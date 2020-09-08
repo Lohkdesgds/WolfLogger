@@ -2,19 +2,13 @@
 
 #include <aegis.hpp>
 #include "printer.h"
+#include "slow_flush.h"
 
 const unsigned long long mee_dev = 280450898885607425; // myself, for debugging and help
 const std::chrono::milliseconds each_server_delay = std::chrono::milliseconds(750);
 const int color_embed_default = 0xd8954d;
 const std::string main_cmd = "lsw/wl";
-
-
-bool slow_flush(aegis::create_message_t, aegis::channel&, unsigned long long);
-bool slow_flush(std::string, aegis::channel&, unsigned long long);
-
-bool slow_flush_embed(nlohmann::json, aegis::channel&, unsigned long long);
-bool slow_flush_embed(aegis::gateway::objects::embed, aegis::channel&, unsigned long long);
-
+const std::string version = "V1.7.159";
 	
 class Languages {
 	struct _lang {

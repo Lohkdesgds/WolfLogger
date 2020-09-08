@@ -14,10 +14,12 @@
     <ClInclude Include="handle_guild_easy.h" />
     <ClInclude Include="keys.h" />
     <ClInclude Include="printer.h" />
+    <ClInclude Include="slow_flush.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="handle_guild_easy.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="slow_flush.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

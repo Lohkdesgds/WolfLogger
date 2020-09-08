@@ -295,7 +295,7 @@ int main()
 			u8"Feito com C++... quero dizer, amor",
 			u8"Simplicidade é tudo",
 			u8"Thank you Aegis! For real!",
-			u8"Versão 1.5.134 pre-release",
+			u8"Versão " + version + " pre-release",
 			u8"Eu sou um bot?!",
 			u8"@Lohkdesgds para suporte!",
 			u8"Arroz, feijão, batata e um abração",
