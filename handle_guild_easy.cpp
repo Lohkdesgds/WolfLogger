@@ -706,25 +706,6 @@ void GuildChat::command(aegis::channel& ch, std::vector<std::string> arguments)
 			};
 
 			send_message_embed(t);
-
-
-
-			/*send_message(
-				"^" + getStrL("flush") + " : " + getStrL("flush_desc") + "\n"
-				"^" + getStrL("show") + " : " + getStrL("show_desc") + "\n"
-				"^" + getStrL("log") + " : " + getStrL("log_desc") + "\n"
-				"^" + getStrL("deeplog") + " : " + getStrL("deeplog_desc") + "\n"
-				"^" + getStrL("nolook") + " : " + getStrL("nolook_desc") + "\n"
-				"^" + getStrL("delnolook") + " : " + getStrL("delnolook_desc") + "\n"
-				"^" + getStrL("addroleadmin") + " : " + getStrL("addroleadmin_desc") + "\n"
-				"^" + getStrL("delroleadmin") + " : " + getStrL("delroleadmin_desc") + "\n"
-				"^" + getStrL("help") + " : " + getStrL("help_desc") + "\n"
-				"^" + getStrL("language") + " : " + getStrL("language_desc") + "\n" +
-				"^" + getStrL("ping") + " : " + getStrL("ping_desc") + "\n" +
-				"^" + getStrL("stats") + " : " + getStrL("stats_desc") + "\n" +
-				"^" + getStrL("alias") + " : " + getStrL("alias_desc") + "\n",
-				true, getStrL("commands")
-			);*/
 		}
 	}
 
@@ -735,7 +716,6 @@ bool GuildChat::remove_chat_nolook(const unsigned long long chid)
 {
 	for (size_t p = 0; p < nolook.size(); p++) {
 		if (nolook[p] == chid) {
-			//std::lock_guard<std::mutex> keep(besur);
 			nolook.erase(nolook.begin() + p);
 			return true;
 		}
@@ -746,7 +726,6 @@ bool GuildChat::remove_role_admin(const unsigned long long usid)
 {
 	for (size_t p = 0; p < adm_tags.size(); p++) {
 		if (adm_tags[p] == usid) {
-			//std::lock_guard<std::mutex> keep(besur);
 			adm_tags.erase(adm_tags.begin() + p);
 			return true;
 		}
@@ -756,7 +735,6 @@ bool GuildChat::remove_role_admin(const unsigned long long usid)
 bool GuildChat::add_chat_nolook(const unsigned long long chid)
 {
 	if (chat_canlook(chid)) {
-		//std::lock_guard<std::mutex> keep(besur);
 		nolook.push_back(chid);
 		return true;
 	}
@@ -769,7 +747,6 @@ bool GuildChat::add_role_admin(const unsigned long long rlid)
 			return false;
 		}
 	}
-	//std::lock_guard<std::mutex> keep(besur);
 	adm_tags.push_back(rlid);
 	return true;
 }
@@ -779,8 +756,6 @@ bool GuildChat::has_admin_rights(aegis::guild& guild, aegis::user& user)
 	if (user.get_id() == guild.get_owner() || user.get_id() == mee_dev) return true;
 		
 	auto tags = user.get_guild_info(guild.get_id()).roles;
-
-	//std::lock_guard<std::mutex> keep(besur);
 		
 	for (auto& i : tags) {
 		for (auto& j : adm_tags) {
@@ -811,19 +786,7 @@ GuildChat::GuildChat(std::shared_ptr<aegis::core> core, aegis::guild& uu) // gui
 	idiom = source_lang.getLang(itsregion);
 
 	load_settings();
-	/*for (auto& i : uu.get_channels()) {
-		if (i.first == mylog.channel_log) {
 
-			if (!i.second) {
-				logging.print("[>] Failed to Welcome Guild #", guild_id);
-				return;
-			}
-			welcome_message(*i.second);
-			logging.print("[>] Welcome -> Guild #", guild_id);
-			return;
-		}
-	}
-	logging.print("[>] No settings found to Guild #", guild_id);*/
 	welcome_message();
 }
 GuildChat::GuildChat(std::shared_ptr<aegis::core> core, aegis::gateway::objects::guild& uu) // guild_id, shard_id, region, guild
@@ -834,22 +797,7 @@ GuildChat::GuildChat(std::shared_ptr<aegis::core> core, aegis::gateway::objects:
 	idiom = source_lang.getLang(itsregion);
 
 	load_settings();
-	/*for (auto& i : uu.channels) {
-		if (i.id == mylog.channel_log) {
 
-			aegis::channel* ch = nullptr;
-			for (size_t tries = 0; tries < 15 && !ch; tries++) ch = ref->channel_create(i.id);
-
-			if (!ch) {
-				logging.print("[>] Failed to Welcome Guild #", guild_id);
-				return;
-			}
-			welcome_message(*ch);
-			//logging.print("[>] Welcome -> Guild #", guild_id);
-			return;
-		}
-	}
-	logging.print("[>] No settings found to Guild #", guild_id);*/
 	welcome_message();
 }
 GuildChat::~GuildChat()
@@ -904,10 +852,6 @@ void GuildChat::handle_specific(aegis::gateway::events::message_create& obj)
 
 		const std::string& content = obj.msg.get_content();
 
-		/*if (content.find(alias_cmd) == 0 && content.length() > 1 && has_admin_rights(obj.msg.get_guild(), obj.get_user())) {
-			command(obj.msg.get_channel(), content.substr(1));
-		}
-		*/
 		if (mylog.last_user != obj.msg.author.id) {
 			buffer_handle("```md\n[" + std::to_string(obj.msg.author.id) + "](" + (obj.msg.author.username) + "#" + (obj.msg.author.discriminator) + ")```");
 			mylog.last_user = obj.msg.author.id;
@@ -943,6 +887,7 @@ void GuildChat::handle_specific(aegis::gateway::events::message_update& obj)
 void GuildChat::handle_specific(aegis::gateway::events::message_delete& obj)
 {
 	if (!mylog.deep_data) return;
+	if (!chat_canlook(obj.channel.get_id())) return;
 
 	buffer_handle("```md\n[" + getStrL("message_t") + "](" + getStrL("delete_t") + ")<" + std::to_string(obj.id) + " @ " + std::to_string(obj.channel.get_id()) + ">```");
 	mylog.last_user = 0;
@@ -1011,6 +956,7 @@ void GuildChat::handle_specific(aegis::gateway::events::message_reaction_remove&
 void GuildChat::handle_specific(aegis::gateway::events::channel_create& obj)
 {
 	if (!mylog.deep_data) return;
+	if (!chat_canlook(obj.channel.id)) return;
 
 	buffer_handle(u8"```md\n[" + getStrL("channel_t") + "](" + getStrL("new_t") + ")```\nID=" + std::to_string(obj.channel.id) + u8";" + getStrL("name") + "=" + obj.channel.name +
 		u8";" + getStrL("nsfw") + "=" + (obj.channel.nsfw ? getStrL("yes") : getStrL("no")) + u8";" + getStrL("audio") + "?" + (obj.channel.bitrate > 0 ? (std::to_string(obj.channel.bitrate) + u8"bps") : u8"---") +
@@ -1020,6 +966,7 @@ void GuildChat::handle_specific(aegis::gateway::events::channel_create& obj)
 void GuildChat::handle_specific(aegis::gateway::events::channel_update& obj)
 {
 	if (!mylog.deep_data) return;
+	if (!chat_canlook(obj.channel.id)) return;
 
 	buffer_handle(u8"```md\n[" + getStrL("channel_t") + "](" + getStrL("new_t") + ")```\nID=" + std::to_string(obj.channel.id) + u8";" + getStrL("name") + "=" + obj.channel.name +
 		u8";" + getStrL("nsfw") + "=" + (obj.channel.nsfw ? getStrL("yes") : getStrL("no")) + u8";" + getStrL("audio") + "?" + (obj.channel.bitrate > 0 ? (std::to_string(obj.channel.bitrate) + u8"bps") : u8"---") +
@@ -1032,6 +979,7 @@ void GuildChat::handle_specific(aegis::gateway::events::channel_update& obj)
 void GuildChat::handle_specific(aegis::gateway::events::channel_delete& obj)
 {
 	if (!mylog.deep_data) return;
+	if (!chat_canlook(obj.channel.id)) return;
 
 	buffer_handle(u8"```md\n[" + getStrL("channel_t") + "](" + getStrL("new_t") + ")```\nID=" + std::to_string(obj.channel.id) + u8";" + getStrL("name") + "=" + obj.channel.name +
 		u8";" + getStrL("nsfw") + "=" + (obj.channel.nsfw ? getStrL("yes") : getStrL("no")) + u8";" + getStrL("audio") + "?" + (obj.channel.bitrate > 0 ? (std::to_string(obj.channel.bitrate) + u8"bps") : u8"---") +
