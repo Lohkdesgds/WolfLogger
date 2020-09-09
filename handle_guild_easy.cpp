@@ -1,9 +1,233 @@
 #include "handle_guild_easy.h"
 
 
-
-nlohmann::json* Languages::getLang(const std::string idiom)
+Languages::Languages()
 {
+	{
+		nlohmann::json lang;
+
+		lang["yes"]								= u8"sim";
+		lang["no"]								= u8"não";
+
+		lang["enabled"]							= u8"habilitado";
+		lang["disabled"]						= u8"desabilitado";
+
+		lang["flush"]							= u8"flush";
+		lang["show"]							= u8"mostrar";
+		lang["log"]								= u8"registro";
+		lang["deeplog"]							= u8"registrarprofundamente";
+		lang["nolook"]							= u8"nãover";
+		lang["delnolook"]						= u8"removernãover";
+		lang["addroleadmin"]					= u8"addtagadmin";
+		lang["delroleadmin"]					= u8"removertagadmin";
+		lang["help"]							= u8"ajuda";
+		lang["language"]						= u8"idioma";
+		lang["ping"]							= u8"ping";
+		lang["stats"]							= u8"estado";
+		lang["alias"]							= u8"alias";
+
+		lang["commands"]						= u8"Comandos disponíveis";
+
+		lang["flush_desc"]  					= u8"libera todos os bytes em memória (do log)";
+		lang["show_desc"] 						= u8"mostra as configurações atuais";
+		lang["log_desc"]  						= u8"define o chat onde deve registrar eventos do chat (passe ID)";
+		lang["deeplog_desc"]  					= u8"define se deve monitorar profundamente ou só o normal";
+		lang["nolook_desc"]  					= u8"deixa de monitorar um chat (passe um ou mais ID(s))";
+		lang["delnolook_desc"] 					= u8"volta a monitorar o chat (passe um ou mais ID(s))";
+		lang["addroleadmin_desc"] 				= u8"adiciona uma tag para usar esses comandos (passe um ou mais ID(s))";
+		lang["delroleadmin_desc"] 				= u8"remove a tag das permitidas a usar esses comandos (passe um ou mais ID(s))";
+		lang["help_desc"] 						= u8"mostra esse menu de ajuda";
+		lang["language_desc"] 					= u8"atualiza o idioma do bot (sem argumentos = baseado na localização do servidor)";
+		lang["ping_desc"] 						= u8"responde de volta sem fazer mais nada";
+		lang["stats_desc"] 						= u8"estado e informações do bot";
+		lang["alias_desc"]						= u8"forma alternativa pra chamar o bot (ex: ^)";
+
+		lang["flushed"]							= u8"Memória liberada";
+		lang["pong"]							= u8"Pong!";
+
+		lang["config_title"]					= u8"Configurações";
+		lang["log_title"]						= u8"Chat de log";
+		lang["alias_title"]						= u8"Alias";
+		lang["deeplog_title"]					= u8"Registro profundo";
+		lang["nolook_title"]					= u8"Canais sem monitoramento";
+		lang["adminroles_title"]				= u8"Tags com permissões";
+
+		lang["broadcast_title"]					= u8"[Mensagem Oficial do(s) Desenvolvedor(es)]";
+
+		lang["success"]							= u8"Sucesso";
+		lang["failed"]							= u8"Algo deu errado";
+		lang["no_embed_available"]				= u8"Algo deu errado! Sem permissão pra embeds (links)";
+
+		lang["list_success"]					= u8"A lista foi atualizada com sucesso";
+
+		lang["new"]								= u8"novo(s)";
+		lang["del"]								= u8"removido(s)";
+
+		lang["edited_message"]					= u8"editou mensagem";
+
+		lang["message_t"]						= u8"MENSAGEM";
+		lang["channel_t"]						= u8"CANAL";
+		lang["role_t"]							= u8"TAG";
+
+		lang["delete_t"]						= u8"APAGOU";
+		lang["update_t"]						= u8"MODIFICOU";
+		lang["new_t"]							= u8"NOVO";
+
+		lang["reacted_with"]					= u8"reagiu com";
+		lang["removed_reaction"]				= u8"removeu reação";
+
+		lang["name"]							= u8"Nome";
+		lang["nsfw"]							= u8"NSFW";
+		lang["audio"]							= u8"Áudio";
+		lang["topic"]							= u8"Tópico";
+
+		lang["banned"]							= u8"Banido";
+		lang["unbanned"]						= u8"Desbanido";
+
+		lang["shutdown_message"] 				= u8"Desculpe, o WolfLogger foi desligado aqui (provavelmente pra uma update).";
+		lang["wakeup_message"] 					= u8"WolfLogger está de volta.";
+		lang["rejoin_message"] 					= u8"O Discord reiniciou a conexão. WolfLogger está de volta.";
+
+		//lang["stats_line_0"]			= u8"Essa é a shard # {} de {}";
+		lang["stats_line_1"] 					= u8"Última versão do bot";
+		lang["stats_line_2"] 					= u8"Grupo oficial do bot";
+		lang["stats_line_3"] 					= u8"Uso de memória";
+		lang["stats_line_4"] 					= u8"Uso de memória máximo";
+
+		lang["stats_title"] 					= u8"__Informações__";
+
+		lang["stats_member"] 					= u8"Membros";
+		lang["stats_channn"] 					= u8"Canais";
+		lang["stats_uptime"] 					= u8"Ligado há";
+		lang["stats_guilds"] 					= u8"Guilds";
+		lang["stats_events"]					= u8"Eventos vistos";
+		lang["stats_buffer"]					= u8"Tamanho do buffer";
+		lang["stats_region"]					= u8"Último idioma salvo";
+		lang["stats_version"]					= u8"Versão do app";
+
+		lang["stats_footer"]					= u8"Feito em C++{} com {}";
+
+		langs.dict.push_back({ "brazil", lang });
+	}
+	{
+		nlohmann::json lang;
+
+		lang["yes"]								= u8"yes";
+		lang["no"]								= u8"no";
+
+		lang["enabled"]							= u8"enabled";
+		lang["disabled"]						= u8"disabled";
+
+		lang["flush"]							= u8"flush";
+		lang["show"]							= u8"show";
+		lang["log"]								= u8"log";
+		lang["deeplog"]							= u8"deeplog";
+		lang["nolook"]							= u8"dontlook";
+		lang["delnolook"]						= u8"deldontlook";
+		lang["addroleadmin"]					= u8"addroleadmin";
+		lang["delroleadmin"]					= u8"delroleadmin";
+		lang["help"]							= u8"help";
+		lang["language"]						= u8"language";
+		lang["ping"]							= u8"ping";
+		lang["stats"]							= u8"stats";
+		lang["alias"]							= u8"alias";
+
+		lang["commands"]						= u8"Commands available";
+
+		lang["flush_desc"]						= u8"flushes the memory (log buffer)";
+		lang["show_desc"]						= u8"show all the settings";
+		lang["log_desc"]						= u8"setup where to store log (require ID)";
+		lang["deeplog_desc"]					= u8"set if it should deeply log or not (normal)";
+		lang["nolook_desc"]						= u8"stop monitoring a chat (require one or more IDs)";
+		lang["delnolook_desc"]					= u8"start monitoring a chat again (require one or more IDs)";
+		lang["addroleadmin_desc"]				= u8"adds new role to run commands (require one or more IDs)";
+		lang["delroleadmin_desc"]				= u8"remove a role from using these commands (require one or more IDs)";
+		lang["help_desc"]						= u8"shows this help";
+		lang["language_desc"]					= u8"updates language (no args = based on server location)";
+		lang["ping_desc"]						= u8"answers back without doing anything";
+		lang["stats_desc"]						= u8"stats and info about the bot";
+		lang["alias_desc"]						= u8"alternative way to call the bot (ex: ^)";
+
+		lang["flushed"]							= u8"Flushed memory";
+		lang["pong"]							= u8"Pong!";
+
+		lang["config_title"]					= u8"Settings";
+		lang["log_title"]						= u8"Log chat";
+		lang["alias_title"]						= u8"Alias";
+		lang["deeplog_title"]					= u8"DeepLog";
+		lang["nolook_title"]					= u8"NoLook chats";
+		lang["adminroles_title"]				= u8"Admin tags";
+
+		lang["broadcast_title"]					= u8"[Oficial Message from Developer(s)]";
+
+		lang["success"]							= u8"Success";
+		lang["failed"]							= u8"Something went wrong";
+		lang["no_embed_available"]				= u8"Something went wrong! No permission to send embeds (links)";
+
+		lang["list_success"]					= u8"Updated list successfully";
+
+		lang["new"]								= u8"new";
+		lang["del"] 							= u8"deleted";
+
+		lang["edited_message"] 					= u8"edited message";
+
+		lang["message_t"] 						= u8"MESSAGE";
+		lang["channel_t"] 						= u8"CHANNEL";
+		lang["role_t"]							= u8"ROLE";
+
+		lang["delete_t"] 						= u8"DELETE";
+		lang["update_t"] 						= u8"UPDATE";
+		lang["new_t"] 							= u8"NEW";
+
+		lang["reacted_with"] 					= u8"reacted with";
+		lang["removed_reaction"] 				= u8"removed reaction";
+
+		lang["name"] 							= u8"Name";
+		lang["nsfw"] 							= u8"NSFW";
+		lang["audio"] 							= u8"Audio";
+		lang["topic"] 							= u8"Topic";
+
+		lang["banned"] 							= u8"Banned";
+		lang["unbanned"] 						= u8"Unbanned";
+
+		lang["shutdown_message"] 				= u8"Sorry, WolfLogger got shutdown (probably update).";
+		lang["wakeup_message"] 					= u8"WolfLogger is back online.";
+		lang["rejoin_message"] 					= u8"Discord restarted connection. WolfLogger is back online.";
+
+		//lang["stats_line_0"]			= u8"This is the shard # {} of {}";
+		lang["stats_line_1"]					= u8"Latest bot source";
+		lang["stats_line_2"] 					= u8"Official bot server";
+		lang["stats_line_3"] 					= u8"Memory usage";
+		lang["stats_line_4"]					= u8"Peak memory usage";
+
+		lang["stats_title"]						= u8"__Stats__";
+
+		lang["stats_member"]					= u8"Members";
+		lang["stats_channn"]					= u8"Channels";
+		lang["stats_uptime"]					= u8"Uptime";
+		lang["stats_guilds"]					= u8"Guilds";
+		lang["stats_events"]					= u8"Events seen";
+		lang["stats_buffer"]					= u8"Buffer";
+		lang["stats_region"]					= u8"Latest language saved";
+		lang["stats_version"]					= u8"App version";
+
+		lang["stats_footer"]					= u8"Made in C++{} with {}";
+
+		langs.dict.push_back({ "default", lang });
+	}
+}
+
+nlohmann::json* Languages::getNtranslateLang(std::string& idiom)
+{
+	for (auto& i : idiom) i = std::tolower(i);
+
+	if (idiom == "brazil" || idiom == "brasil" || idiom == "ptbr" || idiom == "pt" || idiom == "portugues" || idiom == u8"português") {
+		idiom = "brazil";
+	}
+	else {
+		idiom = "default";
+	}
+
 	std::lock_guard<std::mutex> keep(langs.mut);
 
 	for (size_t p = 0; p < langs.dict.size(); p++) {
@@ -11,215 +235,7 @@ nlohmann::json* Languages::getLang(const std::string idiom)
 			return &langs.dict[p].second;
 	}
 
-	// not found, create new
-
-	nlohmann::json lang;
-
-	if (idiom == "brazil") {
-			lang["yes"]						= u8"sim";
-			lang["no"]						= u8"não";
-
-			lang["enabled"]					= u8"habilitado";
-			lang["disabled"]				= u8"desabilitado";
-
-			lang["flush"]					= u8"flush";
-			lang["show"]					= u8"mostrar";
-			lang["log"]						= u8"registro";
-			lang["deeplog"]					= u8"registrarprofundamente";
-			lang["nolook"]					= u8"nãover";
-			lang["delnolook"]				= u8"removernãover";
-			lang["addroleadmin"]			= u8"addtagadmin";
-			lang["delroleadmin"]			= u8"removertagadmin";
-			lang["help"]					= u8"ajuda";
-			lang["language"]				= u8"idioma";
-			lang["ping"]					= u8"ping";
-			lang["stats"]					= u8"estado";
-			lang["alias"]					= u8"alias";
-
-			lang["commands"]				= u8"Comandos disponíveis";
-
-			lang["flush_desc"]				= u8"libera todos os bytes em memória (do log)";
-			lang["show_desc"]				= u8"mostra as configurações atuais";
-			lang["log_desc"]				= u8"define o chat onde deve registrar eventos do chat (passe ID)";
-			lang["deeplog_desc"]			= u8"define se deve monitorar profundamente ou só o normal";
-			lang["nolook_desc"]				= u8"deixa de monitorar um chat (passe um ou mais ID(s))";
-			lang["delnolook_desc"]			= u8"volta a monitorar o chat (passe um ou mais ID(s))";
-			lang["addroleadmin_desc"]		= u8"adiciona uma tag para usar esses comandos (passe um ou mais ID(s))";
-			lang["delroleadmin_desc"]		= u8"remove a tag das permitidas a usar esses comandos (passe um ou mais ID(s))";
-			lang["help_desc"]				= u8"mostra esse menu de ajuda";
-			lang["language_desc"]			= u8"atualiza o idioma do bot baseado na localização do servidor";
-			lang["ping_desc"]				= u8"responde de volta sem fazer mais nada";
-			lang["stats_desc"]				= u8"estado e informações do bot";
-			lang["alias_desc"]				= u8"forma alternativa pra chamar o bot (ex: ^)";
-
-			lang["flushed"]					= u8"Memória liberada";
-			lang["pong"]					= u8"Pong!";
-
-			lang["config_title"]			= u8"Configurações";
-			lang["log_title"]				= u8"Chat de log";
-			lang["alias_title"]				= u8"Alias";
-			lang["deeplog_title"]			= u8"Registro profundo";
-			lang["nolook_title"]			= u8"Canais sem monitoramento";
-			lang["adminroles_title"]		= u8"Tags com permissões";
-
-			lang["success"]					= u8"Sucesso";
-			lang["failed"]					= u8"Algo deu errado";
-			lang["no_embed_available"]		= u8"Algo deu errado! Sem permissão pra embeds (links)";
-
-			lang["list_success"]			= u8"A lista foi atualizada com sucesso";
-
-			lang["new"]						= u8"novo(s)";
-			lang["del"]						= u8"removido(s)";
-
-			lang["edited_message"]			= u8"editou mensagem";
-				
-			lang["message_t"]				= u8"MENSAGEM";
-			lang["channel_t"]				= u8"CANAL";
-			lang["role_t"]					= u8"TAG";
-
-			lang["delete_t"]				= u8"APAGOU";
-			lang["update_t"]				= u8"MODIFICOU";
-			lang["new_t"]					= u8"NOVO";
-
-			lang["reacted_with"]			= u8"reagiu com";
-			lang["removed_reaction"]		= u8"removeu reação";
-
-			lang["name"]					= u8"Nome";
-			lang["nsfw"]					= u8"NSFW";
-			lang["audio"]					= u8"Áudio";
-			lang["topic"]					= u8"Tópico";
-
-			lang["banned"]					= u8"Banido";
-			lang["unbanned"]				= u8"Desbanido";
-
-			lang["shutdown_message"]		= u8"Desculpe, o WolfLogger foi desligado aqui (provavelmente pra uma update).";
-			lang["wakeup_message"]			= u8"WolfLogger está de volta.";
-			lang["rejoin_message"]			= u8"O Discord reiniciou a conexão. WolfLogger está de volta.";
-
-			//lang["stats_line_0"]			= u8"Essa é a shard # {} de {}";
-			lang["stats_line_1"]			= u8"Última versão do bot";
-			lang["stats_line_2"]			= u8"Grupo oficial do bot";
-			lang["stats_line_3"]			= u8"Uso de memória";
-			lang["stats_line_4"]			= u8"Uso de memória máximo";
-				
-			lang["stats_title"]				= u8"__Informações__";
-
-			lang["stats_member"]			= u8"Membros";
-			lang["stats_channn"]			= u8"Canais";
-			lang["stats_uptime"]			= u8"Ligado há";
-			lang["stats_guilds"]			= u8"Guilds";
-			lang["stats_events"]			= u8"Eventos vistos";
-			lang["stats_buffer"]			= u8"Tamanho do buffer";
-			lang["stats_region"]			= u8"Última região salva";
-
-			lang["stats_footer"]			= u8"Feito em C++{} com {}";
-
-	}
-	else // ENGLISH
-	{ 
-			lang["yes"]						= u8"yes";
-			lang["no"]						= u8"no";
-
-			lang["enabled"]					= u8"enabled";
-			lang["disabled"]				= u8"disabled";
-
-			lang["flush"]					= u8"flush";
-			lang["show"]					= u8"show";
-			lang["log"]						= u8"log";
-			lang["deeplog"]					= u8"deeplog";
-			lang["nolook"]					= u8"dontlook";
-			lang["delnolook"]				= u8"deldontlook";
-			lang["addroleadmin"]			= u8"addroleadmin";
-			lang["delroleadmin"]			= u8"delroleadmin";
-			lang["help"]					= u8"help";
-			lang["language"]				= u8"language";
-			lang["ping"]					= u8"ping";
-			lang["stats"]					= u8"stats";
-			lang["alias"]					= u8"alias";
-
-			lang["commands"]				= u8"Commands available";
-
-			lang["flush_desc"]				= u8"flushes the memory (log buffer)";
-			lang["show_desc"]				= u8"show all the settings";
-			lang["log_desc"]				= u8"setup where to store log (require ID)";
-			lang["deeplog_desc"]			= u8"set if it should deeply log or not (normal)";
-			lang["nolook_desc"]				= u8"stop monitoring a chat (require one or more IDs)";
-			lang["delnolook_desc"]			= u8"start monitoring a chat again (require one or more IDs)";
-			lang["addroleadmin_desc"]		= u8"adds new role to run commands (require one or more IDs)";
-			lang["delroleadmin_desc"]		= u8"remove a role from using these commands (require one or more IDs)";
-			lang["help_desc"]				= u8"shows this help";
-			lang["language_desc"]			= u8"updates language based on server location";
-			lang["ping_desc"]				= u8"answers back without doing anything";
-			lang["stats_desc"]				= u8"stats and info about the bot";
-			lang["alias_desc"]				= u8"alternative way to call the bot (ex: ^)";
-
-			lang["flushed"]					= u8"Flushed memory";
-			lang["pong"]					= u8"Pong!";
-
-			lang["config_title"]			= u8"Settings";
-			lang["log_title"]				= u8"Log chat";
-			lang["alias_title"]				= u8"Alias";
-			lang["deeplog_title"]			= u8"DeepLog";
-			lang["nolook_title"]			= u8"NoLook chats";
-			lang["adminroles_title"]		= u8"Admin tags";
-
-			lang["success"]					= u8"Success";
-			lang["failed"]					= u8"Something went wrong";
-			lang["no_embed_available"]		= u8"Something went wrong! No permission to send embeds (links)";
-
-			lang["list_success"]			= u8"Updated list successfully";
-
-			lang["new"]						= u8"new";
-			lang["del"]						= u8"deleted";
-
-			lang["edited_message"]			= u8"edited message";
-				
-			lang["message_t"]				= u8"MESSAGE";
-			lang["channel_t"]				= u8"CHANNEL";
-			lang["role_t"]					= u8"ROLE";
-
-			lang["delete_t"]				= u8"DELETE";
-			lang["update_t"]				= u8"UPDATE";
-			lang["new_t"]					= u8"NEW";
-
-			lang["reacted_with"]			= u8"reacted with";
-			lang["removed_reaction"]		= u8"removed reaction";
-
-			lang["name"]					= u8"Name";
-			lang["nsfw"]					= u8"NSFW";
-			lang["audio"]					= u8"Audio";
-			lang["topic"]					= u8"Topic";
-
-			lang["banned"]					= u8"Banned";
-			lang["unbanned"]				= u8"Unbanned";
-
-			lang["shutdown_message"]		= u8"Sorry, WolfLogger got shutdown (probably update).";
-			lang["wakeup_message"]			= u8"WolfLogger is back online.";
-			lang["rejoin_message"]			= u8"Discord restarted connection. WolfLogger is back online.";
-
-			//lang["stats_line_0"]			= u8"This is the shard # {} of {}";
-			lang["stats_line_1"]			= u8"Latest bot source";
-			lang["stats_line_2"]			= u8"Official bot server";
-			lang["stats_line_3"]			= u8"Memory usage";
-			lang["stats_line_4"]			= u8"Peak memory usage";
-				
-			lang["stats_title"]				= u8"__Stats__";
-
-			lang["stats_member"]			= u8"Members";
-			lang["stats_channn"]			= u8"Channels";
-			lang["stats_uptime"]			= u8"Uptime";
-			lang["stats_guilds"]			= u8"Guilds";
-			lang["stats_events"]			= u8"Events seen";
-			lang["stats_buffer"]			= u8"Buffer";
-			lang["stats_region"]			= u8"Latest region saved";
-
-			lang["stats_footer"]			= u8"Made in C++{} with {}";
-
-	}
-
-	langs.dict.push_back({ idiom, lang });
-
-	return &langs.dict.back().second; // must be at the back
+	return nullptr;
 }
 
 
@@ -236,6 +252,7 @@ void GuildChat::save_settings()
 		myjson["last_user"] = mylog.last_user;
 		myjson["channel_log"] = mylog.channel_log;
 		myjson["deep_data"] = mylog.deep_data;
+		myjson["region"] = mylog.itsregion;
 		myjson["alias_cmd"] = alias_cmd;
 		myjson["adm_tags"] = adm_tags;
 		myjson["ignore_channels"] = nolook;
@@ -246,9 +263,8 @@ void GuildChat::save_settings()
 
 		fclose(fpp);
 	}
-
-
 }
+
 bool GuildChat::load_settings()
 {
 	nlohmann::json j;
@@ -276,6 +292,9 @@ bool GuildChat::load_settings()
 		if (j.count("deep_data") && !j["deep_data"].is_null()) {
 			mylog.deep_data = j["deep_data"].get<bool>();
 		}
+		if (j.count("region") && !j["region"].is_null()) {
+			mylog.itsregion = j["region"].get<std::string>();
+		}
 		if (j.count("alias_cmd") && !j["alias_cmd"].is_null()) {
 			alias_cmd = j["alias_cmd"].get<std::string>();
 		}
@@ -288,7 +307,7 @@ bool GuildChat::load_settings()
 
 		fclose(fpp);
 	}
-	else { // old way (v1, 20200815)
+	/*else { // old way (v1, 20200815), obsolete for sure now.
 		std::string path = "servers/" + std::to_string(guild_id) + "_log.wolflog";
 		FILE* fp = nullptr;
 		if (fopen_s(&fp, path.c_str(), "rb") != 0) { // none found
@@ -306,21 +325,20 @@ bool GuildChat::load_settings()
 			}
 			fclose(fp);
 		}
-	}
-
-
+	}*/
 	return true;
 }
-bool GuildChat::flushLanguage()
+
+bool GuildChat::flushLanguage(std::string newreg)
 {
 	auto* cpy = idiom;
 	auto& shardd = ref->get_shard_by_guild(guild_id);
 	auto guild = ref->guild_create(guild_id, &shardd);
 
 	if (guild) {
-		if (idiom = source_lang.getLang(guild->get_region())) {
-			itsregion = guild->get_region();
-			logging.print("[!] Defined new region at guild #", guild_id, ": ", itsregion);
+		if (idiom = source_lang.getNtranslateLang(newreg)) { // guild->get_region()
+			mylog.itsregion = newreg;
+			logg->info("Guild #{} has set new region/idiom: {}", guild_id, newreg);
 			return true;
 		}
 	}
@@ -339,7 +357,7 @@ void GuildChat::buffer_handle(std::string str)
 		if (temp.length()) {
 			slow_flush(temp, *ch, guild_id, ref->log);
 			//ch->create_message(temp); // max len
-			logging.print("Guild #", guild_id, " has flushed ", temp.length(), " bytes");
+			logg->info("Guild #{} has flushed {} byte(s)", guild_id, temp.length());
 		}
 
 		if (buffer_string.length() > max_len_str) buffer_string = buffer_string.substr(max_len_str); //  if bigger than max discord size, save remaining
@@ -364,7 +382,7 @@ void GuildChat::buffer_flush()
 			slow_flush(buffer_string.substr(0, max_len_str > buffer_string.length() ? max_len_str : buffer_string.length()), *ch, guild_id, ref->log);
 			//ch->create_message(buffer_string.substr(0, max_len_str > buffer_string.length() ? max_len_str : buffer_string.length())); // max len
 
-			logging.print("Guild #", guild_id, " has flushed (forced) ", buffer_string.length() > 2000 ? 2000 : buffer_string.length(), " bytes");
+			logg->info("Guild #{} has flushed (forced) {} byte(s)", guild_id, buffer_string.length() > 2000 ? 2000 : buffer_string.length());
 
 			if (buffer_string.length() > max_len_str) buffer_string = buffer_string.substr(max_len_str); //  if bigger than max discord size, save remaining
 			else buffer_string.clear(); // if less, sent all, so clear
@@ -372,17 +390,18 @@ void GuildChat::buffer_flush()
 		}
 	}
 	catch (...) {
-		logging.print("Guild #", guild_id, " has issue flushing (forced). Skipped.");
+		logg->warn("Guild #{} has issue flushing (forced). Skipped.", guild_id);
 	}
 }
 std::string GuildChat::getStrL(const std::string key, const size_t tries)
 {
 	try {
+		if (!idiom) throw 1; // just to catch and reload.
 		return (*idiom)[key].get<std::string>();
 	}
 	catch (...) {
-		logging.print("[!] Error getting language in region ", itsregion);
-		idiom = source_lang.getLang(itsregion);
+		logg->warn("Error trying to get language \"{}\"", mylog.itsregion);
+		idiom = source_lang.getNtranslateLang(mylog.itsregion);
 		if (!idiom) return "FATAL ERROR";
 	}
 	return tries > 0 ? getStrL(key, tries - 1) : "FATAL ERROR LOOP";
@@ -415,17 +434,6 @@ void GuildChat::command(aegis::channel& ch, std::vector<std::string> arguments)
 		}
 	};
 
-	/*std::vector<std::string> arguments;
-	{
-		std::string buf;
-		for (size_t p = 0; p < slice.length(); p++) {
-			auto& i = slice[p];
-			if (i != ' ') buf += slice[p];
-			else arguments.push_back(std::move(buf));
-		}
-		if (!buf.empty()) arguments.push_back(std::move(buf));
-	}*/
-
 	if (arguments.size() > 0) {
 		std::string& e = arguments[0];
 
@@ -450,12 +458,11 @@ void GuildChat::command(aegis::channel& ch, std::vector<std::string> arguments)
 
 //#if defined(DEBUG) || defined(_DEBUG)
 				//std::string misc = fmt::format(getStrL("stats_line_0"), _shard.get_id() + 1, ref->shard_count()); // stats_line_0 has {} {}
-				const auto div = (1 << 20);
 
 				w	<< "[" << getStrL("stats_line_1") << "](https://github.com/Lohkdesgds/WolfLogger)\n"
 					<< "[" << getStrL("stats_line_2") << "](https://discord.gg/JkzJjCG)\n\n"
-					<< getStrL("stats_line_3") << ": " << double(aegis::utility::getCurrentRSS()) / div << " MB\n"
-					<< getStrL("stats_line_4") << ": " << double(aegis::utility::getPeakRSS()) / div << " MB";
+					<< getStrL("stats_line_3") << ": " << double(aegis::utility::getCurrentRSS()) / div_memory_calc << " MB\n"
+					<< getStrL("stats_line_4") << ": " << double(aegis::utility::getPeakRSS()) / div_memory_calc << " MB";
 
 					
 /*#else
@@ -482,7 +489,8 @@ void GuildChat::command(aegis::channel& ch, std::vector<std::string> arguments)
 							{ { "name", getStrL("stats_guilds") },{ "value", guilds },{ "inline", true } },
 							{ { "name", getStrL("stats_events") },{ "value", events },{ "inline", true } },
 							{ { "name", getStrL("stats_buffer") },{ "value", buffer_len },{ "inline", true } },
-							{ { "name", getStrL("stats_region") },{ "value", itsregion },{ "inline", false } }
+							{ { "name", getStrL("stats_region") },{ "value", mylog.itsregion },{ "inline", true } },
+							{ { "name", getStrL("stats_version") },{ "value", version },{ "inline", true } }
 
 							//{ { "name", u8"\u200b" },{ "value", u8"\u200b" },{ "inline", true } },// this is clean block lmao
 						}
@@ -671,8 +679,26 @@ void GuildChat::command(aegis::channel& ch, std::vector<std::string> arguments)
 			return;
 		}
 		if (e == getStrL("language")) {
-			if (flushLanguage()) {
+
+			std::string reg = "";
+
+			if (arguments.size() > 1) {
+				reg = arguments[1];
+			}
+			else {
+				try {
+					auto res = ref->guild_create(guild_id, &ref->get_shard_by_guild(guild_id));
+					reg = res->get_region();
+				}
+				catch (...) {
+					send_message(getStrL("failed"), false);
+					return;
+				}
+			}
+
+			if (flushLanguage(reg)) {
 				send_message(getStrL("success"), true);
+				save_settings();
 			}
 			else {
 				send_message(getStrL("failed"), false);
@@ -781,30 +807,83 @@ bool GuildChat::user_not_bot_not_null(const unsigned long long userid)
 GuildChat::GuildChat(std::shared_ptr<aegis::core> core, aegis::guild& uu) // guild_id, shard_id, region, guild
 {
 	ref = core;
+	logg = ref->log;
 	guild_id = uu.get_id();
-	itsregion = uu.get_region();
-	idiom = source_lang.getLang(itsregion);
+	mylog.itsregion = uu.get_region();
 
 	load_settings();
+	idiom = source_lang.getNtranslateLang(mylog.itsregion);
+
+	if (!idiom) logg->warn("Guild #{} has potential issue: null idiom!", guild_id);
+	
+	save_settings();
 
 	welcome_message();
 }
 GuildChat::GuildChat(std::shared_ptr<aegis::core> core, aegis::gateway::objects::guild& uu) // guild_id, shard_id, region, guild
 {
 	ref = core;
+	logg = ref->log;
 	guild_id = uu.id;
-	itsregion = uu.region;
-	idiom = source_lang.getLang(itsregion);
+	mylog.itsregion = uu.region;
 
 	load_settings();
+	idiom = source_lang.getNtranslateLang(mylog.itsregion);
+
+	if (!idiom) logg->warn("Guild #{} has potential issue: null idiom!", guild_id);
+	save_settings();
 
 	welcome_message();
 }
 GuildChat::~GuildChat()
 {
 	// saves file
+	save_settings();
+	buffer_flush();
 	end_message();
-	logging.print("[>] Closed Guild #", guild_id);
+	logg->info("Closed Guild #{}", guild_id);
+}
+void GuildChat::broadcast(std::string bread)
+{
+	if (bread.length() == 0) {
+		logg->warn("Guild #{} had issue flushing (broadcast, null). Skipped.", guild_id);
+		return;
+	}
+	if (!mylog.channel_log) {
+		logg->warn("Guild #{} had issue flushing (broadcast, no channel). Skipped.", guild_id);
+		return;
+	}
+
+	try {
+		aegis::channel* ch = ref->channel_create(mylog.channel_log);
+		if (!ch) return;
+
+
+		if (ch->perms().can_embed()) {
+
+			bread = "```md\n" + bread + "```";
+			if (bread.length() > 2000) bread = bread.substr(0, 2000);
+
+			nlohmann::json embed = {
+				{ "title",  getStrL("broadcast_title") },
+				{ "description", bread },
+				{ "color", color_embed_default }
+			};
+			slow_flush_embed(embed, *ch, guild_id, ref->log);
+		}
+		else {
+			bread = "***__" + getStrL("broadcast_title") + "__***\n```md\n" + bread + "```";
+			if (bread.length() > 2000) bread = bread.substr(0, 2000);
+
+			slow_flush(bread, *ch, guild_id, ref->log);
+		}
+
+		logg->info("Guild #{} has flushed (broadcast) {} byte(s)", guild_id, bread.length() > 2000 ? 2000 : bread.length());
+
+	}
+	catch (...) {
+		logg->error("Guild #{} has issue flushing (broadcast, exception). Skipped.", guild_id);
+	}
 }
 void GuildChat::reset()
 {
@@ -827,7 +906,10 @@ void GuildChat::handle_specific(aegis::gateway::events::message_create& obj)
 
 			if (!has_admin_rights(obj.msg.get_guild(), obj.msg.get_user())) { // adm/owner/me
 				slow_flush("You have no permission.", obj.channel, guild_id, ref->log);
-				obj.msg.delete_message();
+
+				auto mmm = obj.channel.delete_message(obj.msg.get_id());
+				while (!mmm.available()) std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
 				return;
 			}
 			size_t start = obj.msg.get_content().find(main_cmd) == 0 ? main_cmd.length() : alias_cmd.size();
@@ -883,14 +965,6 @@ void GuildChat::handle_specific(aegis::gateway::events::message_update& obj)
 			);
 		}
 	}
-}
-void GuildChat::handle_specific(aegis::gateway::events::message_delete& obj)
-{
-	if (!mylog.deep_data) return;
-	if (!chat_canlook(obj.channel.get_id())) return;
-
-	buffer_handle("```md\n[" + getStrL("message_t") + "](" + getStrL("delete_t") + ")<" + std::to_string(obj.id) + " @ " + std::to_string(obj.channel.get_id()) + ">```");
-	mylog.last_user = 0;
 }
 void GuildChat::handle_specific(aegis::gateway::events::message_reaction_add& obj)
 {
@@ -953,14 +1027,22 @@ void GuildChat::handle_specific(aegis::gateway::events::message_reaction_remove&
 		}
 	}
 }
+void GuildChat::handle_specific(aegis::gateway::events::message_delete& obj)
+{
+	if (!mylog.deep_data) return;
+	if (!chat_canlook(obj.channel.get_id())) return;
+	
+	buffer_handle("```md\n[" + getStrL("message_t") + "](" + getStrL("delete_t") + ")<" + std::to_string(obj.id) + " @ " + std::to_string(obj.channel.get_id()) + ">```");
+	mylog.last_user = 0;
+}
 void GuildChat::handle_specific(aegis::gateway::events::channel_create& obj)
 {
 	if (!mylog.deep_data) return;
 	if (!chat_canlook(obj.channel.id)) return;
 
-	buffer_handle(u8"```md\n[" + getStrL("channel_t") + "](" + getStrL("new_t") + ")```\nID=" + std::to_string(obj.channel.id) + u8";" + getStrL("name") + "=" + obj.channel.name +
-		u8";" + getStrL("nsfw") + "=" + (obj.channel.nsfw ? getStrL("yes") : getStrL("no")) + u8";" + getStrL("audio") + "?" + (obj.channel.bitrate > 0 ? (std::to_string(obj.channel.bitrate) + u8"bps") : u8"---") +
-		u8"\n" + (obj.channel.topic.length() > 0 ? (getStrL("topic") + ":\n```\n" + obj.channel.topic + "\n```") : ""));
+	buffer_handle(u8"```md\n[" + getStrL("channel_t") + "](" + getStrL("new_t") + ")```\nID=`" + std::to_string(obj.channel.id) + u8"`;" + getStrL("name") + "=`" + obj.channel.name +
+		u8"`;" + getStrL("nsfw") + "=`" + (obj.channel.nsfw ? getStrL("yes") : getStrL("no")) + u8"`;" + getStrL("audio") + "?`" + (obj.channel.bitrate > 0 ? (std::to_string(obj.channel.bitrate) + u8"bps") : u8"---") +
+		u8"`\n" + (obj.channel.topic.length() > 0 ? (getStrL("topic") + ":\n```\n" + obj.channel.topic + "\n```") : ""));
 	mylog.last_user = 0;
 }
 void GuildChat::handle_specific(aegis::gateway::events::channel_update& obj)
@@ -968,12 +1050,9 @@ void GuildChat::handle_specific(aegis::gateway::events::channel_update& obj)
 	if (!mylog.deep_data) return;
 	if (!chat_canlook(obj.channel.id)) return;
 
-	buffer_handle(u8"```md\n[" + getStrL("channel_t") + "](" + getStrL("new_t") + ")```\nID=" + std::to_string(obj.channel.id) + u8";" + getStrL("name") + "=" + obj.channel.name +
-		u8";" + getStrL("nsfw") + "=" + (obj.channel.nsfw ? getStrL("yes") : getStrL("no")) + u8";" + getStrL("audio") + "?" + (obj.channel.bitrate > 0 ? (std::to_string(obj.channel.bitrate) + u8"bps") : u8"---") +
-		u8"\n" + (obj.channel.topic.length() > 0 ? (getStrL("topic") + ":\n```\n" + obj.channel.topic + "\n```") : ""));
-	/*u8"```md\n[" + getStrL("channel_t") + "](" + getStrL("new_t") + ")```\nID=" + std::to_string(obj.channel.id) + u8";NOME=" + obj.channel.name +
-	u8";NSFW=" + (obj.channel.nsfw ? u8"S" : u8"N") + u8";AUDIO?" + (obj.channel.bitrate > 0 ? (std::to_string(obj.channel.bitrate) + u8"bps") : u8"---") +
-	u8"\n- Tópico:\n```" + obj.channel.topic + "\n```");*/
+	buffer_handle(u8"```md\n[" + getStrL("channel_t") + "](" + getStrL("new_t") + ")```\nID=`" + std::to_string(obj.channel.id) + u8"`;" + getStrL("name") + "=`" + obj.channel.name +
+		u8"`;" + getStrL("nsfw") + "=`" + (obj.channel.nsfw ? getStrL("yes") : getStrL("no")) + u8"`;" + getStrL("audio") + "?`" + (obj.channel.bitrate > 0 ? (std::to_string(obj.channel.bitrate) + u8"bps") : u8"---") +
+		u8"`\n" + (obj.channel.topic.length() > 0 ? (getStrL("topic") + ":\n```\n" + obj.channel.topic + "\n```") : ""));
 	mylog.last_user = 0;
 }
 void GuildChat::handle_specific(aegis::gateway::events::channel_delete& obj)
@@ -981,12 +1060,9 @@ void GuildChat::handle_specific(aegis::gateway::events::channel_delete& obj)
 	if (!mylog.deep_data) return;
 	if (!chat_canlook(obj.channel.id)) return;
 
-	buffer_handle(u8"```md\n[" + getStrL("channel_t") + "](" + getStrL("new_t") + ")```\nID=" + std::to_string(obj.channel.id) + u8";" + getStrL("name") + "=" + obj.channel.name +
-		u8";" + getStrL("nsfw") + "=" + (obj.channel.nsfw ? getStrL("yes") : getStrL("no")) + u8";" + getStrL("audio") + "?" + (obj.channel.bitrate > 0 ? (std::to_string(obj.channel.bitrate) + u8"bps") : u8"---") +
-		u8"\n" + (obj.channel.topic.length() > 0 ? (getStrL("topic") + ":\n```\n" + obj.channel.topic + "\n```") : ""));
-	/*u8"```md\n[" + getStrL("channel_t") + "](" + getStrL("new_t") + ")```\nID=" + std::to_string(obj.channel.id) + u8";NOME=" + obj.channel.name +
-	u8";NSFW=" + (obj.channel.nsfw ? u8"S" : u8"N") + u8";AUDIO?" + (obj.channel.bitrate > 0 ? (std::to_string(obj.channel.bitrate) + u8"bps") : u8"---") +
-	u8"\n- Tópico:\n```" + obj.channel.topic + "\n```");*/
+	buffer_handle(u8"```md\n[" + getStrL("channel_t") + "](" + getStrL("new_t") + ")```\nID=`" + std::to_string(obj.channel.id) + u8"`;" + getStrL("name") + "=`" + obj.channel.name +
+		u8"`;" + getStrL("nsfw") + "=`" + (obj.channel.nsfw ? getStrL("yes") : getStrL("no")) + u8"`;" + getStrL("audio") + "?`" + (obj.channel.bitrate > 0 ? (std::to_string(obj.channel.bitrate) + u8"bps") : u8"---") +
+		u8"`\n" + (obj.channel.topic.length() > 0 ? (getStrL("topic") + ":\n```\n" + obj.channel.topic + "\n```") : ""));
 	mylog.last_user = 0;
 }
 void GuildChat::handle_specific(aegis::gateway::events::guild_ban_add& obj)
@@ -1026,26 +1102,25 @@ void GuildChat::handle_specific(aegis::gateway::events::guild_role_delete& obj)
 }
 void GuildChat::end_message()
 {
-	save_settings();
-	buffer_flush();
 	if (!mylog.deep_data) return;
 
 	if (mylog.channel_log) {
 		for (size_t c = 0; c < 7; c++) {
 			try {
 				if (auto ch = ref->find_channel(mylog.channel_log); ch) {
-					ch->create_message("` - - - - > " + getStrL("shutdown_message") + " < - - - - `").get();
+					auto mmm = ch->create_message("` - - - - > " + getStrL("shutdown_message") + " < - - - - `");
+					while (!mmm.available()) std::this_thread::sleep_for(std::chrono::milliseconds(100));
 					c = 7;
 				}
 				else {
-					logging.print("[", c, "/7] Guild #", guild_id, " can't find channel to send shutdown message.");
+					logg->warn("[{}/7] Guild #{} can't find channel to send shutdown message.", c + 1, guild_id);
 					std::this_thread::yield();
 					std::this_thread::sleep_for(std::chrono::milliseconds(500));
 					std::this_thread::yield();
 				}
 			}
 			catch (...) {
-				logging.print("[", c, "/7] Guild #", guild_id, " failed to send shutdown message once.");
+				logg->error("[{}/7] Guild #{} failed to send shutdown message.", c + 1, guild_id);
 				std::this_thread::yield();
 				std::this_thread::sleep_for(std::chrono::milliseconds(500));
 				std::this_thread::yield();
@@ -1061,18 +1136,19 @@ void GuildChat::welcome_message()
 		for (size_t c = 0; c < 7; c++) {
 			try {
 				if (auto ch = ref->find_channel(mylog.channel_log); ch) {
-					ch->create_message("` - - - - > " + getStrL("wakeup_message") + " < - - - - `");
+					auto mmm = ch->create_message("` - - - - > " + getStrL("wakeup_message") + " < - - - - `");
+					while (!mmm.available()) std::this_thread::sleep_for(std::chrono::milliseconds(100));
 					c = 7;
 				}
 				else {
-					logging.print("[", c, "/7] Guild #", guild_id, " failed to send wakeup message once.");
+					logg->warn("[{}/7] Guild #{} can't find channel to send wakeup message.", c + 1, guild_id);
 					std::this_thread::yield();
 					std::this_thread::sleep_for(std::chrono::milliseconds(500));
 					std::this_thread::yield();
 				}
 			}
 			catch (...) {
-				logging.print("[", c, "/7] Guild #", guild_id, " failed to send wakeup message once.");
+				logg->error("[{}/7] Guild #{} failed to send wakeup message.", c + 1, guild_id);
 				std::this_thread::yield();
 				std::this_thread::sleep_for(std::chrono::milliseconds(500));
 				std::this_thread::yield();
@@ -1090,18 +1166,19 @@ void GuildChat::rejoin_message()
 		for (size_t c = 0; c < 7; c++) {
 			try {
 				if (auto ch = ref->find_channel(mylog.channel_log); ch) {
-					ch->create_message("` - - - - > " + getStrL("rejoin_message") + " < - - - - `");
+					auto mmm = ch->create_message("` - - - - > " + getStrL("rejoin_message") + " < - - - - `");
+					while (!mmm.available()) std::this_thread::sleep_for(std::chrono::milliseconds(100));
 					c = 7;
 				}
 				else {
-					logging.print("[", c, "/7] Guild #", guild_id, " can't find channel to send rejoin message.");
+					logg->warn("[{}/7] Guild #{} can't find channel to send rejoin message.", c + 1, guild_id);
 					std::this_thread::yield();
 					std::this_thread::sleep_for(std::chrono::milliseconds(500));
 					std::this_thread::yield();
 				}
 			}
 			catch (...) {
-				logging.print("[", c, "/7] Guild #", guild_id, " failed to send rejoin message once.");
+				logg->error("[{}/7] Guild #{} failed to send rejoin message.", c + 1, guild_id);
 				std::this_thread::yield();
 				std::this_thread::sleep_for(std::chrono::milliseconds(500));
 				std::this_thread::yield();

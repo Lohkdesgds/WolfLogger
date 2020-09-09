@@ -1,15 +1,15 @@
 #pragma once
 
 #include <aegis.hpp>
-#include "printer.h"
 #include "slow_flush.h"
 
 const unsigned long long mee_dev = 280450898885607425; // myself, for debugging and help
 const std::chrono::milliseconds each_server_delay = std::chrono::milliseconds(750);
 const int color_embed_default = 0xd8954d;
 const std::string main_cmd = "lsw/wl";
-const std::string version = "V1.7.171";
-	
+const std::string version = "V1.8.200";
+const auto div_memory_calc = (1 << 20);
+
 class Languages {
 	struct _lang {
 		std::vector<std::pair<std::string, nlohmann::json>> dict;
@@ -17,7 +17,8 @@ class Languages {
 	};
 	static _lang langs;
 public:
-	nlohmann::json* getLang(const std::string);
+	Languages();
+	nlohmann::json* getNtranslateLang(std::string&);
 };
 
 inline Languages::_lang Languages::langs;
@@ -30,6 +31,7 @@ struct data_log {
 	unsigned long long last_user = 0;
 	unsigned long long channel_log = 0;
 	bool deep_data = false;
+	std::string itsregion = "default";
 };
 
 class GuildChat {
@@ -47,16 +49,15 @@ class GuildChat {
 
 	std::string buffer_string;
 
-
 	std::shared_ptr<aegis::core> ref;
+	std::shared_ptr<spdlog::logger> logg;
 	unsigned long long guild_id = 0;
-	std::string itsregion;
 
 	void save_settings();
 	bool load_settings();
 
 	// updates locale
-	bool flushLanguage();
+	bool flushLanguage(std::string);
 
 	// handles buffer_string
 	void buffer_handle(std::string);
@@ -85,26 +86,17 @@ public:
 	GuildChat(std::shared_ptr<aegis::core>, aegis::gateway::objects::guild&);
 	~GuildChat();
 
+	void broadcast(std::string);
+
 	void reset(); // erase file and data.
 
 	bool operator==(const unsigned long long);
 
-	template<typename T>
-	void handle(T& doit) {
-		if (only_one_tho.try_lock()) {
-			logging.print("in");
-			handle_specific(doit);
-			logging.print("out");
-			only_one_tho.unlock();
-		}
-		else logging.print("no good");
-	}
-
 	void handle_specific(aegis::gateway::events::message_create&);
 	void handle_specific(aegis::gateway::events::message_update&);
-	void handle_specific(aegis::gateway::events::message_delete&);
 	void handle_specific(aegis::gateway::events::message_reaction_add&);
 	void handle_specific(aegis::gateway::events::message_reaction_remove&);
+	void handle_specific(aegis::gateway::events::message_delete&);
 	void handle_specific(aegis::gateway::events::channel_create&);
 	void handle_specific(aegis::gateway::events::channel_update&);
 	void handle_specific(aegis::gateway::events::channel_delete&);

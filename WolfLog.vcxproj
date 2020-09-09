@@ -13,7 +13,6 @@
   <ItemGroup>
     <ClInclude Include="handle_guild_easy.h" />
     <ClInclude Include="keys.h" />
-    <ClInclude Include="printer.h" />
     <ClInclude Include="slow_flush.h" />
   </ItemGroup>
   <ItemGroup>

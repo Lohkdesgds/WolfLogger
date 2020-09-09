@@ -28,9 +28,9 @@ BOOL onConsoleEvent(DWORD event) {
 	switch (event) {
 	case CTRL_C_EVENT:
 	case CTRL_CLOSE_EVENT:
-		logging.print("Forced exit, ending tasks...");
+		std::cout << "Forced exit, ending tasks..." << std::endl;
 		_shared.f();
-		logging.print("Ended everything successfully.");
+		std::cout << "Ended everything successfully." << std::endl;
 		std::this_thread::sleep_for(std::chrono::seconds(3));
 		break;
 	}
@@ -40,7 +40,8 @@ BOOL onConsoleEvent(DWORD event) {
 
 int main()
 {
-	logging.print("> > > Initializing ", project_name, "...");
+	//setlocale(LC_ALL, "");
+	std::cout << "> > > Initializing " << project_name << "..." << std::endl;
 
 	std::vector<std::shared_ptr<GuildChat>> my_guild_control;
 	std::mutex my_guild_mutex;
@@ -72,7 +73,7 @@ int main()
 			}
 		}
 
-		logging.print("[!] Joined/Connected Guild ", g.get_name(), " #", g.get_id(), " from ", g.get_region());
+		thebot->log->info("Joined/Connected Guild {} #{} from {}", g.get_name(), g.get_id(), g.get_region());
 		my_guild_control.push_back(std::make_shared<GuildChat>(thebot, g));
 
 		my_guild_mutex.unlock();
@@ -88,7 +89,7 @@ int main()
 			}
 		}
 
-		logging.print("[!] Joined/Connected Guild ", g.name, " #", g.id, " from ", g.region);
+		thebot->log->info("Joined/Connected Guild {} #{} from {}", g.name, g.id, g.region);
 		my_guild_control.push_back(std::make_shared<GuildChat>(thebot, g));
 		
 		my_guild_mutex.unlock();
@@ -103,7 +104,7 @@ int main()
 
 
 	if (!SetConsoleCtrlHandler(onConsoleEvent, TRUE)) {
-		logging.print("Something went wrong when trying to setup close handling...");
+		thebot->log->critical("Something went wrong when trying to setup close handling...");
 		std::this_thread::sleep_for(std::chrono::seconds(5));
 		return 1;
 	}
@@ -121,7 +122,7 @@ int main()
 		try {
 			get_guild_c(obj.guild);
 		}
-		catch (...) { logging.print("FATAL ERROR | GIVEUP."); }
+		catch (...) { thebot->log->critical("FATAL ERROR | GIVEUP."); }
 	});
 	// leave guild
 	thebot->set_on_guild_delete([&](aegis::gateway::events::guild_delete obj) {
@@ -134,7 +135,7 @@ int main()
 			for (size_t p = 0; p < my_guild_control.size(); p++) {
 				auto& i = my_guild_control[p];
 				if (*i == obj.guild_id) {
-					logging.print("[!] Left Guild #", obj.guild_id);
+					thebot->log->info("Left Guild #{}", obj.guild_id);
 					i->reset();
 					my_guild_control.erase(my_guild_control.begin() + p);
 					my_guild_mutex.unlock();
@@ -147,7 +148,7 @@ int main()
 		}
 		catch (...) { 
 			if (was_locked) my_guild_mutex.unlock();
-			logging.print("FATAL ERROR | GIVEUP.");
+			thebot->log->critical("FATAL ERROR | GIVEUP.");
 		}
 	});
 
@@ -159,7 +160,7 @@ int main()
 			if (obj.msg.is_bot() && !is_allowed_bot(obj.msg.author.id)) return;
 			get_guild(obj.channel.get_guild())->handle_specific(obj);
 		}
-		catch (...) { logging.print("FATAL ERROR | GIVEUP."); }
+		catch (...) { thebot->log->critical("FATAL ERROR | GIVEUP."); }
 	});
 	thebot->set_on_message_update([&](aegis::gateway::events::message_update obj) {
 		if (ignore_all_ending_lmao) return;
@@ -169,7 +170,7 @@ int main()
 
 			get_guild(obj.channel.get_guild())->handle_specific(obj);
 		}
-		catch (...) { logging.print("FATAL ERROR | GIVEUP."); }
+		catch (...) { thebot->log->critical("FATAL ERROR | GIVEUP."); }
 	});
 	thebot->set_on_message_delete([&](aegis::gateway::events::message_delete obj) {
 		if (ignore_all_ending_lmao) return;
@@ -177,7 +178,7 @@ int main()
 		try {
 			get_guild(obj.channel.get_guild())->handle_specific(obj);
 		}
-		catch (...) { logging.print("FATAL ERROR | GIVEUP."); }
+		catch (...) { thebot->log->critical("FATAL ERROR | GIVEUP."); }
 	});
 	thebot->set_on_message_reaction_add([&](aegis::gateway::events::message_reaction_add obj) {
 		if (ignore_all_ending_lmao) return;
@@ -187,9 +188,9 @@ int main()
 
 			aegis::guild* gg = thebot->guild_create(obj.guild_id, &thebot->get_shard_by_guild(obj.guild_id));
 			if (gg) get_guild(*gg)->handle_specific(obj);
-			else logging.print("Failed to recover Guild #", obj.guild_id, "!");
+			else thebot->log->error("Failed to recover Guild #{}!", obj.guild_id);
 		}
-		catch (...) { logging.print("FATAL ERROR | GIVEUP."); }
+		catch (...) { thebot->log->critical("FATAL ERROR | GIVEUP."); }
 	});
 	thebot->set_on_message_reaction_remove([&](aegis::gateway::events::message_reaction_remove obj) {
 		if (ignore_all_ending_lmao) return;
@@ -199,9 +200,9 @@ int main()
 
 			aegis::guild* gg = thebot->guild_create(obj.guild_id, &thebot->get_shard_by_guild(obj.guild_id));
 			if (gg) get_guild(*gg)->handle_specific(obj);
-			else logging.print("Failed to recover Guild #", obj.guild_id, "!");
+			else thebot->log->error("Failed to recover Guild #{}!", obj.guild_id);
 		}
-		catch (...) { logging.print("FATAL ERROR | GIVEUP."); }
+		catch (...) { thebot->log->critical("FATAL ERROR | GIVEUP."); }
 	});
 	thebot->set_on_channel_create([&](aegis::gateway::events::channel_create obj) {
 		if (ignore_all_ending_lmao) return;
@@ -209,9 +210,9 @@ int main()
 		try {
 			aegis::guild* gg = thebot->guild_create(obj.channel.guild_id, &thebot->get_shard_by_guild(obj.channel.guild_id));
 			if (gg) get_guild(*gg)->handle_specific(obj);
-			else logging.print("Failed to recover Guild #", obj.channel.guild_id, "!");
+			else thebot->log->error("Failed to recover Guild #{}!", obj.channel.guild_id);
 		}
-		catch (...) { logging.print("FATAL ERROR | GIVEUP."); }
+		catch (...) { thebot->log->critical("FATAL ERROR | GIVEUP."); }
 	});
 	thebot->set_on_channel_update([&](aegis::gateway::events::channel_update obj) {
 		if (ignore_all_ending_lmao) return;
@@ -219,9 +220,9 @@ int main()
 		try {
 			aegis::guild* gg = thebot->guild_create(obj.channel.guild_id, &thebot->get_shard_by_guild(obj.channel.guild_id));
 			if (gg) get_guild(*gg)->handle_specific(obj);
-			else logging.print("Failed to recover Guild #", obj.channel.guild_id, "!");
+			else thebot->log->error("Failed to recover Guild #{}!", obj.channel.guild_id);
 		}
-		catch (...) { logging.print("FATAL ERROR | GIVEUP."); }
+		catch (...) { thebot->log->critical("FATAL ERROR | GIVEUP."); }
 	});
 	thebot->set_on_channel_delete([&](aegis::gateway::events::channel_delete obj) {
 		if (ignore_all_ending_lmao) return;
@@ -229,9 +230,9 @@ int main()
 		try {
 			aegis::guild* gg = thebot->guild_create(obj.channel.guild_id, &thebot->get_shard_by_guild(obj.channel.guild_id));
 			if (gg) get_guild(*gg)->handle_specific(obj);
-			else logging.print("Failed to recover Guild #", obj.channel.guild_id, "!");
+			else thebot->log->error("Failed to recover Guild #{}!", obj.channel.guild_id);
 		}
-		catch (...) { logging.print("FATAL ERROR | GIVEUP."); }
+		catch (...) { thebot->log->critical("FATAL ERROR | GIVEUP."); }
 	});
 	thebot->set_on_guild_ban_add([&](aegis::gateway::events::guild_ban_add obj) {
 		if (ignore_all_ending_lmao) return;
@@ -239,9 +240,9 @@ int main()
 		try {
 			aegis::guild* gg = thebot->guild_create(obj.guild_id, &thebot->get_shard_by_guild(obj.guild_id));
 			if (gg) get_guild(*gg)->handle_specific(obj);
-			else logging.print("Failed to recover Guild #", obj.guild_id, "!");
+			else thebot->log->error("Failed to recover Guild #{}!", obj.guild_id);
 		}
-		catch (...) { logging.print("FATAL ERROR | GIVEUP."); }
+		catch (...) { thebot->log->critical("FATAL ERROR | GIVEUP."); }
 	});
 	thebot->set_on_guild_ban_remove([&](aegis::gateway::events::guild_ban_remove obj) {
 		if (ignore_all_ending_lmao) return;
@@ -249,9 +250,9 @@ int main()
 		try {
 			aegis::guild* gg = thebot->guild_create(obj.guild_id, &thebot->get_shard_by_guild(obj.guild_id));
 			if (gg) get_guild(*gg)->handle_specific(obj);
-			else logging.print("Failed to recover Guild #", obj.guild_id, "!");
+			else thebot->log->error("Failed to recover Guild #{}!", obj.guild_id);
 		}
-		catch (...) { logging.print("FATAL ERROR | GIVEUP."); }
+		catch (...) { thebot->log->critical("FATAL ERROR | GIVEUP."); }
 	});
 	thebot->set_on_guild_role_create([&](aegis::gateway::events::guild_role_create obj) {
 		if (ignore_all_ending_lmao) return;
@@ -259,9 +260,9 @@ int main()
 		try {
 			aegis::guild* gg = thebot->guild_create(obj.guild_id, &thebot->get_shard_by_guild(obj.guild_id));
 			if (gg) get_guild(*gg)->handle_specific(obj);
-			else logging.print("Failed to recover Guild #", obj.guild_id, "!");
+			else thebot->log->error("Failed to recover Guild #{}!", obj.guild_id);
 		}
-		catch (...) { logging.print("FATAL ERROR | GIVEUP."); }
+		catch (...) { thebot->log->critical("FATAL ERROR | GIVEUP."); }
 	});
 	thebot->set_on_guild_role_update([&](aegis::gateway::events::guild_role_update obj) {
 		if (ignore_all_ending_lmao) return;
@@ -269,9 +270,9 @@ int main()
 		try {
 			aegis::guild* gg = thebot->guild_create(obj.guild_id, &thebot->get_shard_by_guild(obj.guild_id));
 			if (gg) get_guild(*gg)->handle_specific(obj);
-			else logging.print("Failed to recover Guild #", obj.guild_id, "!");
+			else thebot->log->error("Failed to recover Guild #{}!", obj.guild_id);
 		}
-		catch (...) { logging.print("FATAL ERROR | GIVEUP."); }
+		catch (...) { thebot->log->critical("FATAL ERROR | GIVEUP."); }
 	});
 	thebot->set_on_guild_role_delete([&](aegis::gateway::events::guild_role_delete obj) {
 		if (ignore_all_ending_lmao) return;
@@ -279,65 +280,111 @@ int main()
 		try {
 			aegis::guild* gg = thebot->guild_create(obj.guild_id, &thebot->get_shard_by_guild(obj.guild_id));
 			if (gg) get_guild(*gg)->handle_specific(obj);
-			else logging.print("Failed to recover Guild #", obj.guild_id, "!");
+			else thebot->log->error("Failed to recover Guild #{}!", obj.guild_id);
 		}
-		catch (...) { logging.print("FATAL ERROR | GIVEUP."); }
+		catch (...) { thebot->log->critical("FATAL ERROR | GIVEUP."); }
 	});
 
 	thebot->run();
 
 	thr = std::thread([&] {
 
-		const size_t arr_siz = 22;
-		const std::string random_phrases[arr_siz] = {
-			u8"Adoraria jogar Minecraft...",
-			u8"Criado pelo Lohk em 2020!",
-			u8"Feito com C++... quero dizer, amor",
-			u8"Simplicidade é tudo",
-			u8"Thank you Aegis! For real!",
-			u8"Versão " + version + " pre-release",
-			u8"Eu sou um bot?!",
-			u8"@Lohkdesgds para suporte!",
-			u8"Arroz, feijão, batata e um abração",
-			u8"Eu vejo tudo e todos, sempre >:3",
-			u8"Assistindo séries no Netflix...",
-			u8"Eu adoro meu trabalho.",
-			u8"Seria um caos eu ficar offline, né?",
-			u8"Eu também amo vocês",
-			u8"Aparentemente ainda estou em testes!",
-			u8"Sinceramente vejo coisas até demais.",
-			u8"Isso daqui muda com o tempo, sabia?",
-			u8"Agora mais otimizado do que nunca!",
-			u8"Miojo não é a comida mais veloz de se fazer!",
-			u8"Será que eu devia ter Patreon?",
-			u8"Eu suporto acentos àéíóúçêãõü!", // 21
-			u8"Algumas updates podem ser bugadas, mas eu arrumo, relaxa!"
+		const size_t arr_siz = 28;
+		const std::function<std::string(void)> random_phrases[arr_siz] = {
+			[&] {return u8"Adoraria jogar Minecraft...";},
+			[&] {return u8"Criado pelo Lohk em 2020!";},
+			[&] {return u8"Feito com C++... quero dizer, amor";},
+			[&] {return u8"Simplicidade é tudo";},
+			[&] {return u8"Meu DEUS, " + std::to_string(arr_siz) + " possíveis modelos de mensagem?! Pois é";},
+			[&] {return u8"Thank you Aegis! For real!";},
+			[&] {return u8"Versão " + version + " pre-release";},
+			[&] {return u8"Eu sou um bot?!";},
+			[&] {return u8"@Lohkdesgds para suporte!";},
+			[&] {return u8"Arroz, feijão, batata e um abração";},
+			[&] {return u8"Eu vejo tudo e todos, sempre >:3";},
+			[&] {return u8"Assistindo séries no Netflix...";},
+			[&] {return u8"Eu adoro meu trabalho.";},
+			[&] {return u8"Seria um caos eu ficar offline, né?";},
+			[&] {return u8"Eu também amo vocês";},
+			[&] {return u8"Aparentemente ainda estou em testes!";},
+			[&] {return u8"Sinceramente vejo coisas até demais.";},
+			[&] {return u8"Isso daqui muda com o tempo, sabia?";},
+			[&] {return u8"Agora mais otimizado do que nunca!";},
+			[&] {return u8"Miojo não é a comida mais veloz de se fazer!";},
+			[&] {return u8"Será que eu devia ter Patreon?";},
+			[&] {return u8"Eu suporto acentos àéíóúçêãõü!";},
+			[&] {return u8"Você sabia que se eu caio eu não caio? Exatamente...";},
+			[&] {return u8"Algumas updates podem ser bugadas, mas eu arrumo, relaxa!";},
+			[&] {return main_cmd + u8"! - " + std::to_string(thebot->get_guild_count()) + " guild(s)!";},
+			[&] {return u8"Usando " + std::to_string(double(aegis::utility::getCurrentRSS()) / div_memory_calc) + " MB de RAM agora mesmo!"; },
+			[&] {return u8"Acordado há " + thebot->uptime_str();},
+			[&] {return u8"Isso é aleatório (tecnicamente): " + std::to_string(rand());}
 		};
 
-		std::this_thread::sleep_for(std::chrono::seconds(5));
+		std::this_thread::sleep_for(std::chrono::seconds(2));
 
 		auto keep = [&] {return (!ignore_all_ending_lmao); };
 
+		int randdd = arr_siz - 1;
+
 		while (keep()) {
-			int randdd = GetTickCount64() % (arr_siz + 1);
-			if (randdd == arr_siz) {
-				std::string endd = main_cmd + u8"! - " + std::to_string(thebot->get_guild_count()) + " guild(s)!";
-				thebot->update_presence(endd, aegis::gateway::objects::activity::Game, aegis::gateway::objects::presence::Idle);
+
+			for (size_t c = 0; c < 6 && keep(); c++) {
+				std::this_thread::sleep_for(std::chrono::seconds(10));
+				if (!keep()) break;
+				thebot->update_presence(random_phrases[randdd](), aegis::gateway::objects::activity::Game, aegis::gateway::objects::presence::Idle);
 			}
-			else thebot->update_presence(random_phrases[randdd], aegis::gateway::objects::activity::Game, aegis::gateway::objects::presence::Idle);
-			for(size_t c = 0; c < 50 && keep(); c++) std::this_thread::sleep_for(std::chrono::seconds(6));
+			
+			randdd = GetTickCount64() % (arr_siz);
 		}
 	});
 
 	//thebot->yield();
 
-	std::string smth;
-	while (smth != "exit") std::cin >> smth;
+	std::string smth_n;
+	while (smth_n.find("exit") != 0) {
 
-	logging.print("> > > Shutting down ", project_name, "...");
+		std::getline(std::cin, smth_n);
+
+
+		if (smth_n.find("broadcast ") == 0) {
+			if (size_t lenn = strlen("broadcast "); smth_n.length() > lenn) {
+				std::string cutt = smth_n.substr(lenn);
+				std::string confirm;
+
+				for (size_t pp = cutt.find("\\n"); pp != std::string::npos; pp = cutt.find("\\n")) {
+					cutt = cutt.substr(0, pp) + '\n' + (cutt.length() > pp + 2 ? cutt.substr(pp + 2) : "");
+				}
+
+				if (cutt.length() >= 1800) {
+					thebot->log->warn("Isn't '{}' too big? Sorry.", cutt);
+				}
+				else {
+					thebot->log->warn("Are you sure you want to send\n\n{}\n\nto every server connected? (type CONFIRM to send)", cutt);
+					std::getline(std::cin, confirm);
+
+					if (confirm == "CONFIRM") {
+						for (size_t k = 0; k < my_guild_control.size(); k++) {
+							my_guild_mutex.lock();
+							auto u = my_guild_control[k];
+							my_guild_mutex.unlock();
+							u->broadcast(cutt);
+						}
+						thebot->log->info("All guilds have received the message.");
+					}
+				}
+			}
+		}
+
+		else if (smth_n.find("exit") != 0) {
+			thebot->log->info("Commands:\n- broadcast <text>\n- exit");
+		}
+	}
+
+	thebot->log->info("Shutting down {}...", project_name);
 
 	end();
 
-	logging.print("> > > Ended ", project_name, ".");
+	std::cout << "Ended " << project_name << "." << std::endl;
 	//thebot->yield();
 }
