@@ -75,10 +75,10 @@ int main()
 
 		thebot->log->info("Joined/Connected Guild {} #{} from {}", g.get_name(), g.get_id(), g.get_region());
 		my_guild_control.push_back(std::make_shared<GuildChat>(thebot, g));
-
+		auto pcy = my_guild_control.back();
 		my_guild_mutex.unlock();
 
-		return my_guild_control.back();
+		return pcy;
 	};
 	auto get_guild_c = [&] (aegis::gateway::objects::guild& g) {
 		my_guild_mutex.lock();
@@ -91,10 +91,10 @@ int main()
 
 		thebot->log->info("Joined/Connected Guild {} #{} from {}", g.name, g.id, g.region);
 		my_guild_control.push_back(std::make_shared<GuildChat>(thebot, g));
-		
+		auto pcy = my_guild_control.back();
 		my_guild_mutex.unlock();
 
-		return my_guild_control.back();
+		return pcy;
 	};
 
 
@@ -370,7 +370,7 @@ int main()
 							my_guild_mutex.unlock();
 							u->broadcast(cutt);
 						}
-						thebot->log->info("All guilds have received the message.");
+						thebot->log->info("All {} guilds have received the task to broadcast.", my_guild_control.size());
 					}
 				}
 			}

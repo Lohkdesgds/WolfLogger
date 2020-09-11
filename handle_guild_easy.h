@@ -7,8 +7,9 @@ const unsigned long long mee_dev = 280450898885607425; // myself, for debugging 
 const std::chrono::milliseconds each_server_delay = std::chrono::milliseconds(750);
 const int color_embed_default = 0xd8954d;
 const std::string main_cmd = "lsw/wl";
-const std::string version = "V1.8.200";
+const std::string version = "V1.9.240";
 const auto div_memory_calc = (1 << 20);
+const auto took_long = std::chrono::milliseconds(10000);
 
 class Languages {
 	struct _lang {
@@ -22,6 +23,25 @@ public:
 };
 
 inline Languages::_lang Languages::langs;
+
+
+class handle_in_steps {
+	std::thread* hs_thr = nullptr;
+	bool keep_run = false, done = false;
+	std::vector<std::function<void(void)>> list;
+	std::mutex m;
+
+	std::function<void(void)> alt_task;
+
+	bool task();
+public:
+	handle_in_steps();
+	~handle_in_steps();
+
+	void set_standby_task(std::function<void(void)>);
+
+	void add(std::function<void(void)>);
+};
 
 
 
@@ -39,6 +59,8 @@ class GuildChat {
 	//TaskControl tasking;
 	Languages source_lang;
 
+	handle_in_steps hs;
+
 	nlohmann::json* idiom = nullptr;
 
 	std::vector<unsigned long long> nolook,
@@ -48,10 +70,16 @@ class GuildChat {
 	std::string alias_cmd = "^";
 
 	std::string buffer_string;
+	std::chrono::milliseconds last_flush_t = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
+	std::mutex flush_t_m;
 
 	std::shared_ptr<aegis::core> ref;
 	std::shared_ptr<spdlog::logger> logg;
 	unsigned long long guild_id = 0;
+
+	
+	void check_flush_t();
+
 
 	void save_settings();
 	bool load_settings();
@@ -61,7 +89,8 @@ class GuildChat {
 
 	// handles buffer_string
 	void buffer_handle(std::string);
-	void buffer_flush();
+	// timed?
+	void buffer_flush(const bool = false);
 
 	// get string in language (no worry last arg)
 	std::string getStrL(const std::string, const size_t = 5);
@@ -81,6 +110,20 @@ class GuildChat {
 	bool has_admin_rights(aegis::guild&, aegis::user&);
 	bool chat_canlook(const unsigned long long);
 	bool user_not_bot_not_null(const unsigned long long);
+
+	void handle(aegis::gateway::events::message_create&);
+	void handle(aegis::gateway::events::message_update&);
+	void handle(aegis::gateway::events::message_reaction_add&);
+	void handle(aegis::gateway::events::message_reaction_remove&);
+	void handle(aegis::gateway::events::message_delete&);
+	void handle(aegis::gateway::events::channel_create&);
+	void handle(aegis::gateway::events::channel_update&);
+	void handle(aegis::gateway::events::channel_delete&);
+	void handle(aegis::gateway::events::guild_ban_add&);
+	void handle(aegis::gateway::events::guild_ban_remove&);
+	void handle(aegis::gateway::events::guild_role_create&);
+	void handle(aegis::gateway::events::guild_role_update&);
+	void handle(aegis::gateway::events::guild_role_delete&);
 public:
 	GuildChat(std::shared_ptr<aegis::core>, aegis::guild&);
 	GuildChat(std::shared_ptr<aegis::core>, aegis::gateway::objects::guild&);
@@ -92,19 +135,10 @@ public:
 
 	bool operator==(const unsigned long long);
 
-	void handle_specific(aegis::gateway::events::message_create&);
-	void handle_specific(aegis::gateway::events::message_update&);
-	void handle_specific(aegis::gateway::events::message_reaction_add&);
-	void handle_specific(aegis::gateway::events::message_reaction_remove&);
-	void handle_specific(aegis::gateway::events::message_delete&);
-	void handle_specific(aegis::gateway::events::channel_create&);
-	void handle_specific(aegis::gateway::events::channel_update&);
-	void handle_specific(aegis::gateway::events::channel_delete&);
-	void handle_specific(aegis::gateway::events::guild_ban_add&);
-	void handle_specific(aegis::gateway::events::guild_ban_remove&);
-	void handle_specific(aegis::gateway::events::guild_role_create&);
-	void handle_specific(aegis::gateway::events::guild_role_update&);
-	void handle_specific(aegis::gateway::events::guild_role_delete&);
+	template<typename T>
+	void handle_specific(T& t) {
+		hs.add([&, t] {T cpy = t; handle(cpy); });
+	}
 
 	void end_message();
 	void welcome_message();

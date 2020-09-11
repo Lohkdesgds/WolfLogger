@@ -239,6 +239,113 @@ nlohmann::json* Languages::getNtranslateLang(std::string& idiom)
 }
 
 
+
+
+
+
+bool handle_in_steps::task()
+{
+	std::function<void(void)> ff;
+	bool uu = false;
+
+	// > > > > > > > > MUTEX PART < < < < < < < < < //
+	while (!m.try_lock()) std::this_thread::yield();
+	if (list.size()) {
+		ff = list.front();
+		list.erase(list.begin());
+		uu = true;
+	}
+	m.unlock();
+	// > > > > > > > > MUTEX PART < < < < < < < < < //
+
+	if (!uu && !ff) ff = alt_task;
+
+	if (ff) {
+		try {
+			ff();
+		}
+		catch (aegis::error e) {
+			std::cout << "AEGIS FATAL ERROR: " << e << std::endl;
+			std::this_thread::sleep_for(std::chrono::milliseconds(500));
+			for (size_t p = 0; p < 4; p++) std::this_thread::yield();
+		}
+		catch (std::exception e) {
+			std::cout << "STD FATAL ERROR: " << e.what() << std::endl;
+			std::this_thread::sleep_for(std::chrono::milliseconds(500));
+			for (size_t p = 0; p < 4; p++) std::this_thread::yield();
+		}
+		catch (...) {
+			std::cout << "AEGIS FATAL ERROR" << std::endl;
+			std::this_thread::sleep_for(std::chrono::milliseconds(500));
+			for (size_t p = 0; p < 4; p++) std::this_thread::yield();
+		}
+	}
+	std::this_thread::yield();
+	std::this_thread::sleep_for(std::chrono::milliseconds(750));
+	std::this_thread::yield();
+	return uu;
+}
+
+handle_in_steps::handle_in_steps()
+{
+	if (!hs_thr) {
+		done = false;
+		keep_run = true;
+		hs_thr = new std::thread([&] {done = false; while (keep_run) { if (!task()) { std::this_thread::sleep_for(std::chrono::milliseconds(500)); std::this_thread::yield(); } } done = true; });
+	}
+}
+
+handle_in_steps::~handle_in_steps()
+{
+	if (hs_thr) {
+		keep_run = false;
+		for (size_t tries = 0; tries < 10 && !done; tries++) std::this_thread::sleep_for(std::chrono::milliseconds(50));
+		if (!done) {
+			hs_thr->detach();
+			// > > > > > > > > MUTEX PART < < < < < < < < < //
+			while (!m.try_lock()) std::this_thread::yield(); // has to be able to lock!
+			::TerminateThread(hs_thr->native_handle(), 1);
+			m.unlock();
+			// > > > > > > > > MUTEX PART < < < < < < < < < //
+		}
+		else {
+			if (hs_thr->joinable()) hs_thr->join();
+		}
+		delete hs_thr;
+		hs_thr = nullptr;
+	}
+}
+
+void handle_in_steps::set_standby_task(std::function<void(void)> f)
+{
+	alt_task = f;
+}
+
+void handle_in_steps::add(std::function<void(void)> f)
+{
+	// > > > > > > > > MUTEX PART < < < < < < < < < //
+	while (!m.try_lock()) std::this_thread::yield();
+	list.emplace_back(std::move(f));
+	m.unlock();
+	// > > > > > > > > MUTEX PART < < < < < < < < < //
+}
+
+
+
+
+
+void GuildChat::check_flush_t()
+{
+	auto noww = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
+
+	flush_t_m.lock();
+	if (noww - last_flush_t > took_long) {
+		flush_t_m.unlock();
+		buffer_flush(true); // updates last_flush_t
+	}
+	else flush_t_m.unlock();
+}
+
 void GuildChat::save_settings()
 {
 	CreateDirectoryA("servers", NULL);
@@ -351,14 +458,12 @@ void GuildChat::buffer_handle(std::string str)
 	aegis::channel* ch = ref->channel_create(mylog.channel_log);
 	if (!ch) return;
 
+	// > > > > > > > > MUTEX PART < < < < < < < < < //
+	flush_t_m.lock();
+	std::vector<std::string> tosend;
 	while (str.length() + buffer_string.length() >= max_len_str) {
-			
 		auto temp = buffer_string.substr(0, max_len_str);
-		if (temp.length()) {
-			slow_flush(temp, *ch, guild_id, ref->log);
-			//ch->create_message(temp); // max len
-			logg->info("Guild #{} has flushed {} byte(s)", guild_id, temp.length());
-		}
+		if (temp.length()) tosend.push_back(temp);
 
 		if (buffer_string.length() > max_len_str) buffer_string = buffer_string.substr(max_len_str); //  if bigger than max discord size, save remaining
 		else buffer_string.clear(); // if less, sent all, so clear
@@ -369,25 +474,54 @@ void GuildChat::buffer_handle(std::string str)
 	if (!str.empty()) { // sum < max discord len (cause if it was it would be cleared)
 		buffer_string += str + '\n';
 	}
+	last_flush_t = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
+	flush_t_m.unlock();
+	// > > > > > > > > MUTEX PART < < < < < < < < < //
+
+	for (auto h : tosend) {
+
+		hs.add([&, h, ch] {
+			slow_flush(h, *ch, guild_id, ref->log);
+			logg->info("Guild #{} has flushed {} byte(s)", guild_id, h.length());
+		});
+
+	}
+	tosend.clear();
 }
-void GuildChat::buffer_flush()
+void GuildChat::buffer_flush(const bool timed)
 {
 	if (buffer_string.length() == 0) return;
 	if (!mylog.channel_log) return;
+
+
+	// > > > > > > > > MUTEX PART < < < < < < < < < //
+	flush_t_m.lock();
+	std::vector<std::string> tosend;
+	while (buffer_string.length()) {
+		tosend.push_back(buffer_string.substr(0, max_len_str > buffer_string.length() ? max_len_str : buffer_string.length()));
+
+		if (buffer_string.length() > max_len_str) buffer_string = buffer_string.substr(max_len_str); //  if bigger than max discord size, save remaining
+		else buffer_string.clear(); // if less, sent all, so clear
+
+	}
+	last_flush_t = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
+	flush_t_m.unlock();
+	// > > > > > > > > MUTEX PART < < < < < < < < < //
+
+
 	try {
 		aegis::channel* ch = ref->channel_create(mylog.channel_log);
 		if (!ch) return;
 
-		while (buffer_string.length()) {
-			slow_flush(buffer_string.substr(0, max_len_str > buffer_string.length() ? max_len_str : buffer_string.length()), *ch, guild_id, ref->log);
-			//ch->create_message(buffer_string.substr(0, max_len_str > buffer_string.length() ? max_len_str : buffer_string.length())); // max len
+		for(auto h : tosend){
 
-			logg->info("Guild #{} has flushed (forced) {} byte(s)", guild_id, buffer_string.length() > 2000 ? 2000 : buffer_string.length());
-
-			if (buffer_string.length() > max_len_str) buffer_string = buffer_string.substr(max_len_str); //  if bigger than max discord size, save remaining
-			else buffer_string.clear(); // if less, sent all, so clear
+			hs.add([&, h, ch, timed] {
+				slow_flush(h, *ch, guild_id, ref->log);
+				logg->info("Guild #{} has flushed ({}) {} byte(s)", guild_id, timed ? "timed" : "forced", h.length());
+			});
 
 		}
+		tosend.clear();
 	}
 	catch (...) {
 		logg->warn("Guild #{} has issue flushing (forced). Skipped.", guild_id);
@@ -396,11 +530,11 @@ void GuildChat::buffer_flush()
 std::string GuildChat::getStrL(const std::string key, const size_t tries)
 {
 	try {
-		if (!idiom) throw 1; // just to catch and reload.
+		//if (!idiom) throw 1; // just to catch and reload.
 		return (*idiom)[key].get<std::string>();
 	}
 	catch (...) {
-		logg->warn("Error trying to get language \"{}\"", mylog.itsregion);
+		logg->critical("Error trying to get language \"{}\"", mylog.itsregion);
 		idiom = source_lang.getNtranslateLang(mylog.itsregion);
 		if (!idiom) return "FATAL ERROR";
 	}
@@ -804,101 +938,9 @@ bool GuildChat::user_not_bot_not_null(const unsigned long long userid)
 	}
 	return false;
 }
-GuildChat::GuildChat(std::shared_ptr<aegis::core> core, aegis::guild& uu) // guild_id, shard_id, region, guild
-{
-	ref = core;
-	logg = ref->log;
-	guild_id = uu.get_id();
-	mylog.itsregion = uu.get_region();
-
-	load_settings();
-	idiom = source_lang.getNtranslateLang(mylog.itsregion);
-
-	if (!idiom) logg->warn("Guild #{} has potential issue: null idiom!", guild_id);
-	
-	save_settings();
-
-	welcome_message();
-}
-GuildChat::GuildChat(std::shared_ptr<aegis::core> core, aegis::gateway::objects::guild& uu) // guild_id, shard_id, region, guild
-{
-	ref = core;
-	logg = ref->log;
-	guild_id = uu.id;
-	mylog.itsregion = uu.region;
-
-	load_settings();
-	idiom = source_lang.getNtranslateLang(mylog.itsregion);
-
-	if (!idiom) logg->warn("Guild #{} has potential issue: null idiom!", guild_id);
-	save_settings();
-
-	welcome_message();
-}
-GuildChat::~GuildChat()
-{
-	// saves file
-	save_settings();
-	buffer_flush();
-	end_message();
-	logg->info("Closed Guild #{}", guild_id);
-}
-void GuildChat::broadcast(std::string bread)
-{
-	if (bread.length() == 0) {
-		logg->warn("Guild #{} had issue flushing (broadcast, null). Skipped.", guild_id);
-		return;
-	}
-	if (!mylog.channel_log) {
-		logg->warn("Guild #{} had issue flushing (broadcast, no channel). Skipped.", guild_id);
-		return;
-	}
-
-	try {
-		aegis::channel* ch = ref->channel_create(mylog.channel_log);
-		if (!ch) return;
 
 
-		if (ch->perms().can_embed()) {
-
-			bread = "```md\n" + bread + "```";
-			if (bread.length() > 2000) bread = bread.substr(0, 2000);
-
-			nlohmann::json embed = {
-				{ "title",  getStrL("broadcast_title") },
-				{ "description", bread },
-				{ "color", color_embed_default }
-			};
-			slow_flush_embed(embed, *ch, guild_id, ref->log);
-		}
-		else {
-			bread = "***__" + getStrL("broadcast_title") + "__***\n```md\n" + bread + "```";
-			if (bread.length() > 2000) bread = bread.substr(0, 2000);
-
-			slow_flush(bread, *ch, guild_id, ref->log);
-		}
-
-		logg->info("Guild #{} has flushed (broadcast) {} byte(s)", guild_id, bread.length() > 2000 ? 2000 : bread.length());
-
-	}
-	catch (...) {
-		logg->error("Guild #{} has issue flushing (broadcast, exception). Skipped.", guild_id);
-	}
-}
-void GuildChat::reset()
-{
-	std::string path = "servers/" + std::to_string(guild_id) + "_log.wolflog";
-	std::string path2 = "servers/" + std::to_string(guild_id) + "_log.wolflogv2";
-	std::remove(path.c_str());
-	std::remove(path2.c_str());
-	mylog.channel_log = 0;
-	mylog.last_user = 0;
-}
-bool GuildChat::operator==(const unsigned long long id)
-{
-	return guild_id == id;
-}
-void GuildChat::handle_specific(aegis::gateway::events::message_create& obj)
+void GuildChat::handle(aegis::gateway::events::message_create& obj)
 {
 	if (user_not_bot_not_null(obj.msg.author.id) && chat_canlook(obj.channel.get_id())) {
 
@@ -946,7 +988,7 @@ void GuildChat::handle_specific(aegis::gateway::events::message_create& obj)
 		buffer_handle("`[" + obj.msg.timestamp + "]<m" + std::to_string(obj.msg.get_id()) + "@" + std::to_string(obj.msg.get_channel_id()) + ">(" + channelname + ")`**:** " + content + extra);
 	}
 }
-void GuildChat::handle_specific(aegis::gateway::events::message_update& obj)
+void GuildChat::handle(aegis::gateway::events::message_update& obj)
 {
 	if (user_not_bot_not_null(obj.msg.author.id) && chat_canlook(obj.channel.get_id())) {
 
@@ -966,7 +1008,7 @@ void GuildChat::handle_specific(aegis::gateway::events::message_update& obj)
 		}
 	}
 }
-void GuildChat::handle_specific(aegis::gateway::events::message_reaction_add& obj)
+void GuildChat::handle(aegis::gateway::events::message_reaction_add& obj)
 {
 	if (user_not_bot_not_null(obj.user_id) && chat_canlook(obj.channel_id)) {
 
@@ -996,7 +1038,7 @@ void GuildChat::handle_specific(aegis::gateway::events::message_reaction_add& ob
 		}
 	}
 }
-void GuildChat::handle_specific(aegis::gateway::events::message_reaction_remove& obj)
+void GuildChat::handle(aegis::gateway::events::message_reaction_remove& obj)
 {
 	if (user_not_bot_not_null(obj.user_id) && chat_canlook(obj.channel_id)) {
 
@@ -1027,15 +1069,15 @@ void GuildChat::handle_specific(aegis::gateway::events::message_reaction_remove&
 		}
 	}
 }
-void GuildChat::handle_specific(aegis::gateway::events::message_delete& obj)
+void GuildChat::handle(aegis::gateway::events::message_delete& obj)
 {
 	if (!mylog.deep_data) return;
 	if (!chat_canlook(obj.channel.get_id())) return;
-	
+
 	buffer_handle("```md\n[" + getStrL("message_t") + "](" + getStrL("delete_t") + ")<" + std::to_string(obj.id) + " @ " + std::to_string(obj.channel.get_id()) + ">```");
 	mylog.last_user = 0;
 }
-void GuildChat::handle_specific(aegis::gateway::events::channel_create& obj)
+void GuildChat::handle(aegis::gateway::events::channel_create& obj)
 {
 	if (!mylog.deep_data) return;
 	if (!chat_canlook(obj.channel.id)) return;
@@ -1045,7 +1087,7 @@ void GuildChat::handle_specific(aegis::gateway::events::channel_create& obj)
 		u8"`\n" + (obj.channel.topic.length() > 0 ? (getStrL("topic") + ":\n```\n" + obj.channel.topic + "\n```") : ""));
 	mylog.last_user = 0;
 }
-void GuildChat::handle_specific(aegis::gateway::events::channel_update& obj)
+void GuildChat::handle(aegis::gateway::events::channel_update& obj)
 {
 	if (!mylog.deep_data) return;
 	if (!chat_canlook(obj.channel.id)) return;
@@ -1055,7 +1097,7 @@ void GuildChat::handle_specific(aegis::gateway::events::channel_update& obj)
 		u8"`\n" + (obj.channel.topic.length() > 0 ? (getStrL("topic") + ":\n```\n" + obj.channel.topic + "\n```") : ""));
 	mylog.last_user = 0;
 }
-void GuildChat::handle_specific(aegis::gateway::events::channel_delete& obj)
+void GuildChat::handle(aegis::gateway::events::channel_delete& obj)
 {
 	if (!mylog.deep_data) return;
 	if (!chat_canlook(obj.channel.id)) return;
@@ -1065,40 +1107,156 @@ void GuildChat::handle_specific(aegis::gateway::events::channel_delete& obj)
 		u8"`\n" + (obj.channel.topic.length() > 0 ? (getStrL("topic") + ":\n```\n" + obj.channel.topic + "\n```") : ""));
 	mylog.last_user = 0;
 }
-void GuildChat::handle_specific(aegis::gateway::events::guild_ban_add& obj)
+void GuildChat::handle(aegis::gateway::events::guild_ban_add& obj)
 {
 	if (!mylog.deep_data) return;
 
 	buffer_handle("```md\n[" + getStrL("banned") + "](" + std::to_string(obj.user.id) + ")<" + obj.user.username + "#" + obj.user.discriminator + ">```");
 	mylog.last_user = 0;
 }
-void GuildChat::handle_specific(aegis::gateway::events::guild_ban_remove& obj)
+void GuildChat::handle(aegis::gateway::events::guild_ban_remove& obj)
 {
 	if (!mylog.deep_data) return;
 
 	buffer_handle("```md\n[" + getStrL("unbanned") + "](" + std::to_string(obj.user.id) + ")<" + obj.user.username + "#" + obj.user.discriminator + ">```");
 	mylog.last_user = 0;
 }
-void GuildChat::handle_specific(aegis::gateway::events::guild_role_create& obj)
+void GuildChat::handle(aegis::gateway::events::guild_role_create& obj)
 {
 	if (!mylog.deep_data) return;
 
 	buffer_handle("```md\n[" + getStrL("role_t") + "](" + getStrL("new_t") + ")<" + std::to_string(obj.role.id) + " " + obj.role.name + ">```\n> <@&" + std::to_string(obj.role.id) + ">");
 	mylog.last_user = 0;
 }
-void GuildChat::handle_specific(aegis::gateway::events::guild_role_update& obj)
+void GuildChat::handle(aegis::gateway::events::guild_role_update& obj)
 {
 	if (!mylog.deep_data) return;
 
 	buffer_handle("```md\n[" + getStrL("role_t") + "](" + getStrL("update_t") + ")<" + std::to_string(obj.role.id) + " " + obj.role.name + ">```\n> <@&" + std::to_string(obj.role.id) + ">");
 	mylog.last_user = 0;
 }
-void GuildChat::handle_specific(aegis::gateway::events::guild_role_delete& obj)
+void GuildChat::handle(aegis::gateway::events::guild_role_delete& obj)
 {
 	if (!mylog.deep_data) return;
 
 	buffer_handle("```md\n[" + getStrL("role_t") + "](" + getStrL("delete_t") + ")<" + std::to_string(obj.role_id) + ">");
 	mylog.last_user = 0;
+}
+
+
+
+GuildChat::GuildChat(std::shared_ptr<aegis::core> core, aegis::guild& uu) // guild_id, shard_id, region, guild
+{
+	ref = core;
+	logg = ref->log;
+	guild_id = uu.get_id();
+	mylog.itsregion = uu.get_region();
+
+	load_settings();
+	idiom = source_lang.getNtranslateLang(mylog.itsregion);
+	if (!idiom) {
+		logg->warn("Guild #{} has potential issue: null idiom! Reseting to English!", guild_id);
+		mylog.itsregion = "default";
+		while (!(idiom = source_lang.getNtranslateLang(mylog.itsregion))) logg->critical("FATAL ERROR ON GUILD #{}: CANNOT GET DEFAULT LANGUAGE!", guild_id); // this HAS to be true
+	}
+	
+	save_settings();
+	welcome_message();
+
+	hs.set_standby_task([&] {check_flush_t(); });
+}
+GuildChat::GuildChat(std::shared_ptr<aegis::core> core, aegis::gateway::objects::guild& uu) // guild_id, shard_id, region, guild
+{
+	ref = core;
+	logg = ref->log;
+	guild_id = uu.id;
+	mylog.itsregion = uu.region;
+
+	load_settings();
+	idiom = source_lang.getNtranslateLang(mylog.itsregion);
+	if (!idiom) {
+		logg->warn("Guild #{} has potential issue: null idiom! Reseting to English!", guild_id);
+		mylog.itsregion = "default";
+		while (!(idiom = source_lang.getNtranslateLang(mylog.itsregion))) logg->critical("FATAL ERROR ON GUILD #{}: CANNOT GET DEFAULT LANGUAGE!", guild_id); // this HAS to be true
+	}	
+
+	save_settings();
+	welcome_message();
+
+	hs.set_standby_task([&] {check_flush_t(); });
+}
+GuildChat::~GuildChat()
+{
+	// saves file
+	save_settings();
+	buffer_flush();
+	end_message();
+	logg->info("Closed Guild #{}", guild_id);
+}
+void GuildChat::broadcast(std::string bread)
+{
+	if (bread.length() == 0) {
+		logg->warn("Guild #{} had issue flushing (broadcast, null). Skipped.", guild_id);
+		return;
+	}
+	if (!mylog.channel_log) {
+		logg->warn("Guild #{} had issue flushing (broadcast, no channel). Skipped.", guild_id);
+		return;
+	}
+
+	try {
+		aegis::channel* ch = ref->channel_create(mylog.channel_log);
+		if (!ch) return;
+
+
+		if (ch->perms().can_embed()) {
+
+			bread = "```md\n" + bread + "```";
+			if (bread.length() > 2000) bread = bread.substr(0, 2000);
+
+			nlohmann::json embed = {
+				{ "title",  getStrL("broadcast_title") },
+				{ "description", bread },
+				{ "color", color_embed_default }
+			};
+
+			hs.add([&, embed, ch] {
+				slow_flush_embed(embed, *ch, guild_id, ref->log);
+				logg->info("Guild #{} broadcasted message successfully.");
+			});
+
+			//slow_flush_embed(embed, *ch, guild_id, ref->log);
+		}
+		else {
+			bread = "***__" + getStrL("broadcast_title") + "__***\n```md\n" + bread + "```";
+			if (bread.length() > 2000) bread = bread.substr(0, 2000);
+
+			hs.add([&, bread, ch] {
+				slow_flush(bread, *ch, guild_id, ref->log);
+				logg->info("Guild #{} broadcasted message successfully.");
+			});
+
+			//slow_flush(bread, *ch, guild_id, ref->log);
+		}
+
+		//logg->info("Guild #{} has flushed (broadcast) {} byte(s)", guild_id, bread.length() > 2000 ? 2000 : bread.length());
+	}
+	catch (...) {
+		logg->error("Guild #{} has issue flushing (broadcast, exception). Skipped.", guild_id);
+	}
+}
+void GuildChat::reset()
+{
+	std::string path = "servers/" + std::to_string(guild_id) + "_log.wolflog";
+	std::string path2 = "servers/" + std::to_string(guild_id) + "_log.wolflogv2";
+	std::remove(path.c_str());
+	std::remove(path2.c_str());
+	mylog.channel_log = 0;
+	mylog.last_user = 0;
+}
+bool GuildChat::operator==(const unsigned long long id)
+{
+	return guild_id == id;
 }
 void GuildChat::end_message()
 {
