@@ -11,14 +11,17 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="handle_guild_easy.h" />
-    <ClInclude Include="keys.h" />
+    <ClInclude Include="guild_global.h" />
+    <ClInclude Include="guild_control.h" />
     <ClInclude Include="slow_flush.h" />
+    <ClInclude Include="supermutex.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="handle_guild_easy.cpp" />
+    <ClCompile Include="guild_global.cpp" />
+    <ClCompile Include="guild_control.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="slow_flush.cpp" />
+    <ClCompile Include="supermutex.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
