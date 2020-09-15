@@ -126,6 +126,8 @@ Language::Language()
 		pt_br.names_alias.push_back(u8"português");
 		pt_br.names_alias.push_back("portuguese");
 		pt_br.names_alias.push_back("portugues");
+		pt_br.names_alias.push_back("brazil");
+		pt_br.names_alias.push_back("brasil");
 		pt_br.names_alias.push_back("pt_br");
 		pt_br.names_alias.push_back("pt");
 		

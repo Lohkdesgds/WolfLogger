@@ -17,7 +17,7 @@ const std::chrono::milliseconds timeout_time = std::chrono::milliseconds(60000);
 const std::regex regex_link("http(?:s?)://([\\w_-]+(?:(?:\\.[\\w_-]+)+))([\\w.,@?^=%&:/~+#-]*[\\w@?^=%&/~+#-])?");
 const std::string common_bar = u8"——————————————————————————————";
 const auto div_memory_calc = (1 << 20);
-const std::string version = "V2.0.400";
+const std::string version = "V2.0.402";
 
 
 using namespace LSW::v5::Tools;
