@@ -17,7 +17,8 @@ const std::chrono::milliseconds timeout_time = std::chrono::milliseconds(60000);
 const std::regex regex_link("http(?:s?)://([\\w_-]+(?:(?:\\.[\\w_-]+)+))([\\w.,@?^=%&:/~+#-]*[\\w@?^=%&/~+#-])?");
 const std::string common_bar = u8"——————————————————————————————";
 const auto div_memory_calc = (1 << 20);
-const std::string version = "V2.0.402";
+const std::chrono::milliseconds time_to_flush = std::chrono::milliseconds((size_t)30e3);
+const std::string version = "V2.0.411";
 
 
 using namespace LSW::v5::Tools;
@@ -88,8 +89,6 @@ class Guild {
 
 	nlohmann::json lng;
 
-	bool firstt = true;
-
 	aegis::snowflake guild_id;
 	std::shared_ptr<spdlog::logger> logg;
 	std::shared_ptr<aegis::core> core;
@@ -105,11 +104,15 @@ class Guild {
 	//std::mutex emergency_m;
 	std::string buf;
 	std::recursive_mutex buf_control;
+	std::chrono::milliseconds last;
 
 	SuperMutex working_on;
 
 	//std::function<void(void)> restart_please;
 	//bool ON_RESTART = false;
+
+
+	bool trycatch_auto(std::function<void(void)>);
 
 
 	void load_config();
@@ -141,6 +144,8 @@ class Guild {
 	// content, chatid, userid
 	bool check_command(std::string, aegis::channel&, const aegis::snowflake);
 
+	void time_flush();
+
 	//void giveup_everything_restart();
 
 	void task_welcome_message();
@@ -159,10 +164,30 @@ public:
 
 	void force_save();
 
+	void welcome_back();
+
 	bool broadcast(std::string);
 	bool force_flush_buffer();
+	aegis::snowflake get_guild_id();
 
 	bool is_guild(const aegis::snowflake);
+
+	template<typename T>
+	void handle_filter(T& t) {
+		for (size_t p = 0; p < 15 && !thus; p++) {
+			bool good = trycatch_auto([&] {reassign(core); }); // trying to reassign.
+			if (!thus || !good) {
+				logg->critical("[{}/15] Guild #{} has no guild set. Trying to reset guild pointer...", p + 1, guild_id);
+				std::this_thread::sleep_for(std::chrono::seconds(3));
+			}
+		}
+		if (!thus) return;
+		for (size_t p = 0; p < 15 && !trycatch_auto([&] {handle(t); }); p++) {
+			logg->critical("[{}/15] Guild #{} failed to handle event.", p + 1, guild_id);
+			std::this_thread::sleep_for(std::chrono::seconds(3));
+		}
+		time_flush();
+	}
 
 	void handle(aegis::gateway::events::message_create&);
 	void handle(aegis::gateway::events::message_update&);

@@ -42,8 +42,8 @@ int main()
 
 	thr = std::shared_ptr<std::thread>(new std::thread([&] {
 
-		const size_t arr_siz = 28;
-		const std::function<std::string(void)> random_phrases[arr_siz] = {
+		size_t arr_siz = 0;
+		const std::function<std::string(void)> random_phrases[] = {
 			[&] {return u8"Adoraria jogar Minecraft...";},
 			[&] {return u8"Criado pelo Lohk em 2020!";},
 			[&] {return u8"Feito com C++... quero dizer, amor";},
@@ -54,6 +54,28 @@ int main()
 			[&] {return u8"Eu sou um bot?!";},
 			[&] {return u8"@Lohkdesgds para suporte!";},
 			[&] {return u8"Arroz, feijão, batata e um abração";},
+			[&] {return u8"Me ajude a ficar famoso!";},
+			[&] {return u8"Você bem que podia procurar por Lohk no Google...";},
+			[&] {return u8"Eu tenho bastante fome e sono, sabia?";},
+			[&] {return u8"O Lohk tem tentado me fazer extremamente estável. Se eu tiver problemas, desculpe!";},
+			[&] {return u8"Você sabia que você pode me adicionar no seu grupo?";},
+			[&] {return u8"Fun Fact: o Ninja ainda é o maior streamer na Twitch de todos os tempos.";},
+			[&] {return u8"Sério alguém pode comprar algo pra eu jantar?";},
+			[&] {return u8"Quanto mais eu penso, menos eu durmo :o";},
+			[&] {return u8"Eu sou feito de 1 e 0 no final das contas, e você?";},
+			[&] {return u8"Se precisa de ajuda, procure, nem que seja no Google!";},
+			[&] {return u8"No Brasil 1 + 1 pode ser 3 ou até 5, dependendo dos impostos em cima do produto ;-;";},
+			[&] {return u8"Eu nunca vi um bot ter tanta mensagem diferente assim O.o";},
+			[&] {return u8"Eu sinto falta de quando eu era apenas um main(){std::cout << \"hello world\";}";},
+			[&] {return u8"Algumas vezes você pode pensar em algo e tentar achar uma resposta aleatória aqui mesmo!";},
+			[&] {return u8"Sim";},
+			[&] {return u8"Não";},
+			[&] {return u8"Talvez";},
+			[&] {return u8"Nunca se sabe";},
+			[&] {return u8"Mas é óbvio";},
+			[&] {return u8"Com certeza";},
+			[&] {return u8"Com certeza que não";},
+			[&] {return u8"Onde já se viu uma coisa dessas!";},
 			[&] {return u8"Eu vejo tudo e todos, sempre >:3";},
 			[&] {return u8"Assistindo séries no Netflix...";},
 			[&] {return u8"Eu adoro meu trabalho.";},
@@ -73,6 +95,7 @@ int main()
 			[&] {if (auto corr = i_know.get_core(); corr) {return u8"Acordado há " + corr->uptime_str(); } return std::string(u8"Acho que tive uns problemas aqui O.o"); },
 			[&] {return u8"Isso é aleatório (tecnicamente): " + std::to_string(rand());}
 		};
+		arr_siz = sizeof(random_phrases) / sizeof(std::function<std::string(void)>);
 
 		std::this_thread::sleep_for(std::chrono::seconds(2));
 
@@ -83,38 +106,38 @@ int main()
 		while (keep()) {
 
 			for (size_t c = 0; c < 6 && keep(); c++) {
-				std::this_thread::sleep_for(std::chrono::seconds(10));
+				for(size_t pause = 0; pause < 10 && keep(); pause++) std::this_thread::sleep_for(std::chrono::seconds(2));
 				if (!keep()) break;
 
 				try {
 					if (auto corr = i_know.get_core(); corr) corr->update_presence(random_phrases[randdd](), aegis::gateway::objects::activity::Game, aegis::gateway::objects::presence::Idle);
 				}
 				catch (aegis::error e) {
-					if (auto logg = i_know.get_logger(); logg) logg->critical("[Local] Presence Updater: couldn't set presence. Got error: {}", e);
+					if (auto logg = i_know.get_logger(); logg) logg->critical("Presence Updater: couldn't set presence. Got error: {}", e);
 				}
 				catch (nlohmann::detail::type_error e) {
-					if (auto logg = i_know.get_logger(); logg) logg->error("[Local] Presence Updater:: JSON failed: TYPE ERROR: {}", e.what());
+					if (auto logg = i_know.get_logger(); logg) logg->error("Presence Updater:: JSON failed: TYPE ERROR: {}", e.what());
 				}
 				catch (nlohmann::detail::invalid_iterator e) {
-					if (auto logg = i_know.get_logger(); logg) logg->error("[Local] Presence Updater:: JSON failed: INVALID ITERATOR ERROR: {}", e.what());
+					if (auto logg = i_know.get_logger(); logg) logg->error("Presence Updater:: JSON failed: INVALID ITERATOR ERROR: {}", e.what());
 				}
 				catch (nlohmann::detail::parse_error e) {
-					if (auto logg = i_know.get_logger(); logg) logg->error("[Local] Presence Updater:: JSON failed: PARSE ERROR: {}", e.what());
+					if (auto logg = i_know.get_logger(); logg) logg->error("Presence Updater:: JSON failed: PARSE ERROR: {}", e.what());
 				}
 				catch (nlohmann::detail::out_of_range e) {
-					if (auto logg = i_know.get_logger(); logg) logg->error("[Local] Presence Updater:: JSON failed: OUT OF RANGE ERROR: {}",  e.what());
+					if (auto logg = i_know.get_logger(); logg) logg->error("Presence Updater:: JSON failed: OUT OF RANGE ERROR: {}",  e.what());
 				}
 				catch (nlohmann::detail::other_error e) {
-					if (auto logg = i_know.get_logger(); logg) logg->error("[Local] Presence Updater:: JSON failed: OTHER ERROR: {}", e.what());
+					if (auto logg = i_know.get_logger(); logg) logg->error("Presence Updater:: JSON failed: OTHER ERROR: {}", e.what());
 				}
 				catch (nlohmann::detail::exception e) {
-					if (auto logg = i_know.get_logger(); logg) logg->error("[Local] Presence Updater:: JSON failed: GENERIC EXCEPTION ERROR: {}", e.what());
+					if (auto logg = i_know.get_logger(); logg) logg->error("Presence Updater:: JSON failed: GENERIC EXCEPTION ERROR: {}", e.what());
 				}
 				catch (std::exception e) {
-					if (auto logg = i_know.get_logger(); logg) logg->critical("[Local] Presence Updater: couldn't set presence. Got error: {}", e.what());
+					if (auto logg = i_know.get_logger(); logg) logg->critical("Presence Updater: couldn't set presence. Got error: {}", e.what());
 				}
 				catch (...) {
-					if (auto logg = i_know.get_logger(); logg) logg->critical("[Local] Presence Updater: couldn't set presence. Unknown error.");
+					if (auto logg = i_know.get_logger(); logg) logg->critical("Presence Updater: couldn't set presence. Unknown error.");
 				}
 			}
 			
@@ -156,9 +179,10 @@ int main()
 					std::getline(std::cin, confirm);
 
 					if (confirm == "CONFIRM") {
-						size_t amount = i_know.broadcast(cutt);
 						size_t total = i_know.guild_count();
-						if (auto logg = i_know.get_logger(); logg) logg->info("All {} of {} guilds have received the task to broadcast.", amount, total);
+						if (auto logg = i_know.get_logger(); logg) logg->info("Sending broadcast to {} guilds...", total);
+						size_t amount = i_know.broadcast(cutt);
+						if (auto logg = i_know.get_logger(); logg) logg->info("{} of {} guilds have received the task to broadcast.", amount, total);
 						else std::cout << "All " << amount << " of " << total << " guilds have received the task to broadcast." << std::endl;
 					}
 				}

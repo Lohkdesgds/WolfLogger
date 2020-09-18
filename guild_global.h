@@ -21,10 +21,10 @@ class GuildGlobal {
 	bool assist_end = false;
 	std::mutex restartu_m;*/
 
-	std::thread auto_flush;
+	///std::thread auto_flush; // for now
 
 	// automatic flush
-	void auto_flush_guilds();
+	///void auto_flush_guilds();
 
 	void setup();
 

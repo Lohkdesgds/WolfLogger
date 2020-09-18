@@ -1,6 +1,6 @@
 #include "guild_global.h"
 
-void GuildGlobal::auto_flush_guilds()
+/*void GuildGlobal::auto_flush_guilds()
 {
 	logg->info("AutoFlush started.");
 	while (!on_shutdown) {
@@ -9,27 +9,25 @@ void GuildGlobal::auto_flush_guilds()
 			logg->warn("AutoFlush got shutdown. Leaving.");
 			return;
 		}
-		logg->info("AutoFlush flushing guilds...");
-		guilds_m.lock();
+		//logg->info("AutoFlush flushing guilds...");
+		std::lock_guard<std::mutex> luck(guilds_m);
 		for (auto& i : guilds) {
 			i->force_flush_buffer();
 			if (on_shutdown) {
 				logg->warn("AutoFlush got shutdown. Leaving.");
-				guilds_m.unlock();
 				return;
 			}
 		}
-		guilds_m.unlock();
-		logg->info("AutoFlush flushed all guilds.");
+		//logg->info("AutoFlush flushed all guilds.");
 	}
-}
+}*/
 
 void GuildGlobal::setup()
 {
 	// join in guild
 	core->set_on_guild_create([&](aegis::gateway::events::guild_create obj) {
 		if (on_shutdown) return;
-		get_guild(obj.guild.id)->reassign(core);
+		get_guild(obj.guild.id)->welcome_back();
 	});
 	// leave guild
 	core->set_on_guild_delete([&](aegis::gateway::events::guild_delete obj) {
@@ -42,100 +40,95 @@ void GuildGlobal::setup()
 		if (on_shutdown) return;
 		if (obj.msg.author.is_bot()) return;
 		auto this_guild = get_guild(obj.msg.get_guild_id());
-		if (this_guild) this_guild->handle(obj);
+		if (this_guild) this_guild->handle_filter(obj);
 	});
 	core->set_on_message_update([&](aegis::gateway::events::message_update obj) {
 		if (on_shutdown) return;
 		if (obj.msg.author.is_bot() || obj.msg.get_content().empty()) return;
 		auto this_guild = get_guild(obj.msg.get_guild_id());
-		if (this_guild) this_guild->handle(obj);
+		if (this_guild) this_guild->handle_filter(obj);
 	});
 	core->set_on_message_delete([&](aegis::gateway::events::message_delete obj) {
 		if (on_shutdown) return;
 		auto this_guild = get_guild(obj.channel.get_guild_id());
-		if (this_guild) this_guild->handle(obj);
+		if (this_guild) this_guild->handle_filter(obj);
 	});
 	core->set_on_message_reaction_add([&](aegis::gateway::events::message_reaction_add obj) {
 		if (on_shutdown) return;
 		auto this_guild = get_guild(obj.guild_id);
-		if (this_guild) this_guild->handle(obj);
+		if (this_guild) this_guild->handle_filter(obj);
 	});
 	core->set_on_message_reaction_remove([&](aegis::gateway::events::message_reaction_remove obj) {
 		if (on_shutdown) return;
 		auto this_guild = get_guild(obj.guild_id);
-		if (this_guild) this_guild->handle(obj);
+		if (this_guild) this_guild->handle_filter(obj);
 	});
 	core->set_on_channel_create([&](aegis::gateway::events::channel_create obj) {
 		if (on_shutdown) return;
 		auto this_guild = get_guild(obj.channel.guild_id);
-		if (this_guild) this_guild->handle(obj);
+		if (this_guild) this_guild->handle_filter(obj);
 	});
 	core->set_on_channel_update([&](aegis::gateway::events::channel_update obj) {
 		if (on_shutdown) return;
 		auto this_guild = get_guild(obj.channel.guild_id);
-		if (this_guild) this_guild->handle(obj);
+		if (this_guild) this_guild->handle_filter(obj);
 	});
 	core->set_on_channel_delete([&](aegis::gateway::events::channel_delete obj) {
 		if (on_shutdown) return;
 		auto this_guild = get_guild(obj.channel.guild_id);
-		if (this_guild) this_guild->handle(obj);
+		if (this_guild) this_guild->handle_filter(obj);
 	});
 	core->set_on_guild_ban_add([&](aegis::gateway::events::guild_ban_add obj) {
 		if (on_shutdown) return;
 		auto this_guild = get_guild(obj.guild_id);
-		if (this_guild) this_guild->handle(obj);
+		if (this_guild) this_guild->handle_filter(obj);
 	});
 	core->set_on_guild_ban_remove([&](aegis::gateway::events::guild_ban_remove obj) {
 		if (on_shutdown) return;
 		auto this_guild = get_guild(obj.guild_id);
-		if (this_guild) this_guild->handle(obj);
+		if (this_guild) this_guild->handle_filter(obj);
 	});
 	core->set_on_guild_role_create([&](aegis::gateway::events::guild_role_create obj) {
 		if (on_shutdown) return;
 		auto this_guild = get_guild(obj.guild_id);
-		if (this_guild) this_guild->handle(obj);
+		if (this_guild) this_guild->handle_filter(obj);
 	});
 	core->set_on_guild_role_update([&](aegis::gateway::events::guild_role_update obj) {
 		if (on_shutdown) return;
 		auto this_guild = get_guild(obj.guild_id);
-		if (this_guild) this_guild->handle(obj);
+		if (this_guild) this_guild->handle_filter(obj);
 	});
 	core->set_on_guild_role_delete([&](aegis::gateway::events::guild_role_delete obj) {
 		if (on_shutdown) return;
 		auto this_guild = get_guild(obj.guild_id);
-		if (this_guild) this_guild->handle(obj);
+		if (this_guild) this_guild->handle_filter(obj);
 	});
 }
 
 std::shared_ptr<Guild> GuildGlobal::get_guild(const aegis::snowflake id)
 {
-	guilds_m.lock();
+	std::lock_guard<std::mutex> luck(guilds_m);
 	for (auto& i : guilds) {
 		if (i && i->is_guild(id)) {
-			auto cpy = i;
-			guilds_m.unlock();
-			return cpy;
+			i->reassign(core);
+			return i;
 		}
 	}
 	guilds.push_back(std::make_shared<Guild>(id, core));
 	logg->info("Created Guild #{}", id);
-	auto cpy = guilds.back();
-	guilds_m.unlock();
-	return cpy;
+	return guilds.back();
 }
 
 void GuildGlobal::erase_guild(const aegis::snowflake id)
 {
-	guilds_m.lock();
+	std::lock_guard<std::mutex> luck(guilds_m);
 	for (size_t p = 0; p < guilds.size(); p++) {
 		if (guilds[p] && guilds[p]->is_guild(id)) {
 			guilds.erase(guilds.begin() + p);
 			logg->info("Erased Guild #{}", id);
-			guilds_m.unlock();
 			return;
 		}
 	}
-	guilds_m.unlock();
 }
 
 void GuildGlobal::wakeup(std::shared_ptr<spdlog::logger> spd)
@@ -161,7 +154,7 @@ void GuildGlobal::wakeup(std::shared_ptr<spdlog::logger> spd)
 	setup();
 	core->run();
 
-	auto_flush = std::thread([&] {auto_flush_guilds(); });
+	//auto_flush = std::thread([&] {auto_flush_guilds(); });
 }
 
 GuildGlobal::GuildGlobal()
@@ -183,7 +176,7 @@ void GuildGlobal::shutdown()
 	guilds.clear();
 	guilds_m.unlock();
 	if (core) core->shutdown();
-	if (auto_flush.joinable()) auto_flush.join();
+	//if (auto_flush.joinable()) auto_flush.join();
 }
 
 void GuildGlobal::force_save_all()
@@ -200,7 +193,9 @@ size_t GuildGlobal::broadcast(const std::string whut)
 	size_t count = 0;
 	guilds_m.lock();
 	for (auto& i : guilds) {
+		logg->info("Sending broadcast to #{}...", i->get_guild_id());
 		count += i->broadcast(whut);
+		std::this_thread::sleep_for(std::chrono::milliseconds(100));
 	}
 	guilds_m.unlock();
 	return count;

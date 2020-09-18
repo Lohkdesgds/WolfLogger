@@ -362,16 +362,41 @@ nlohmann::json guild_data::export_config()
 }
 
 
-
-/*std::shared_ptr<aegis::core> Guild::core_t()
+bool Guild::trycatch_auto(std::function<void(void)> f)
 {
-	return core.lock();
+	try {
+		if (f) f();
+		return true;
+	}
+	catch (aegis::error e) {
+		logg->critical("Guild #{} Guild::trycatch_auto: failed aegis. Got error: {}", max_tries, guild_id, e);
+	}
+	catch (nlohmann::detail::type_error e) {
+		logg->error("Guild #{} Guild::trycatch_auto: JSON failed: TYPE ERROR: {}", guild_id, e.what());
+	}
+	catch (nlohmann::detail::invalid_iterator e) {
+		logg->error("Guild #{} Guild::trycatch_auto: JSON failed: INVALID ITERATOR ERROR: {}", guild_id, e.what());
+	}
+	catch (nlohmann::detail::parse_error e) {
+		logg->error("Guild #{} Guild::trycatch_auto: JSON failed: PARSE ERROR: {}", guild_id, e.what());
+	}
+	catch (nlohmann::detail::out_of_range e) {
+		logg->error("Guild #{} Guild::trycatch_auto: JSON failed: OUT OF RANGE ERROR: {}", guild_id, e.what());
+	}
+	catch (nlohmann::detail::other_error e) {
+		logg->error("Guild #{} Guild::trycatch_auto: JSON failed: OTHER ERROR: {}", guild_id, e.what());
+	}
+	catch (nlohmann::detail::exception e) {
+		logg->error("Guild #{} Guild::trycatch_auto: JSON failed: GENERIC EXCEPTION ERROR: {}", guild_id, e.what());
+	}
+	catch (std::exception e) {
+		logg->critical("Guild #{} Guild::trycatch_auto: failed exception. Got error: {}", guild_id, e.what());
+	}
+	catch (...) {
+		logg->critical("Guild #{} Guild::trycatch_auto: failed. Unknown error.", guild_id);
+	}
+	return false;
 }
-
-std::shared_ptr<spdlog::logger> Guild::logg_t()
-{
-	return logg.lock();
-}*/
 
 void Guild::load_config()
 {
@@ -419,7 +444,7 @@ void Guild::save_config()
 
 void Guild::refresh_flush_channel()
 {
-	//if (ON_RESTART) return;
+	if (!thus) return;
 	flush_channel = thus->get_channel(data.channel_log);
 }
 
@@ -486,107 +511,10 @@ bool Guild::_flush_custom(const std::string s, const bool check_size_recursiv)
 				slow_flush(u8" `...(can't read, sorry)...` ", *flush_channel, guild_id, logg); // failed somehow
 			}
 		}
+		return true;
 	}
-	else return slow_flush(s, *flush_channel, guild_id, logg);
-
-	return true;
-
-	/*if (!slow_flush(s, *flush_channel, guild_id, c)) {
-		auto widenn = widen(s); // utf8 should become one.
-		size_t slice_p = widenn.size() / 2;
-
-		auto first = narrow(widenn.substr(0, slice_p));
-		auto second = narrow(widenn.substr(slice_p));
-
-		if (_flush_custom(first, true)) {
-			return _flush_custom(second, true);
-		}
-		return false;
-	}
-	return true;*/
-	return false;
+	return slow_flush(s, *flush_channel, guild_id, logg);
 }
-
-
-/*void Guild::flush()
-{
-	if (!flush_channel) {
-		logg->error("Guild #{} has not a FLUSH channel set! Trying to recover...", guild_id);
-		refresh_flush_channel();
-
-		//if (ON_RESTART) return;
-
-		if (!flush_channel) {
-			logg->critical("Guild #{} still has NO FLUSH CHANNEL set!", guild_id);
-			
-			if (blocks_m.timed_force_lock() == weirdMutex_fe::FORCED) {
-				giveup_everything_restart();
-				return;
-			}
-
-			if (blocks.size() > 100) {
-				logg->critical("Guild #{} has too many messages stuck! Can't send messages because there's NO FLUSH CHANNEL!", guild_id);
-				while (blocks.size() > 50) blocks.erase(blocks.begin());
-			}
-			blocks_m.unlock();
-			return;
-		}
-	}
-
-	std::vector<size_t> flush_steps;
-
-	if (blocks_m.timed_force_lock() == weirdMutex_fe::FORCED) {
-		giveup_everything_restart();
-		return;
-	}
-
-	if (auto c = logg_t(); c) {
-		while (blocks.size() > 0) {
-			//if (ON_RESTART) return;
-
-			if (!blocks_m.am_i_owner()) { // something took too much so skipped this.
-				logg->error("Guild #{}'s frozen thread woke up. Giving up tasks.", guild_id);
-				if (flush_steps.size() > 1) {
-					logg->info("Guild #{} flushed...", guild_id);
-					for (auto& i : flush_steps) {
-						logg->info("#{} -> {} byte(s)", guild_id, i);
-					}
-				}
-				else if (flush_steps.size() == 1) {
-					logg->info("Guild #{} flushed {} byte(s)", guild_id, flush_steps[0]);
-				}
-				return;
-			}
-
-			blocks_m.refresh_time_ownership();
-
-			auto& i = blocks.front();
-
-			if (auto corr = core.lock(); corr) {
-				corr->async([&, i] { flush_one_block(i); }).then([c] {logg->info("[THEN] Tasked one block."); });
-			}
-			else {
-				logg->info("Guild #{} failed to get CORE. Trying again in 2 seconds...", guild_id, flush_steps[0]);
-				std::this_thread::sleep_for(std::chrono::seconds(2));
-				continue;
-			}
-
-			blocks.erase(blocks.begin());
-		}
-	}
-
-	blocks_m.unlock();	
-
-	if (flush_steps.size() > 1) {
-		logg->info("Guild #{} flushed...", guild_id);
-		for (auto& i : flush_steps) {
-			logg->info("#{} -> {} byte(s)", guild_id, i);
-		}
-	}
-	else if (flush_steps.size() == 1) {
-		logg->info("Guild #{} flushed {} byte(s)", guild_id, flush_steps[0]);
-	}
-}*/
 
 void Guild::flush_one_block(each_block i)
 {
@@ -665,36 +593,29 @@ bool Guild::is_chat_valid(const aegis::snowflake id)
 {
 	if (!data.channel_log) return false;
 
-	//AutoLock luckyness(working_on);
-
-	//data.general_mutex.lock();
 	for (auto& i : data.ignore_channels) {
 		if (i == id) {
-			//data.general_mutex.unlock();
 			return false;
 		}
 	}
-	//data.general_mutex.unlock();
 	return true;
 }
 
 bool Guild::is_user_admin(const aegis::snowflake id)
 {
+	if (!thus) return false;
 	if (id == thus->get_owner() || id == mee_dev) return true;
 	aegis::user* usr = core->user_create(id);
 	if (!usr) return false;
 	auto hmm = usr->get_guild_info(guild_id).roles;
 
-	//data.general_mutex.lock();
 	for (auto& i : data.adm_tags) {
 		for (auto& j : hmm) {
 			if (j == i) {
-				//data.general_mutex.unlock();
 				return true;
 			}
 		}
 	}
-	//data.general_mutex.unlock();
 	return false;
 }
 
@@ -881,7 +802,6 @@ void Guild::command(std::vector<std::string> args, aegis::channel& ch)
 					for (size_t p = 2; p < args.size(); p++) {
 						auto val = stdstoulla(args[p]);
 						bool found = false;
-						//data.general_mutex.lock();
 						for (size_t s = 0; s < data.adm_tags.size(); s++) {
 							if (data.adm_tags[s] == val) {
 								data.adm_tags.erase(data.adm_tags.begin() + s);
@@ -889,7 +809,6 @@ void Guild::command(std::vector<std::string> args, aegis::channel& ch)
 								break;
 							}
 						}
-						//data.general_mutex.unlock();
 
 						if (found) {
 							combo += local("del_arg") + " -> " + args[p] + "\n";
@@ -904,19 +823,15 @@ void Guild::command(std::vector<std::string> args, aegis::channel& ch)
 						auto val = stdstoulla(args[p]);
 						if (val) {
 							bool found = false;
-							//data.general_mutex.lock();
 							for (size_t s = 0; s < data.adm_tags.size(); s++) {
 								if (data.adm_tags[s] == val) {
 									found = true;
 									break;
 								}
 							}
-							//data.general_mutex.unlock();
 
 							if (!found) {
-								//data.general_mutex.lock();
 								data.adm_tags.push_back(val);
-								//data.general_mutex.unlock();
 								combo += local("add_arg") + " -> " + args[p] + "\n";
 							}
 						}
@@ -932,15 +847,20 @@ void Guild::command(std::vector<std::string> args, aegis::channel& ch)
 
 		// - > - > - > - > - > - > - > LANGUAGE < - < - < - < - < - < - < - //
 		else if (cmd == local("language")) {
-			std::string regg;
-			if (args.size() > 1) regg = args[1];
-			else regg = thus->get_region();
+			if (thus) {
+				std::string regg;
+				if (args.size() > 1) regg = args[1];
+				else regg = thus->get_region();
 
-			for (auto& i : regg) i = std::tolower(i);
+				for (auto& i : regg) i = std::tolower(i);
 
-			refresh_language(regg);
+				refresh_language(regg);
 
-			send_message_default(ch, local("success", true), true);
+				send_message_default(ch, local("success", true), true);
+			}
+			else {
+				send_message_default(ch, local("failed", true), false);
+			}
 		}
 
 		// - > - > - > - > - > - > - > PING  < - < - < - < - < - < - < - //
@@ -969,7 +889,6 @@ void Guild::command(std::vector<std::string> args, aegis::channel& ch)
 			std::string events = fmt::format("{}", eventsseen);
 
 			std::stringstream w;
-			auto& _shard = core->get_shard_by_guild(guild_id);
 
 			w << u8"[" << local("stats_github", true) << u8"](https://github.com/Lohkdesgds/WolfLogger)\n"
 				<< u8"[" << local("stats_discord", true) << u8"](https://discord.gg/JkzJjCG)\n" + common_bar + u8"\n"
@@ -1120,12 +1039,15 @@ bool Guild::check_command(std::string str, aegis::channel& ch, const aegis::snow
 	return false;
 }
 
-/*void Guild::giveup_everything_restart()
+void Guild::time_flush()
 {
-	ON_RESTART = true;
-	blocks_m.force_unlock();
-	restart_please();
-}*/
+	auto now = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
+	if (now - last > time_to_flush) {
+		force_flush_buffer();
+	}
+	last = now;
+}
+
 
 void Guild::task_welcome_message()
 {
@@ -1154,7 +1076,7 @@ void Guild::task_end_message()
 Guild::Guild(const aegis::snowflake id, std::shared_ptr<aegis::core> bot/*, std::function<void(void)> giveup*/)
 {
 	guild_id = id;
-	//restart_please = giveup;
+	last = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
 	reassign(bot);
 	load_config();
 	core->async([&] {refresh_flush_channel(); }); // do later
@@ -1167,50 +1089,30 @@ Guild::~Guild()
 	task_end_message();
 }
 
-/*void Guild::force_pause()
-{
-	ON_RESTART = true;
-	core.reset();
-	//logg.reset();
-}
-
-void Guild::fix_emergency()
-{
-	emergency_m.lock();
-	if (blocks_m.timed_force_lock() == weirdMutex_fe::FORCED) {
-		logg->warn("Guild #{} had mutex locked. Doing the copy anyway.", guild_id);
-	}
-	if (emergency.size()) logg->info("Guild #{} has {} messages to fix.", guild_id, emergency.size());
-	for (auto& i : emergency) {
-		blocks.push_back(i);
-	}
-	blocks_m.unlock();
-	if (emergency.size()) logg->info("Guild #{} done fixing messages.", guild_id);
-	emergency.clear();
-	emergency_m.unlock();
-	ON_RESTART = false;
-}*/
-
 void Guild::reassign(std::shared_ptr<aegis::core> bot)
 {
 	core = bot;
 	logg = bot->log;
 
-	auto& shardd = bot->get_shard_by_guild(guild_id);
-	thus = bot->guild_create(guild_id, &shardd);
-
-	if (firstt) {
-		task_reset_message();
-		firstt = false;
+	if (!trycatch_auto([&] {
+		aegis::shards::shard* _shard = &core->get_shard_by_guild(guild_id);
+		thus = bot->guild_create(guild_id, _shard);
+	})) {
+		logg->critical("Failed to get Guild #{}! Skipping event.", guild_id);
+		thus = nullptr;
+		return;
 	}
-	//load_config();
-	//ON_RESTART = false;
 }
 
 void Guild::force_save()
 {
 	save_config();
 	force_flush_buffer();
+}
+
+void Guild::welcome_back()
+{
+	task_reset_message();
 }
 
 bool Guild::broadcast(std::string bread)
@@ -1242,11 +1144,8 @@ bool Guild::broadcast(std::string bread)
 				{ "color", color_embed_default }
 			};
 
-			aegis::channel* cpyy = flush_channel;
-			core->async([&, embed, cpyy] {
-				if (slow_flush_embed(embed, *cpyy, guild_id, logg)) logg->info("Guild #{} broadcasted message successfully.");
-				else logg->error("Guild #{} failed to broadcast the message.");
-			}).then([&] {logg->info("[ASYNC] Tasked broadcast block."); });
+			if (slow_flush_embed(embed, *flush_channel, guild_id, logg)) logg->info("Guild #{} broadcasted message successfully.", guild_id);
+			else logg->error("Guild #{} failed to broadcast the message.");
 
 			return true;
 		}
@@ -1254,11 +1153,8 @@ bool Guild::broadcast(std::string bread)
 			bread = "***__" + local("broadcast_title") + "__***\n```md\n" + bread + "```";
 			if (bread.length() > 2000) bread = bread.substr(0, 2000);
 
-			aegis::channel* cpyy = flush_channel;
-			core->async([&, bread, cpyy] {
-				if (slow_flush(bread, *cpyy, guild_id, logg)) logg->info("Guild #{} broadcasted message successfully.", guild_id);
-				else logg->error("Guild #{} failed to broadcast the message.");
-			}).then([&] {logg->info("[ASYNC] Tasked broadcast block."); });
+			if (slow_flush(bread, *flush_channel, guild_id, logg)) logg->info("Guild #{} broadcasted message successfully.", guild_id);
+			else logg->error("Guild #{} failed to broadcast the message.");
 
 			return true;
 		}
@@ -1272,18 +1168,20 @@ bool Guild::broadcast(std::string bread)
 bool Guild::force_flush_buffer()
 {
 	//if (ON_RESTART) return false;
-	buf_control.lock();
+	std::lock_guard<std::recursive_mutex> luck(buf_control);
 	if (buf.empty()) {
-		buf_control.unlock();
 		return true;
 	}
 	if (_flush_custom(buf)) {
 		buf.clear();
-		buf_control.unlock();
 		return true;
 	}
-	buf_control.unlock();
 	return false;
+}
+
+aegis::snowflake Guild::get_guild_id()
+{
+	return guild_id;
 }
 
 bool Guild::is_guild(const aegis::snowflake id)
