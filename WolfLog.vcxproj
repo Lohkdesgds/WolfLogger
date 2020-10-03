@@ -11,16 +11,18 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="custom_events_data.h" />
     <ClInclude Include="guild_global.h" />
     <ClInclude Include="guild_control.h" />
-    <ClInclude Include="slow_flush.h" />
+    <ClInclude Include="resources.h" />
     <ClInclude Include="supermutex.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="custom_events_data.cpp" />
     <ClCompile Include="guild_global.cpp" />
     <ClCompile Include="guild_control.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="slow_flush.cpp" />
+    <ClCompile Include="resources.cpp" />
     <ClCompile Include="supermutex.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -70,7 +72,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;_HAS_AUTO_PTR_ETC=1;_WIN32_WINNT=0x0A01</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;_HAS_AUTO_PTR_ETC=1;_WIN32_WINNT=0x0A01;AEGIS_DISABLE_ALL_CACHE</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>.\aegis.cpp\include;.\aegis.cpp\lib\asio\asio\include;.\aegis.cpp\lib\json\include;.\aegis.cpp\lib\spdlog\include;.\aegis.cpp\lib\websocketpp;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -91,7 +93,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;_HAS_AUTO_PTR_ETC=1;_WIN32_WINNT=0x0A01</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;_HAS_AUTO_PTR_ETC=1;_WIN32_WINNT=0x0A01;AEGIS_DISABLE_ALL_CACHE</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>.\aegis.cpp\include;.\aegis.cpp\lib\asio\asio\include;.\aegis.cpp\lib\json\include;.\aegis.cpp\lib\spdlog\include;.\aegis.cpp\lib\websocketpp;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>

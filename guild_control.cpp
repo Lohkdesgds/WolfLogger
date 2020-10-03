@@ -32,6 +32,7 @@ Language::Language()
 		en_us.lang["show"]							= u8"show"; //
 		en_us.lang["log"]							= u8"log"; //
 		en_us.lang["deeplog"]						= u8"deeplog"; //
+		en_us.lang["megadeep"]						= u8"megadeep"; //
 		en_us.lang["nolook"]						= u8"ignore"; //
 		en_us.lang["admin"]							= u8"admin"; //
 		en_us.lang["language"]						= u8"language"; //
@@ -44,8 +45,9 @@ Language::Language()
 
 		en_us.lang["flush_desc"]					= u8"flushes the memory (log buffer)"; //
 		en_us.lang["show_desc"]						= u8"show all the settings"; //
-		en_us.lang["log_desc"]						= u8"setup where to store log (require ID)"; //
+		en_us.lang["log_desc"]						= u8"setup where to store log (require one or two ID(s))"; //
 		en_us.lang["deeplog_desc"]					= u8"set if it should deeply log or not (normal)"; //
+		en_us.lang["megadeep_desc"]					= u8"set if ANY EVENT should be logged or not (even presences and typing)"; //
 		en_us.lang["nolook_desc"]					= u8"stop monitoring a chat. COMMAND DEL <...> = remove from list (require one or more IDs)"; //
 		en_us.lang["admin_desc"]					= u8"adds new role to run commands. COMMAND DEL <...> = remove from list (require one or more IDs)"; //
 		en_us.lang["help_desc"]						= u8"shows this help"; //
@@ -58,9 +60,10 @@ Language::Language()
 		en_us.lang["pong"]							= u8"pong"; //
 
 		en_us.lang["config_title"]					= u8"settings"; //
-		en_us.lang["log_title"]						= u8"log chat"; //
+		en_us.lang["log_title"]						= u8"log chat(s)"; //
 		en_us.lang["alias_title"]					= u8"alias"; //
 		en_us.lang["deeplog_title"]					= u8"deep logging"; //
+		en_us.lang["megadeep_title"]				= u8"megadeep logging"; //
 		en_us.lang["nolook_title"]					= u8"ignore channels"; //
 		en_us.lang["adminroles_title"]				= u8"admin tags"; //
 
@@ -93,7 +96,7 @@ Language::Language()
 		en_us.lang["role_info"]						= u8"role info"; //
 		en_us.lang["role_color"]					= u8"color"; //
 		en_us.lang["role_hoist"]					= u8"hoist"; //
-		en_us.lang["role_managed"]					= u8"managed"; //
+		en_us.lang["role_managed"]					= u8"managed by integration"; //
 		en_us.lang["role_mentionable"]				= u8"mentionable"; //
 
 
@@ -118,6 +121,55 @@ Language::Language()
 		en_us.lang["stats_version"]					= u8"version"; //
 
 		en_us.lang["stats_footer"]					= u8"made in C++{} in a LSW fork of {}"; // has to have two {}!
+		
+		en_us.lang["voice_member_update"]			= u8"MEMBER UPDATE IN VOICECHAT";
+
+		en_us.lang["new_member"]					= u8"NEW MEMBER";
+		en_us.lang["update_member"]					= u8"UPDATE MEMBER";
+		en_us.lang["update_user"]					= u8"UPDATE USER";
+		en_us.lang["del_member"]					= u8"LEFT GUILD";
+
+		en_us.lang["member_joined_at"]				= u8"joined At";
+		en_us.lang["member_nick"]					= u8"nick";
+		en_us.lang["member_realnick"]				= u8"real nick";
+		en_us.lang["member_is_bot"]					= u8"bot";
+		en_us.lang["member_verified"]				= u8"verified";
+		en_us.lang["member_webhook"]				= u8"webhook";
+		en_us.lang["member_mfa"]					= u8"MFA enabled";
+		en_us.lang["member_flags"]					= u8"flags";
+		en_us.lang["member_publicflags"]			= u8"public flags";
+		en_us.lang["member_nitro"]					= u8"nitro level";
+		en_us.lang["member_locale"]					= u8"from where";
+		en_us.lang["member_deaf"]					= u8"deafen";
+		en_us.lang["member_mute"]					= u8"muted";
+		en_us.lang["member_deaf_self"]				= u8"deafen themself";
+		en_us.lang["member_mute_self"]				= u8"muted themself";
+		en_us.lang["member_tags"]					= u8"current roles";
+		en_us.lang["member_stream"]					= u8"livestream";
+		en_us.lang["member_video"]					= u8"webcam active";
+		en_us.lang["typing_event"]					= u8"typing...";
+
+		en_us.lang["member_has_no_tags"]			= u8"no roles";
+
+		en_us.lang["integrations_update_t"]			= u8"INTEGRATION UPDATE";
+		en_us.lang["emoji_list_update_t"]			= u8"EMOJI LIST UPDATE";
+		en_us.lang["pinned_message_t"]				= u8"UPDATED PINNED";
+		en_us.lang["new_invite_t"]					= u8"INVITE CREATED";
+		en_us.lang["del_invite_t"]					= u8"INVITE DESTROYED";
+
+		en_us.lang["invite_inviter"]				= u8"created by";
+		en_us.lang["invite_max_age"]				= u8"lasts for";
+		en_us.lang["invite_max_uses"]				= u8"max uses";
+		en_us.lang["invite_temporary"]				= u8"temporary";
+		en_us.lang["invite_code"]					= u8"code";
+
+		en_us.lang["presence_generic_t"]			= u8"PRESENCE UPDATE";
+
+		en_us.lang["spotify_music_t"]				= u8"MUSIC";
+		en_us.lang["spotify_album_t"]				= u8"ALBUM";
+		en_us.lang["gaming_playing_t"]				= u8"PLAYING";
+		en_us.lang["gaming_info_t"]					= u8"INFO";
+
 
 		langs.emplace_back(std::move(en_us));
 	}
@@ -149,6 +201,7 @@ Language::Language()
 		pt_br.lang["show"]							= u8"mostrar"; //
 		pt_br.lang["log"]							= u8"registro"; //
 		pt_br.lang["deeplog"]						= u8"registrarprofundamente"; //
+		pt_br.lang["megadeep"]						= u8"megaprofundo"; //
 		pt_br.lang["nolook"]						= u8"ignorar"; //
 		pt_br.lang["admin"]							= u8"admin"; //
 		pt_br.lang["language"]						= u8"idioma"; //
@@ -161,8 +214,9 @@ Language::Language()
 
 		pt_br.lang["flush_desc"]					= u8"libera a memória"; //
 		pt_br.lang["show_desc"]						= u8"mostra todas as configurações"; //
-		pt_br.lang["log_desc"]						= u8"define onde salvar o log (precisa de um ID)"; //
+		pt_br.lang["log_desc"]						= u8"define onde salvar o log (precisa de um ou dois ID(s))"; //
 		pt_br.lang["deeplog_desc"]					= u8"define se deve salvar tudo ou só o básico (normal)"; //
+		pt_br.lang["megadeep_desc"]					= u8"define se deve salvar QUALQUER EVENTO (até mesmo presence e escrevendo)"; //
 		pt_br.lang["nolook_desc"]					= u8"para de monitorar um chat. COMANDO DEL <...> = remove da list (precisa de um ou mais IDs)"; //
 		pt_br.lang["admin_desc"]					= u8"adiciona uma tag como admin. COMANDO DEL <...> = remove da list (precisa de um ou mais IDs)"; //
 		pt_br.lang["help_desc"]						= u8"mostra essa ajuda"; //
@@ -175,9 +229,10 @@ Language::Language()
 		pt_br.lang["pong"]							= u8"pong"; //
 
 		pt_br.lang["config_title"]					= u8"configurações"; //
-		pt_br.lang["log_title"]						= u8"chat de registro"; //
+		pt_br.lang["log_title"]						= u8"chat(s) de registro"; //
 		pt_br.lang["alias_title"]					= u8"apelido"; //
 		pt_br.lang["deeplog_title"]					= u8"registrando profundamente"; //
+		pt_br.lang["megadeep_title"]				= u8"Mega profundo"; //
 		pt_br.lang["nolook_title"]					= u8"canais ignorados"; //
 		pt_br.lang["adminroles_title"]				= u8"tags de admin"; //
 
@@ -210,7 +265,7 @@ Language::Language()
 		pt_br.lang["role_info"]						= u8"informações"; //
 		pt_br.lang["role_color"]					= u8"cor"; //
 		pt_br.lang["role_hoist"]					= u8"no topo"; //
-		pt_br.lang["role_managed"]					= u8"dirigido"; //
+		pt_br.lang["role_managed"]					= u8"vinculado a uma integração"; //
 		pt_br.lang["role_mentionable"]				= u8"mencionável"; //
 
 
@@ -236,6 +291,55 @@ Language::Language()
 
 		pt_br.lang["stats_footer"]					= u8"feito em C++{} numa fork do LSW de {}"; // has to have two {}!
 
+		pt_br.lang["voice_member_update"]			= u8"UPDATE MEMBRO EM VOICECHAT";
+
+		pt_br.lang["new_member"]					= u8"NOVO MEMBRO";
+		pt_br.lang["update_member"]					= u8"UPDATE MEMBRO";
+		pt_br.lang["update_user"]					= u8"UPDATE USUÁRIO";
+		pt_br.lang["del_member"]					= u8"SAIU DA GUILD";
+
+		pt_br.lang["member_joined_at"]				= u8"entrou";
+		pt_br.lang["member_nick"]					= u8"nick";
+		pt_br.lang["member_realnick"]				= u8"nick verdadeiro";
+		pt_br.lang["member_is_bot"]					= u8"bot";
+		pt_br.lang["member_verified"]				= u8"verificado";
+		pt_br.lang["member_webhook"]				= u8"webhook";
+		pt_br.lang["member_mfa"]					= u8"MFA habilitado";
+		pt_br.lang["member_flags"]					= u8"flags";
+		pt_br.lang["member_publicflags"]			= u8"flags públicas";
+		pt_br.lang["member_nitro"]					= u8"nível do nitro";
+		pt_br.lang["member_locale"]					= u8"de onde";
+		pt_br.lang["member_deaf"]					= u8"surdo";
+		pt_br.lang["member_mute"]					= u8"silenciado";
+		pt_br.lang["member_deaf_self"]				= u8"ensurdeceu si mesmo";
+		pt_br.lang["member_mute_self"]				= u8"silenciou si mesmo";
+		pt_br.lang["member_tags"]					= u8"roles atuais";
+		pt_br.lang["member_stream"]					= u8"ao vivo";
+		pt_br.lang["member_video"]					= u8"webcam ativa";
+
+		pt_br.lang["typing_event"]					= u8"escrevendo...";
+
+		pt_br.lang["member_has_no_tags"]			= u8"sem roles";
+
+		pt_br.lang["integrations_update_t"]			= u8"UPDATE NAS INTEGRAÇÕES";
+		pt_br.lang["emoji_list_update_t"]			= u8"EMOJIS ATUALIZADOS";
+		pt_br.lang["pinned_message_t"]				= u8"ALTERAÇÕES NOS FIXADOS";
+		pt_br.lang["new_invite_t"]					= u8"CONVITE CRIADO";
+		pt_br.lang["del_invite_t"]					= u8"CONVITE DESTRUÍDO";
+
+		pt_br.lang["invite_inviter"]				= u8"criado por";
+		pt_br.lang["invite_max_age"]				= u8"dura";
+		pt_br.lang["invite_max_uses"]				= u8"máximo número de usos";
+		pt_br.lang["invite_temporary"]				= u8"temporário";
+		pt_br.lang["invite_code"]					= u8"código";
+		
+		pt_br.lang["presence_generic_t"]			= u8"UPDATE NA PRESENÇA";
+
+		pt_br.lang["spotify_music_t"]				= u8"MÚSICA";
+		pt_br.lang["spotify_album_t"]				= u8"ÁLBUM";
+		pt_br.lang["gaming_playing_t"]				= u8"JOGANDO";
+		pt_br.lang["gaming_info_t"]					= u8"INFO";
+
 		langs.emplace_back(std::move(pt_br));
 	}
 
@@ -256,26 +360,6 @@ nlohmann::json Language::get_lang(std::string str) const
 }
 
 
-aegis::snowflake stdstoulla(std::string str) {
-	while (str.length() > 0) if (!std::isdigit(str[0])) str.erase(str.begin()); else break;
-	if (str.length() == 0) return 0;
-	unsigned long long t;
-	if (sscanf_s(str.c_str(), "%llu", &t) == 1) {
-		return t;
-	}
-	return 0;
-}
-std::string narrow(const std::wstring& ws)
-{
-	std::wstring_convert <std::codecvt_utf8 <wchar_t>, wchar_t> convert;
-	return convert.to_bytes(ws);
-}
-
-std::wstring widen(const std::string& s)
-{
-	std::wstring_convert <std::codecvt_utf8 <wchar_t>, wchar_t> convert;
-	return convert.from_bytes(s);
-}
 
 std::string transform_weirdo(const std::string in)
 {
@@ -291,6 +375,9 @@ std::string transform_weirdo(const std::string in)
 std::string format_emoji(aegis::gateway::objects::emoji e) {
 	return e.id ? fmt::format("<{}:{}:{}>", e.animated ? "a" : "", e.name, e.id) : e.name;
 }
+/*std::string format_emoji(emoji_c e) {
+	return e.id.get() ? fmt::format("<{}:{}:{}>", e.animated.get() ? "a" : "", e.name.get(), e.id.get()) : e.name.get();
+}*/
 
 
 
@@ -325,8 +412,14 @@ void guild_data::load_config(nlohmann::json j)
 	if (j.count("channel_log") && !j["channel_log"].is_null()) {
 		channel_log = j["channel_log"].get<unsigned long long>();
 	}
+	if (j.count("channel_alt_log") && !j["channel_alt_log"].is_null()) {
+		channel_alt_log = j["channel_alt_log"].get<unsigned long long>();
+	}
 	if (j.count("deep_data") && !j["deep_data"].is_null()) {
 		deep_data = j["deep_data"].get<bool>();
+	}
+	if (j.count("mega_deep") && !j["mega_deep"].is_null()) {
+		mega_deep = j["mega_deep"].get<bool>();
 	}
 	if (j.count("region") && !j["region"].is_null()) {
 		region = j["region"].get<std::string>();
@@ -334,6 +427,7 @@ void guild_data::load_config(nlohmann::json j)
 	if (j.count("alias_cmd") && !j["alias_cmd"].is_null()) {
 		alias_cmd = j["alias_cmd"].get<std::string>();
 	}
+
 	if (j.count("adm_tags") && !j["adm_tags"].is_null()) {
 		for (auto& i : j["adm_tags"])
 			adm_tags.push_back(i.get<unsigned long long>());
@@ -348,8 +442,10 @@ nlohmann::json guild_data::export_config()
 {
 	nlohmann::json j;
 
+	j["channel_alt_log"] = channel_alt_log;
 	j["channel_log"] = channel_log;
 	j["deep_data"] = deep_data;
+	j["mega_deep"] = mega_deep;
 	j["region"] = region;
 	j["alias_cmd"] = alias_cmd;
 
@@ -369,38 +465,38 @@ bool Guild::trycatch_auto(std::function<void(void)> f)
 		return true;
 	}
 	catch (aegis::error e) {
-		logg->critical("Guild #{} Guild::trycatch_auto: failed aegis. Got error: {}", max_tries, guild_id, e);
+		logg->critical("Guild #{} Guild::trycatch_auto: failed aegis. Got error: {}", here.get_raw_guild().id.get(), e);
 	}
 	catch (nlohmann::detail::type_error e) {
-		logg->error("Guild #{} Guild::trycatch_auto: JSON failed: TYPE ERROR: {}", guild_id, e.what());
+		logg->error("Guild #{} Guild::trycatch_auto: JSON failed: TYPE ERROR: {}", here.get_raw_guild().id.get(), e.what());
 	}
 	catch (nlohmann::detail::invalid_iterator e) {
-		logg->error("Guild #{} Guild::trycatch_auto: JSON failed: INVALID ITERATOR ERROR: {}", guild_id, e.what());
+		logg->error("Guild #{} Guild::trycatch_auto: JSON failed: INVALID ITERATOR ERROR: {}", here.get_raw_guild().id.get(), e.what());
 	}
 	catch (nlohmann::detail::parse_error e) {
-		logg->error("Guild #{} Guild::trycatch_auto: JSON failed: PARSE ERROR: {}", guild_id, e.what());
+		logg->error("Guild #{} Guild::trycatch_auto: JSON failed: PARSE ERROR: {}", here.get_raw_guild().id.get(), e.what());
 	}
 	catch (nlohmann::detail::out_of_range e) {
-		logg->error("Guild #{} Guild::trycatch_auto: JSON failed: OUT OF RANGE ERROR: {}", guild_id, e.what());
+		logg->error("Guild #{} Guild::trycatch_auto: JSON failed: OUT OF RANGE ERROR: {}", here.get_raw_guild().id.get(), e.what());
 	}
 	catch (nlohmann::detail::other_error e) {
-		logg->error("Guild #{} Guild::trycatch_auto: JSON failed: OTHER ERROR: {}", guild_id, e.what());
+		logg->error("Guild #{} Guild::trycatch_auto: JSON failed: OTHER ERROR: {}", here.get_raw_guild().id.get(), e.what());
 	}
 	catch (nlohmann::detail::exception e) {
-		logg->error("Guild #{} Guild::trycatch_auto: JSON failed: GENERIC EXCEPTION ERROR: {}", guild_id, e.what());
+		logg->error("Guild #{} Guild::trycatch_auto: JSON failed: GENERIC EXCEPTION ERROR: {}", here.get_raw_guild().id.get(), e.what());
 	}
 	catch (std::exception e) {
-		logg->critical("Guild #{} Guild::trycatch_auto: failed exception. Got error: {}", guild_id, e.what());
+		logg->critical("Guild #{} Guild::trycatch_auto: failed exception. Got error: {}", here.get_raw_guild().id.get(), e.what());
 	}
 	catch (...) {
-		logg->critical("Guild #{} Guild::trycatch_auto: failed. Unknown error.", guild_id);
+		logg->critical("Guild #{} Guild::trycatch_auto: failed. Unknown error.", here.get_raw_guild().id.get());
 	}
 	return false;
 }
 
 void Guild::load_config()
 {
-	std::string pathh = "servers/" + std::to_string(guild_id) + "_log.wolflogv2";
+	std::string pathh = "servers/" + std::to_string(here.get_raw_guild().id.get()) + "_log.wolflogv2";
 
 	FILE* fp = nullptr;
 	if (fopen_s(&fp, pathh.c_str(), "rb") == 0) {
@@ -417,18 +513,18 @@ void Guild::load_config()
 		auto j = nlohmann::json::parse(all_buf);
 		data.load_config(j);
 
-		logg->info("Guild #{} loaded config successfully.", guild_id);
+		logg->info("Guild #{} loaded config successfully.", here.get_raw_guild().id.get());
 
 		fclose(fp);
 	}
 	else {
-		logg->info("Guild #{} couldn't find the config file (new?).", guild_id);
+		logg->info("Guild #{} couldn't find the config file (new?).", here.get_raw_guild().id.get());
 	}
 }
 
 void Guild::save_config()
 {
-	std::string pathh = "servers/" + std::to_string(guild_id) + "_log.wolflogv2";
+	std::string pathh = "servers/" + std::to_string(here.get_raw_guild().id.get()) + "_log.wolflogv2";
 
 	FILE* fp = nullptr;
 	if (fopen_s(&fp, pathh.c_str(), "wb") == 0) {
@@ -442,12 +538,6 @@ void Guild::save_config()
 	}
 }
 
-void Guild::refresh_flush_channel()
-{
-	if (!thus) return;
-	flush_channel = thus->get_channel(data.channel_log);
-}
-
 void Guild::refresh_language(const std::string str)
 {
 	try {
@@ -455,7 +545,7 @@ void Guild::refresh_language(const std::string str)
 		data.region = str;
 	}
 	catch (...) {
-		logg->error("Guild #{} failed to get language (exception)!", guild_id);
+		logg->error("Guild #{} failed to get language (exception)!", here.get_raw_guild().id.get());
 	}
 }
 
@@ -476,99 +566,88 @@ std::string Guild::local(const std::string key, const bool first_up)
 			return std::move(cpy);
 		}
 		else {
-			logg->critical("Guild #{} CRITICAL ERROR: CANNOT GET LANGUAGE!", guild_id);
+			logg->critical("Guild #{} CRITICAL ERROR: CANNOT GET LANGUAGE!", here.get_raw_guild().id.get());
 			return "ERRR";
 		}
 	}
 }
 
-bool Guild::_flush_custom(const std::string s, const bool check_size_recursiv)
+bool Guild::_force_flush_buffer_custom(std::string& buff, const unsigned long long chid)
 {
-	//if (ON_RESTART) return false;
-	if (!flush_channel) {
-		logg->warn("Guild #{} has not a FLUSH channel set! Trying to recover...", guild_id);
-		refresh_flush_channel();
-		if (!flush_channel) {
-			logg->critical("Guild #{} still has NO FLUSH CHANNEL set!", guild_id);
-			return false;
-		}
-	}
-
-	if (check_size_recursiv && s.length() < min_len) {
-		if (cant_send_send_dots_then) {
-			return slow_flush(u8" `...` ", *flush_channel, guild_id, logg);
-		}
-		else return false;
-	}
-
-	if (s.length() > max_len) {
-		auto widenn = widen(s); // utf8 should become one.
-			
-		const size_t each_slice_len = (max_len / sizeof(wchar_t) - 1);
-
-		for (size_t p = 0; p * each_slice_len < widenn.length(); p++) {
-			if (!slow_flush(narrow(widenn.substr(p * each_slice_len, each_slice_len)), *flush_channel, guild_id, logg)) {
-				slow_flush(u8" `...(can't read, sorry)...` ", *flush_channel, guild_id, logg); // failed somehow
-			}
-		}
+	if (!chid) return false;
+	std::lock_guard<std::recursive_mutex> luck(buf_control);
+	if (buff.empty()) {
 		return true;
 	}
-	return slow_flush(s, *flush_channel, guild_id, logg);
+	if (here.create_message(chid, buff)) {
+		logg->info("Guild #{} flushed {} byte(s)", here.get_raw_guild().id.get(), buff.size());
+		buff.clear();
+		return true;
+	}
+	return false;
 }
 
-void Guild::flush_one_block(each_block i)
-{
+void Guild::_flush_block(each_block& i, std::string& buff, const unsigned long long chid)
+{//channel_log
 	std::lock_guard<std::recursive_mutex> luck(buf_control);
-
 	if (last_user != i.user_id || !i.user_id) {
 		auto title_gen = i.generate_title();
-		if (buf.length() + title_gen.length() > max_len) {
-			logg->info("Guild #{} flushed {} byte(s)", guild_id, buf.size());
-			if (!force_flush_buffer()) {
-				logg->critical("Guild #{} FAILED TO SEND BUFFER! ABORT MESSAGE!", guild_id);
+		if (buff.length() + title_gen.length() > max_len) {
+			if (!_force_flush_buffer_custom(buff, chid)) {
+				logg->critical("Guild #{} FAILED TO SEND BUFFER! ABORT MESSAGE!", here.get_raw_guild().id.get());
 				return;
 			}
 		}
-		buf += title_gen;
+		buff += title_gen;
 		last_user = i.user_id;
 	}
 
 	auto content_gen = i.generate();
 
-	if (buf.length() + content_gen.length() > max_len) {
-		logg->info("Guild #{} flushed {} byte(s)", guild_id, buf.size());
-		if (!force_flush_buffer()) {
-			logg->critical("Guild #{} FAILED TO SEND BUFFER! ABORT MESSAGE!", guild_id);
+	if (buff.length() + content_gen.length() > max_len) {
+		if (!_force_flush_buffer_custom(buff, chid)) {
+			logg->critical("Guild #{} FAILED TO SEND BUFFER! ABORT MESSAGE!", here.get_raw_guild().id.get());
 			return;
 		}
 	}
-	buf += content_gen;
+	buff += content_gen;
 
 	if (i.has_emd) { // has to flush latest so embed can be sent
-		logg->info("Guild #{} flushed {} byte(s)", guild_id, buf.size());
-		if (!force_flush_buffer()) {
-			logg->critical("Guild #{} FAILED TO SEND BUFFER! ABORT MESSAGE!", guild_id);
+		if (!_force_flush_buffer_custom(buff, chid)) {
+			logg->critical("Guild #{} FAILED TO SEND BUFFER! ABORT MESSAGE!", here.get_raw_guild().id.get());
 			return;
 		}
 
-		if (flush_channel->perms().can_embed()) {
-			if (!slow_flush_embed(i.emb, *flush_channel, guild_id, logg)) {
-				logg->critical("Guild #{} FAILED TO SEND EMBED BUFFER! ABORT MESSAGE!", guild_id);
+		if (here.bot_has_perm(chid, permissions_user::EMBED_LINKS)) {
+			//if (!slow_flush_embed(i.emb, *flush_channel, guild_id, logg)) {
+			if (!here.create_message_embed(chid, i.emb)) {
+				logg->critical("Guild #{} FAILED TO SEND EMBED BUFFER! ABORT MESSAGE!", here.get_raw_guild().id.get());
 				return;
 			}
-			else logg->info("Guild #{} flushed one embed.", guild_id);
+			else logg->info("Guild #{} flushed one embed.", here.get_raw_guild().id.get());
 		}
 		else {
 			nlohmann::json j = i.emb;
 			std::string emb_str = u8"Can't send embed. Please allow links. The embed JSON is:\n" + j.dump(2);
 			emb_str = emb_str.substr(0, max_len);
-			logg->info("Guild #{} flushed {} byte(s)", guild_id, emb_str.size());
-			if (!_flush_custom(emb_str)) {
-				logg->critical("Guild #{} FAILED TO SEND BUFFER! ABORT MESSAGE!", guild_id);
+			//logg->info("Guild #{} flushed {} byte(s)", here.get_raw_guild().id.get(), emb_str.size());
+			//if (!_flush_custom(emb_str)) {
+			if (!here.create_message(chid, emb_str)) {
+				logg->critical("Guild #{} FAILED TO SEND BUFFER! ABORT MESSAGE!", here.get_raw_guild().id.get());
 				return;
 			}
 		}
 	}
+}
+
+void Guild::flush_one_block(each_block& i)
+{
+	_flush_block(i, buf, data.channel_log);
+}
+
+void Guild::flush_one_alt_block(each_block& i)
+{
+	_flush_block(i, altbuf, data.channel_alt_log ? data.channel_alt_log : data.channel_log); // if not set, use default
 }
 
 std::string Guild::_fix_content(const std::string& str)
@@ -589,9 +668,14 @@ std::string Guild::_fix_content(const std::string& str)
 	return std::move(wrk);
 }
 
-bool Guild::is_chat_valid(const aegis::snowflake id)
+bool Guild::is_chat_valid(const unsigned long long id)
 {
-	if (!data.channel_log) return false;
+	if (!id) return false;
+	if (id == data.channel_log) return false;
+
+	// # / # / # / # / # / # / # / # / # / # / # / # / # \ # \ # \ # \ # \ # \ # \ # \ # # \ # \ # \ # //
+	// = - = - = - = - = - = - = - = - = - = - = LOCKED AREA = - = - = - = - = - = - = - = - = - = - = //
+	AutoLock luckynus(vectors_on);
 
 	for (auto& i : data.ignore_channels) {
 		if (i == id) {
@@ -599,46 +683,50 @@ bool Guild::is_chat_valid(const aegis::snowflake id)
 		}
 	}
 	return true;
+	// = - = - = - = - = - = - = - = - = - = - = LOCKED AREA = - = - = - = - = - = - = - = - = - = - = //
+	// # \ # \ # \ # \ # \ # \ # \ # \ # # \ # \ # \ # - # / # / # / # / # / # / # / # / # / # / # / # //
 }
 
-bool Guild::is_user_admin(const aegis::snowflake id)
+bool Guild::is_user_admin(const unsigned long long id)
 {
-	if (!thus) return false;
-	if (id == thus->get_owner() || id == mee_dev) return true;
-	aegis::user* usr = core->user_create(id);
-	if (!usr) return false;
-	auto hmm = usr->get_guild_info(guild_id).roles;
+	if (!id) return false;
+	//if (!thus) return false;
 
-	for (auto& i : data.adm_tags) {
-		for (auto& j : hmm) {
-			if (j == i) {
-				return true;
-			}
+	if (id == here.get_raw_guild().owner_id.get() || id == mee_dev) return true;
+	member_c usr = here.get_member(id);
+
+	// # / # / # / # / # / # / # / # / # / # / # / # / # \ # \ # \ # \ # \ # \ # \ # \ # # \ # \ # \ # //
+	// = - = - = - = - = - = - = - = - = - = - = LOCKED AREA = - = - = - = - = - = - = - = - = - = - = //
+	AutoLock luckynus(vectors_on);
+
+	for (auto& j : data.adm_tags) {
+		for (size_t p = 0; p < usr.roles.size(); p++) {
+			if (usr.roles[p] == j) return true;
 		}
 	}
 	return false;
+	// = - = - = - = - = - = - = - = - = - = - = LOCKED AREA = - = - = - = - = - = - = - = - = - = - = //
+	// # \ # \ # \ # \ # \ # \ # \ # \ # # \ # \ # \ # - # / # / # / # / # / # / # / # / # / # / # / # //
 }
 
-void Guild::send_message_default(aegis::channel& ch, std::string content, bool succeed, std::string custom_title, int color)
+void Guild::send_message_default(const unsigned long long chid, std::string content, bool succeed, std::string custom_title, int color)
 {
-	if (ch.perms().can_embed()) {
+	//channel_c chh = here.get_channel(chid);
+
+	if (here.bot_has_perm(chid, permissions_user::EMBED_LINKS)) {
 		nlohmann::json embed = {
 			{ "title",  custom_title.empty() ? (succeed ? local("success", true) : local("failed", true)) : custom_title },
 			{ "description", content.substr(0, 2048) },
 			{ "color", color }
 		};
-		aegis::channel* autoref = core->find_channel(ch.get_id()); // make sure it is a valid pointer
-		if (autoref) core->async([&, embed, autoref] {slow_flush_embed(embed, *autoref, guild_id, logg); });// .then([&] {logg->info("[ASYNC] Tasked send_message_default block."); });
-		else logg->critical("[SMD] Guild #{}: Once in existance chat just got deleted / disappeared!", guild_id);
+		here.create_message_embed(chid, embed);
 	}
 	else {
-		aegis::channel* autoref = core->find_channel(ch.get_id()); // make sure it is a valid pointer
-		if (autoref) core->async([&, content, custom_title, autoref] {slow_flush(("**" + custom_title + "**\n" + content).substr(0, 2000), *autoref, guild_id, logg); });// .then([&] {logg->info("[ASYNC] Tasked send_message_default block."); });
-		else logg->critical("[SMD] Guild #{}: Once in existance chat just got deleted / disappeared!", guild_id);
+		here.create_message(chid, ("```css\n[ " + (custom_title.empty() ? (succeed ? local("success", true) : local("failed", true)) : custom_title) + " ]```" + content));
 	}
 }
 
-void Guild::command(std::vector<std::string> args, aegis::channel& ch)
+void Guild::command(std::vector<std::string> args, const unsigned long long ch)
 {
 	//std::function<void(void)> at_the_end;
 
@@ -663,9 +751,10 @@ void Guild::command(std::vector<std::string> args, aegis::channel& ch)
 
 			combo +=
 				local("config_title", true) + ":\n" +
-				local("log_title", true) + ": <#" + std::to_string(data.channel_log) + ">\n" +
+				local("log_title", true) + ": <#" + std::to_string(data.channel_log) + ">" + (data.channel_alt_log ? (" & <#" + std::to_string(data.channel_alt_log) + ">") : std::string("")) + "\n" +
 				local("alias_title", true) + ": " + data.alias_cmd + "\n" +
-				local("deeplog_title", true) + ": " + std::string(data.deep_data ? local("yes") : local("no"));
+				local("deeplog_title", true) + ": " + std::string(data.deep_data ? local("yes") : local("no")) + "\n" +
+				local("megadeep_title", true) + ": " + std::string(data.mega_deep ? local("yes") : local("no"));
 
 			if (data.ignore_channels.size() > 0) {
 
@@ -675,9 +764,16 @@ void Guild::command(std::vector<std::string> args, aegis::channel& ch)
 				}
 
 				combo += "\n" + local("nolook_title", true) + ":";
+
+				// # / # / # / # / # / # / # / # / # / # / # / # / # \ # \ # \ # \ # \ # \ # \ # \ # # \ # \ # \ # //
+				// = - = - = - = - = - = - = - = - = - = - = LOCKED AREA = - = - = - = - = - = - = - = - = - = - = //
+				AutoLock luckynus(vectors_on);
+
 				for (auto& i : data.ignore_channels) {
 					combo += u8"\n- <#" + std::to_string(i) + u8">";
 				}
+				// = - = - = - = - = - = - = - = - = - = - = LOCKED AREA = - = - = - = - = - = - = - = - = - = - = //
+				// # \ # \ # \ # \ # \ # \ # \ # \ # # \ # \ # \ # - # / # / # / # / # / # / # / # / # / # / # / # //
 			}
 			if (data.adm_tags.size() > 0) {
 
@@ -687,9 +783,17 @@ void Guild::command(std::vector<std::string> args, aegis::channel& ch)
 				}
 
 				combo += u8"\n" + local("adminroles_title", true) + ":";
+
+				// # / # / # / # / # / # / # / # / # / # / # / # / # \ # \ # \ # \ # \ # \ # \ # \ # # \ # \ # \ # //
+				// = - = - = - = - = - = - = - = - = - = - = LOCKED AREA = - = - = - = - = - = - = - = - = - = - = //
+				AutoLock luckynus(vectors_on);
+
 				for (auto& i : data.adm_tags) {
 					combo += u8"\n- <@&" + std::to_string(i) + u8">";
 				}
+
+				// = - = - = - = - = - = - = - = - = - = - = LOCKED AREA = - = - = - = - = - = - = - = - = - = - = //
+				// # \ # \ # \ # \ # \ # \ # \ # \ # # \ # \ # \ # - # / # / # / # / # / # / # / # / # / # / # / # //
 			}
 
 			if (combo.length()) send_message_default(ch, combo, true);
@@ -705,23 +809,49 @@ void Guild::command(std::vector<std::string> args, aegis::channel& ch)
 				if (cpystr.length() > 0) {
 					auto val = stdstoulla(cpystr);
 					if (val) {
-						send_message_default(ch, local("success", true), true);
 						data.channel_log = val;
 						save_config();
 						fail = false;
 					}
 				}
+				if (!fail && args.size() >= 3) {
+					auto cpystr2 = args[2];
+
+					if (cpystr2.length() > 0) {
+						auto val2 = stdstoulla(cpystr2);
+						if (val2) {
+							data.channel_alt_log = val2;
+							save_config();
+							fail = false;
+						}
+					}
+				}
+				else if (!fail) {
+					data.channel_alt_log = 0;
+				}
 			}
 			if (fail) send_message_default(ch, local("failed", true), false);
+			else send_message_default(ch, local("success", true), true);
 		}
 
-		// - > - > - > - > - > - > - > LOG < - < - < - < - < - < - < - //
+		// - > - > - > - > - > - > - > DEEPLOG < - < - < - < - < - < - < - //
 		else if (cmd == local("deeplog")) {
 			
 			data.deep_data = !data.deep_data;
 			send_message_default(ch,
 				local("deeplog_title", true) + " -> " +
 				std::string(data.deep_data ? local("enabled", true) : local("disabled", true)), true);
+			save_config();
+
+		}
+
+		// - > - > - > - > - > - > - > MEGADEEP < - < - < - < - < - < - < - //
+		else if (cmd == local("megadeep")) {
+			
+			data.mega_deep = !data.mega_deep;
+			send_message_default(ch,
+				local("megadeep_title", true) + " -> " +
+				std::string(data.mega_deep ? local("enabled", true) : local("disabled", true)), true);
 			save_config();
 
 		}
@@ -742,6 +872,11 @@ void Guild::command(std::vector<std::string> args, aegis::channel& ch)
 					for (size_t p = 2; p < args.size(); p++) {
 						auto val = stdstoulla(args[p]);
 						bool found = false;
+
+						// # / # / # / # / # / # / # / # / # / # / # / # / # \ # \ # \ # \ # \ # \ # \ # \ # # \ # \ # \ # //
+						// = - = - = - = - = - = - = - = - = - = - = LOCKED AREA = - = - = - = - = - = - = - = - = - = - = //
+						AutoLock luckynus(vectors_on);
+
 						for (size_t s = 0; s < data.ignore_channels.size(); s++) {
 							if (data.ignore_channels[s] == val) {
 								data.ignore_channels.erase(data.ignore_channels.begin() + s);
@@ -753,6 +888,8 @@ void Guild::command(std::vector<std::string> args, aegis::channel& ch)
 						if (found) {
 							combo += local("del_arg") + " -> " + args[p] + "\n";
 						}
+						// = - = - = - = - = - = - = - = - = - = - = LOCKED AREA = - = - = - = - = - = - = - = - = - = - = //
+						// # \ # \ # \ # \ # \ # \ # \ # \ # # \ # \ # \ # - # / # / # / # / # / # / # / # / # / # / # / # //
 					}
 				}
 				else { // ADD
@@ -763,6 +900,11 @@ void Guild::command(std::vector<std::string> args, aegis::channel& ch)
 						auto val = stdstoulla(args[p]);
 						if (val) {
 							bool found = false;
+
+							// = - = - = - = - = - = - = - = - = - = - = = - - = - = - = - = - = - = - = - = - = = - = - = - = //
+							// = - = - = - = - = - = - = - = - = - = - = LOCKED AREA = - = - = - = - = - = - = - = - = - = - = //
+							AutoLock luckynus(vectors_on);
+
 							for (size_t s = 0; s < data.ignore_channels.size(); s++) {
 								if (data.ignore_channels[s] == val) {
 									found = true;
@@ -774,6 +916,8 @@ void Guild::command(std::vector<std::string> args, aegis::channel& ch)
 								data.ignore_channels.push_back(val);
 								combo += local("add_arg") + " -> " + args[p] + "\n";
 							}
+							// = - = - = - = - = - = - = - = - = - = - = LOCKED AREA = - = - = - = - = - = - = - = - = - = - = //
+							// = - = - = - = - = - = - = - = - = - = - = = - - = - = - = - = - = - = - = - = - = = - = - = - = //
 						}
 					}
 				}
@@ -802,6 +946,11 @@ void Guild::command(std::vector<std::string> args, aegis::channel& ch)
 					for (size_t p = 2; p < args.size(); p++) {
 						auto val = stdstoulla(args[p]);
 						bool found = false;
+
+						// # / # / # / # / # / # / # / # / # / # / # / # / # \ # \ # \ # \ # \ # \ # \ # \ # # \ # \ # \ # //
+						// = - = - = - = - = - = - = - = - = - = - = LOCKED AREA = - = - = - = - = - = - = - = - = - = - = //
+						AutoLock luckynus(vectors_on);
+
 						for (size_t s = 0; s < data.adm_tags.size(); s++) {
 							if (data.adm_tags[s] == val) {
 								data.adm_tags.erase(data.adm_tags.begin() + s);
@@ -813,6 +962,8 @@ void Guild::command(std::vector<std::string> args, aegis::channel& ch)
 						if (found) {
 							combo += local("del_arg") + " -> " + args[p] + "\n";
 						}
+						// = - = - = - = - = - = - = - = - = - = - = LOCKED AREA = - = - = - = - = - = - = - = - = - = - = //
+						// # \ # \ # \ # \ # \ # \ # \ # \ # # \ # \ # \ # - # / # / # / # / # / # / # / # / # / # / # / # //
 					}
 				}
 				else { // ADD
@@ -823,6 +974,11 @@ void Guild::command(std::vector<std::string> args, aegis::channel& ch)
 						auto val = stdstoulla(args[p]);
 						if (val) {
 							bool found = false;
+
+							// # / # / # / # / # / # / # / # / # / # / # / # / # \ # \ # \ # \ # \ # \ # \ # \ # # \ # \ # \ # //
+							// = - = - = - = - = - = - = - = - = - = - = LOCKED AREA = - = - = - = - = - = - = - = - = - = - = //
+							AutoLock luckynus(vectors_on);
+
 							for (size_t s = 0; s < data.adm_tags.size(); s++) {
 								if (data.adm_tags[s] == val) {
 									found = true;
@@ -834,6 +990,8 @@ void Guild::command(std::vector<std::string> args, aegis::channel& ch)
 								data.adm_tags.push_back(val);
 								combo += local("add_arg") + " -> " + args[p] + "\n";
 							}
+							// = - = - = - = - = - = - = - = - = - = - = LOCKED AREA = - = - = - = - = - = - = - = - = - = - = //
+							// # \ # \ # \ # \ # \ # \ # \ # \ # # \ # \ # \ # - # / # / # / # / # / # / # / # / # / # / # / # //
 						}
 					}
 				}
@@ -847,10 +1005,10 @@ void Guild::command(std::vector<std::string> args, aegis::channel& ch)
 
 		// - > - > - > - > - > - > - > LANGUAGE < - < - < - < - < - < - < - //
 		else if (cmd == local("language")) {
-			if (thus) {
+			if (args.size() > 1 || here.get_raw_guild().region.is_set()) {
 				std::string regg;
 				if (args.size() > 1) regg = args[1];
-				else regg = thus->get_region();
+				else regg = here.get_raw_guild().region.get();
 
 				for (auto& i : regg) i = std::tolower(i);
 
@@ -874,18 +1032,18 @@ void Guild::command(std::vector<std::string> args, aegis::channel& ch)
 		else if (cmd == local("stats")) {
 			std::lock_guard<std::recursive_mutex> luck(buf_control);
 
-			int64_t guild_count = core->get_guild_count();
-			int64_t user_count_unique = core->get_user_count();
-			int64_t channel_count = core->get_channel_count();
+			//int64_t guild_count = core->get_guild_map().size();
+			//int64_t user_count_unique = core->us();
+			//int64_t channel_count = core->get_channel_count();
 
 			int64_t eventsseen = 0;
 
 			for (auto& e : core->message_count)
 				eventsseen += e.second;
 
-			std::string members = fmt::format("{}", user_count_unique);
-			std::string channels = fmt::format("{}", channel_count);
-			std::string guilds = fmt::format("{}", guild_count);
+			//std::string members = fmt::format("{}", user_count_unique);
+			//std::string channels = fmt::format("{}", channel_count);
+			//std::string guilds = fmt::format("{}", guild_count);
 			std::string events = fmt::format("{}", eventsseen);
 
 			std::stringstream w;
@@ -899,7 +1057,7 @@ void Guild::command(std::vector<std::string> args, aegis::channel& ch)
 			std::string stats = common_bar + u8"\n" + w.str() + u8"\n" + common_bar;
 			std::string buffer_len = std::to_string(buf.length()) + "/" + std::to_string(max_len) + " bytes";
 
-			if (ch.perms().can_embed()) {
+			if (here.bot_has_perm(ch, permissions_user::EMBED_LINKS)) {
 
 				nlohmann::json t = {
 					{ "title", local("stats_title", true) },
@@ -908,10 +1066,10 @@ void Guild::command(std::vector<std::string> args, aegis::channel& ch)
 					{ "fields",
 					nlohmann::json::array(
 						{
-							{ { "name", local("stats_members", true) },		{ "value", members },				{ "inline", true } },
-							{ { "name", local("stats_channnels", true) },	{ "value", channels },				{ "inline", true } },
+							//{ { "name", local("stats_members", true) },		{ "value", members },				{ "inline", true } },
+							//{ { "name", local("stats_channnels", true) },	{ "value", channels },				{ "inline", true } },
 							{ { "name", local("stats_uptime", true) },		{ "value", core->uptime_str() },	{ "inline", true } },
-							{ { "name", local("stats_guilds", true) },		{ "value", guilds },				{ "inline", true } },
+							//{ { "name", local("stats_guilds", true) },		{ "value", guilds },				{ "inline", true } },
 							{ { "name", local("stats_events", true) },		{ "value", events },				{ "inline", true } },
 							{ { "name", local("stats_buffer", true) },		{ "value", buffer_len },			{ "inline", true } },
 							{ { "name", local("stats_region", true) },		{ "value", data.region },			{ "inline", true } },
@@ -924,22 +1082,24 @@ void Guild::command(std::vector<std::string> args, aegis::channel& ch)
 					{ "footer",{ { "icon_url", "https://cdn.discordapp.com/emojis/289276304564420608.png" },{ "text", fmt::format(local("stats_footer", true), CXX_VERSION, AEGIS_VERSION_TEXT) } } }
 				};
 
-				slow_flush_embed(t, ch, guild_id, logg);
+				here.create_message_embed(ch, t);
+				//slow_flush_embed(t, ch, guild_id, logg);
 			}
 			else {
 
 				std::string mm = "***" + local("stats_title", true) + "***\n```\n" +
 					stats + "\n" +
-					local("stats_members", true)	+ ": " + members + "\n" +
-					local("stats_channnels", true)	+ ": " + channels + "\n" +
+					//local("stats_members", true)	+ ": " + members + "\n" +
+					//local("stats_channnels", true)	+ ": " + channels + "\n" +
 					local("stats_uptime", true)		+ ": " + core->uptime_str() + "\n" +
-					local("stats_guilds", true)		+ ": " + guilds + "\n" +
+					//local("stats_guilds", true)		+ ": " + guilds + "\n" +
 					local("stats_events", true)		+ ": " + events + "\n" +
 					local("stats_buffer", true)		+ ": " + buffer_len + "\n" +
 					local("stats_region", true)		+ ": " + data.region + "\n" +
 					local("stats_version", true)	+ ": " + version + "\n```";
 
-				slow_flush(mm, ch, guild_id, logg);
+				//slow_flush(mm, ch, guild_id, logg);
+				here.create_message(ch, mm);
 			}
 
 		}
@@ -967,7 +1127,7 @@ void Guild::command(std::vector<std::string> args, aegis::channel& ch)
 		}
 	}
 	if (do_help) { // HELP
-		if (ch.perms().can_embed()) {
+		if (here.bot_has_perm(ch, permissions_user::EMBED_LINKS)) {
 
 			nlohmann::json t = {
 				{ "title", local("commands", true) },
@@ -979,6 +1139,7 @@ void Guild::command(std::vector<std::string> args, aegis::channel& ch)
 						{ { "name", local("show") },		{ "value", "`" + local("show_desc") + "`" },		{ "inline", false } },
 						{ { "name", local("log") },			{ "value", "`" + local("log_desc") + "`" },			{ "inline", false } },
 						{ { "name", local("deeplog") },		{ "value", "`" + local("deeplog_desc") + "`" },		{ "inline", false } },
+						{ { "name", local("megadeep") },	{ "value", "`" + local("megadeep_desc") + "`" },	{ "inline", false } },
 						{ { "name", local("nolook") },		{ "value", "`" + local("nolook_desc") + "`" },		{ "inline", false } },
 						{ { "name", local("admin") },		{ "value", "`" + local("admin_desc") + "`" },		{ "inline", false } },
 						{ { "name", local("help") },		{ "value", "`" + local("help_desc") + "`" },		{ "inline", false } },
@@ -991,14 +1152,16 @@ void Guild::command(std::vector<std::string> args, aegis::channel& ch)
 				}
 			};
 
-			slow_flush_embed(t, ch, guild_id, logg);
+			here.create_message_embed(ch, t);
+			//slow_flush_embed(t, ch, guild_id, logg);
 		}
 		else {
-			std::string msg = "*" + local("commands", true) + "*\n```\n" +
+			std::string msg = "```md\n# " + local("commands", true) + "\n" +
 				local("flush") + ": " + local("flush_desc") + "\n" +
 				local("show") + ": " + local("show_desc") + "\n" +
 				local("log") + ": " + local("log_desc") + "\n" +
 				local("deeplog") + ": " + local("deeplog_desc") + "\n" +
+				local("megadeep") + ": " + local("megadeep_desc") + "\n" +
 				local("nolook") + ": " + local("nolook_desc") + "\n" +
 				local("admin") + ": " + local("admin_desc") + "\n" +
 				local("help") + ": " + local("help_desc") + "\n" +
@@ -1012,7 +1175,7 @@ void Guild::command(std::vector<std::string> args, aegis::channel& ch)
 	}
 }
 
-bool Guild::check_command(std::string str, aegis::channel& ch, const aegis::snowflake id)
+bool Guild::check_command(std::string str, const unsigned long long ch, const unsigned long long id)
 {
 	int found = str.find(command_global) == 0 ? 1 : (data.alias_cmd.length() > 0 ? (str.find(data.alias_cmd) == 0 ? 2 : 0) : 0); // alias == 2
 	if (found > 0) {
@@ -1043,7 +1206,8 @@ void Guild::time_flush()
 {
 	auto now = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
 	if (now - last > time_to_flush) {
-		force_flush_buffer();
+		_force_flush_buffer_custom(buf, data.channel_log);
+		_force_flush_buffer_custom(altbuf, data.channel_alt_log ? data.channel_alt_log : data.channel_log);
 	}
 	last = now;
 }
@@ -1051,36 +1215,1051 @@ void Guild::time_flush()
 
 void Guild::task_welcome_message()
 {
-	if (!data.deep_data) return;
-	auto message = "` - - - - > " + local("wakeup_message") + " < - - - - `";
+	has_welcomed = true;
+	std::lock_guard<std::recursive_mutex> rluck(welcome_goodbye_refresh);
+	if (data.deep_data) {
+		auto message = "` - - - - > " + local("wakeup_message") + " < - - - - `";
 
-	core->async([&,message] {_flush_custom(message); }).then([&] {logg->info("[ASYNC] Tasked welcome block."); });
+		here.create_message(data.channel_log, message);
+		//core->async([&, message] {_flush_custom(message); }).then([&] {logg->info("[ASYNC] Tasked welcome block."); });
+	}
+	if (here.get_raw_guild().id.get() == master_guild) {
+		std::string mess = "```md\n# Hello master guild.\n";
+		mess += "- Version running right now: " + version;
+		mess += "```";
+		here.create_message(data.channel_log, mess);
+		//core->async([&, mess] {_flush_custom(mess); }).then([&] {logg->info("[ASYNC] Tasked MASTER debugging message."); });
+	}
 }
 
 void Guild::task_reset_message()
 {
 	if (!data.deep_data) return;
+	std::lock_guard<std::recursive_mutex> rluck(welcome_goodbye_refresh);
 	auto message = "` - - - - > " + local("rejoin_message") + " < - - - - `";
 
-	core->async([&, message] {_flush_custom(message); }).then([&] {logg->info("[ASYNC] Tasked rejoin block."); });
+	here.create_message(data.channel_log, message);
+	//core->async([&, message] {_flush_custom(message); }).then([&] {logg->info("[ASYNC] Tasked rejoin block."); });
 }
 
 void Guild::task_end_message()
 {
 	if (!data.deep_data) return;
+	std::lock_guard<std::recursive_mutex> rluck(welcome_goodbye_refresh);
 	auto message = "` - - - - > " + local("shutdown_message") + " < - - - - `";
 
-	_flush_custom(message);
+	here.create_message(data.channel_log, message);
+	//_flush_custom(message);
 }
 
-Guild::Guild(const aegis::snowflake id, std::shared_ptr<aegis::core> bot/*, std::function<void(void)> giveup*/)
+
+
+void Guild::handle(the_event& ev)
 {
-	guild_id = id;
+	// all this is handled in lambda in constructor
+	/*if (!has_welcomed) {
+		refresh_flush_channel();
+		task_welcome_message();
+		has_welcomed = true;
+	}*/
+	/*for (size_t p = 0; p < 15 && !thus; p++) {
+		bool good = trycatch_auto([&] {reassign(core); }); // trying to reassign.
+		if (!thus || !good) {
+			logg->critical("[{}/15] Guild #{} has no guild set. Trying to reset guild pointer...", p + 1, guild_id);
+			std::this_thread::sleep_for(std::chrono::seconds(3));
+		}
+	}
+	if (!thus) return;
+	for (size_t p = 0; p < 15 && !trycatch_auto([&] {handle(t); }); p++) {
+		logg->critical("[{}/15] Guild #{} failed to handle event.", p + 1, guild_id);
+		std::this_thread::sleep_for(std::chrono::seconds(3));
+	}*/
+
+	//logg->info("GOT EVENT TYPE #{} ({})", ev.type, ev.type_str.get());
+
+	switch (ev.type) {
+	case event_type::GUILD_MEMBER_ADD:
+	{
+		auto& ref = ev.data.guild_member_add;
+		if (!ref.is_set()) {
+			logg->warn("Event {} was nullptr", ev.type_str.get());
+			return;
+		}
+
+		if (!data.deep_data) return;
+
+		each_block b;
+		b.title = "```css\n[" + local("new_member") + "](#" + std::to_string(ref->user.id.get()) + ")```";
+		b.content = "```md\n- " + local("member_joined_at", true) + ": " + ref->joined_at.nice_format() + "\n"
+			+ "- " + local("member_nick", true) + ": " + ref->nick.get() + "\n"
+			+ "- " + local("member_realnick", true) + ": " + ref->user.get_combo_name() + "\n"
+			+ "- " + local("member_is_bot", true) + ": " + std::string(ref->user.bot.get() ? local("yes") : local("no")) + "\n"
+			+ "- " + local("member_verified", true) + ": " + std::string(ref->user.verified.get() ? local("yes") : local("no")) + "\n"
+			+ "- " + local("member_webhook", true) + ": " + std::string(ref->user.is_webhook() ? local("yes") : local("no")) + "\n"
+			+ "- " + local("member_mfa", true) + ": " + std::string(ref->user.mfa_enabled.get() ? local("yes") : local("no")) + "\n"
+			+ "- " + local("member_locale", true) + ": " + ref->user.locale.get() + "\n"
+			+ "- " + local("member_flags", true) + ": " + std::to_string(ref->user.flags.get()) + "\n"
+			+ "- " + local("member_publicflags", true) + ": " + std::to_string(ref->user.public_flags.get()) + "\n"
+			+ (ref->user.premium_type.get() ? ("- " + local("member_nitro", true) + ": " + (ref->user.premium_type.get() == 1 ? "Nitro Classic" : "Nitro")) : "")
+			+ "```\n";
+
+		b.user_id = 0;
+
+		flush_one_alt_block(b);
+	}
+		break;
+	case event_type::GUILD_MEMBER_UPDATE:
+	{
+		auto& ref = ev.data.guild_member_update;
+		if (!ref.is_set()) {
+			logg->warn("Event {} was nullptr", ev.type_str.get());
+			return;
+		}
+
+		if (!data.deep_data) return;
+
+		std::string roles_combo;
+		for (size_t p = 0; p < ref->roles.size(); p++) {
+			auto& i = ref->roles[p];
+			roles_combo += "#" + std::to_string(i) + (i != ref->roles.back() ? ", " : "");
+		}
+		if (roles_combo.empty()) roles_combo = local("member_has_no_tags");
+
+		each_block b;
+		b.title = "```css\n[" + local("update_member") + "](#" + std::to_string(ref->user.id.get()) + ")```";
+		b.content = "```md\n- " + local("member_joined_at", true) + ": " + ref->joined_at.nice_format() + "\n"
+			+ "- " + local("member_nick", true) + ": " + ref->nick.get() + "\n"
+			+ "- " + local("member_realnick", true) + ": " + ref->user.get_combo_name() + "\n"
+			+ "- " + local("member_is_bot", true) + ": " + std::string(ref->user.bot.get() ? local("yes") : local("no")) + "\n"
+			+ "- " + local("member_verified", true) + ": " + std::string(ref->user.verified.get() ? local("yes") : local("no")) + "\n"
+			+ "- " + local("member_webhook", true) + ": " + std::string(ref->user.is_webhook() ? local("yes") : local("no")) + "\n"
+			+ "- " + local("member_mfa", true) + ": " + std::string(ref->user.mfa_enabled.get() ? local("yes") : local("no")) + "\n"
+			+ "- " + local("member_locale", true) + ": " + ref->user.locale.get() + "\n"
+			+ "- " + local("member_flags", true) + ": " + std::to_string(ref->user.flags.get()) + "\n"
+			+ "- " + local("member_publicflags", true) + ": " + std::to_string(ref->user.public_flags.get()) + "\n"
+			+ "- " + local("member_deaf", true) + ": " + std::string(ref->deaf.get() ? local("yes") : local("no")) + "\n"
+			+ "- " + local("member_mute", true) + ": " + std::string(ref->mute.get() ? local("yes") : local("no")) + "\n"
+			+ "- " + local("member_tags", true) + ": " + roles_combo
+			+ "```\n";
+
+		b.user_id = 0;
+
+		flush_one_alt_block(b);
+	}
+		break;
+	case event_type::GUILD_MEMBER_REMOVE:
+	{
+		auto& ref = ev.data.guild_member_remove;
+		if (!ref.is_set()) {
+			logg->warn("Event {} was nullptr", ev.type_str.get());
+			return;
+		}
+
+		if (!data.deep_data) return;
+
+		std::string roles_combo;
+		for (size_t p = 0; p < ref->roles.size(); p++) {
+			auto& i = ref->roles[p];
+			roles_combo += "#" + std::to_string(i) + (i != ref->roles.back() ? ", " : "");
+		}
+		if (roles_combo.empty()) roles_combo = local("member_has_no_tags");
+
+		each_block b;
+		b.title = "```css\n[" + local("update_member") + "](#" + std::to_string(ref->user.id.get()) + ")```";
+		b.content = "```md\n- " + local("member_joined_at", true) + ": " + ref->joined_at.nice_format() + "\n"
+			+ "- " + local("member_nick", true) + ": " + ref->nick.get() + "\n"
+			+ "- " + local("member_realnick", true) + ": " + ref->user.get_combo_name() + "\n"
+			+ "- " + local("member_is_bot", true) + ": " + std::string(ref->user.bot.get() ? local("yes") : local("no")) + "\n"
+			+ "- " + local("member_verified", true) + ": " + std::string(ref->user.verified.get() ? local("yes") : local("no")) + "\n"
+			+ "- " + local("member_webhook", true) + ": " + std::string(ref->user.is_webhook() ? local("yes") : local("no")) + "\n"
+			+ "- " + local("member_mfa", true) + ": " + std::string(ref->user.mfa_enabled.get() ? local("yes") : local("no")) + "\n"
+			+ "- " + local("member_locale", true) + ": " + ref->user.locale.get() + "\n"
+			+ "- " + local("member_flags", true) + ": " + std::to_string(ref->user.flags.get()) + "\n"
+			+ "- " + local("member_publicflags", true) + ": " + std::to_string(ref->user.public_flags.get()) + "\n"
+			+ "- " + local("member_deaf", true) + ": " + std::string(ref->deaf.get() ? local("yes") : local("no")) + "\n"
+			+ "- " + local("member_mute", true) + ": " + std::string(ref->mute.get() ? local("yes") : local("no")) + "\n"
+			+ "- " + local("member_tags", true) + ": " + roles_combo
+			+ "```\n";
+
+		b.user_id = 0;
+
+		flush_one_alt_block(b);
+	}
+		break;
+	case event_type::MESSAGE_CREATE: // command disabled
+	{
+		auto& ref = ev.data.message_create;
+		if (!ref.is_set()) {
+			logg->warn("Event {} was nullptr", ev.type_str.get());
+			return;
+		}
+		if (!ref->member.user.id.is_set() || ref->member.user.id.get() == 0) {
+#ifdef _DEBUG // it's probably some weird return from a message that the bot answered.
+			logg->warn("Event {} had invalid user", ev.type_str.get());
+#endif
+			return;
+		}
+
+		if (ref->member.user.bot.get()) return;
+
+		if (!is_chat_valid(ref->channel_id.get())) return;
+
+		check_command(ref->content.get(), ref->channel_id, ref->member.user.id);
+
+		std::string extra;
+		for (size_t count = 0; count < ref->attachments.size(); count++) extra += "\n > " + ref->attachments[count].filename.get() + " (" + ref->attachments[count].url.get() + ")";
+		channel_c ch = here.get_channel(ref->channel_id);
+
+		each_block b;
+		b.title = "```md\n[" + std::to_string(ref->author.id.get()) + "](" + ref->author.get_combo_name() + ")```";
+		b.subtitle = "`[" + ref->timestamp.nice_format() + "]<m" + std::to_string(ref->id.get()) + "@" + std::to_string(ch.id.get()) + ">(" + ch.name.get() + ")`**:** ";
+		b.content = _fix_content(ref->content.get()) + extra + '\n';
+		b.user_id = ref->author.id.get();
+		if (b.has_emd = (ref->embeds.size() > 0)) b.emb = ref->embeds[0];
+
+
+		flush_one_block(b);		
+	}
+		break;
+	case event_type::MESSAGE_UPDATE:
+	{
+		auto& ref = ev.data.message_update;
+		if (!ref.is_set()) {
+			logg->warn("Event {} was nullptr", ev.type_str.get());
+			return;
+		}
+		if (!ref->member.user.id.is_set() || ref->member.user.id.get() == 0) {
+#ifdef _DEBUG // it's probably some weird return from a message that the bot answered.
+			logg->warn("Event {} had invalid user", ev.type_str.get());
+#endif
+			return;
+		}
+
+		if (ref->member.user.bot.get()) return;
+
+		if (!is_chat_valid(ref->channel_id.get())) return;
+
+		channel_c ch = here.get_channel(ref->channel_id);
+
+		each_block b;
+		b.title = "```md\n[" + std::to_string(ref->author.id.get()) + "](" + ref->author.get_combo_name() + ")```";
+		b.subtitle = "`[" + ref->timestamp.nice_format() + "]<m" + std::to_string(ref->id.get()) + "@" + std::to_string(ch.id.get()) + ">(" + ch.name.get() + ")`**:** ";
+		b.content = _fix_content(ref->content.get()) + " `<- " + local("edited_message") + "`\n";
+		b.user_id = ref->author.id.get();
+		if (b.has_emd = (ref->embeds.size() > 0)) b.emb = ref->embeds[0];
+
+
+		flush_one_block(b);
+
+	}
+		break;
+	case event_type::MESSAGE_DELETE:
+	{
+		auto& ref = ev.data.message_delete;
+		if (!ref.is_set()) {
+			logg->warn("Event {} was nullptr", ev.type_str.get());
+			return;
+		}
+
+		member_c memb = here.get_member(ref->id.get());
+		if (memb.user.bot.get()) return;
+
+		if (!data.deep_data) return;
+
+		if (!is_chat_valid(ref->channel_id.get())) return;
+
+		channel_c ch = here.get_channel(ref->channel_id);
+
+		each_block b;
+		b.title = "```css\n[" + local("message_t") + "](" + local("delete_t") + ")```";
+		b.subtitle = "`<m" + std::to_string(ref->id.get()) + "@" + std::to_string(ch.id.get()) + ">(" + ch.name.get() + ")` ";
+		b.content = " `<- " + local("del") + "`\n";
+		b.user_id = 0;
+
+
+		flush_one_block(b);
+	}
+		break;
+	case event_type::PRESENCE_UPDATE:
+	{
+		auto& ref = ev.data.presence_update;
+		if (!ref.is_set()) {
+			logg->warn("Event {} was nullptr", ev.type_str.get());
+			return;
+		}
+
+		if (!data.mega_deep || !data.deep_data) return;
+
+		member_c memb = here.get_member(ref->user.id);
+		if (memb.user.bot) return;
+
+		std::string final_content;
+
+		std::vector<std::string> activities_str;
+
+		for (size_t p = 0; p < ref->activities.size(); p++) {
+			auto& i = ref->activities[p];
+
+			if (!i.has_new_data()) continue;
+
+			std::string curr;
+
+			// common
+			time_iso started;
+			started.input_epoch_ms(i.created_at.get());
+
+			//if (i.name == ref->game.name) curr += "# . MAIN APP/GAME/EVENT . #\n";
+			curr += "# " + i.name.get() + "\n";
+
+			switch (i.type.get()) {
+			case static_cast<int64_t>(activity_types::Game):
+				if (i.details.is_set() && !i.details.get().empty()) curr += "- " + local("gaming_playing_t") + ": < " + i.details.get() + " >\n";
+				if (i.state.is_set() && !i.state.get().empty()) curr += "- " + local("gaming_info_t") + ": < " + i.state.get() + " >\n";
+				break;
+			case static_cast<int64_t>(activity_types::Streaming):
+				if (i.details.is_set() && !i.details.get().empty()) curr += "< " + i.details.get() + " >\n";
+				if (i.state.is_set() && !i.state.get().empty()) curr += "< " + i.state.get() + " >\n";
+				curr += "* " + i.url.get() + "\n";
+				break;
+			case static_cast<int64_t>(activity_types::Listening): // spotify probably
+				if (i.details.is_set() && !i.details.get().empty()) curr += "- " + local("spotify_music_t") + ": < " + i.details.get() + " >\n";
+				if (i.state.is_set() && !i.state.get().empty()) curr += "- " + local("spotify_album_t") + ": < " + i.state.get() + " >\n";
+				// nothing, maybe later add more stuff like assets and so on?
+				break;
+			case static_cast<int64_t>(activity_types::Custom): // custom status
+				if (i.state.is_set() && !i.state.get().empty()) {
+					curr += "[" + ((i.emoji.id.is_set() && !i.emoji.name.get().empty()) ? i.emoji.format() : "-") + "](" + i.state.get() + ")\n";
+				}
+				else if (i.emoji.id.is_set() && !i.emoji.name.get().empty()) {
+					curr += "- " + i.emoji.format() + "\n";
+				}
+				break;
+			}
+
+			curr += "> " + started.nice_format() + "\n"; // date
+			activities_str.push_back(curr);
+		}
+
+		/*if (ref->game.has_new_data())*/
+		{
+			std::string first;
+			if (ref->status.is_set()) {
+				auto& i = ref->status.get();
+				if (i == "idle") {
+					first += u8"🟠 > "; // orange
+				}
+				if (i == "dnd") {
+					first += u8"🔴 > "; // red
+				}
+				if (i == "online") {
+					first += u8"🟢 > "; // green
+				}
+				if (i == "offline") {
+					first += u8"⚫ > "; // black
+				}
+			}
+			
+			if (ref->client_status.desktop.is_set()) {
+				//first += "- ON DESKTOP: " + ref->client_status.desktop.get() + "\n";
+				first += u8"💻";
+			}
+			if (ref->client_status.mobile.is_set()) {
+				//first += "- ON MOBILE: " + ref->client_status.desktop.get() + "\n";
+				first += u8"📱";
+			}
+			if (ref->client_status.web.is_set()) {
+				//first += "- ON WEB: " + ref->client_status.desktop.get() + "\n";
+				first += u8"📡";
+			}
+
+			/*if (ref->game.assets.large_image.is_set()) {
+				first += "- LARGE IMG: " + ref->game.assets.large_url(ref->game.application_id, 256) + "\n";
+			}
+			if (ref->game.assets.small_image.is_set()) {
+				first += "- SMALL IMG: " + ref->game.assets.small_url(ref->game.application_id, 256) + "\n";
+			}*/
+			final_content += std::string("```md\n")
+				/*+ "- " + local("member_nick", true) + ": " + ref->nick.get() + "\n"
+				+ "- " + local("member_realnick", true) + ": " + memb.user.get_combo_name() + "\n"
+				+ "- " + local("member_is_bot", true) + ": " + std::string(memb.user.bot.get() ? local("yes") : local("no"))*/
+				+ first + "``` "; // no need to \n
+		}
+
+		for (size_t p = 0; p < activities_str.size(); p++) {
+			auto& k = activities_str[p];
+			final_content += "```md\n" + k + "```\n";
+			/*each_block b;
+			b.title = "```md\n[" + local("presence_generic_t") + "](" + ref->user.get_combo_name() + ")<#" + std::to_string(p + 1) + ">```";
+			b.content = "```md\n"
+				+ k
+				+ "```";
+
+			b.user_id = 0;
+
+			flush_one_block(b);*/
+		}
+		each_block b;
+		b.title = "```md\n[" + local("presence_generic_t") + "](" + ref->user.get_combo_name() + ")```";
+		//b.content = "```md\n" + default_start + first + "```";
+		b.content = std::move(final_content);
+
+		b.user_id = 0;
+
+		flush_one_alt_block(b);
+
+	}
+		break;
+	case event_type::TYPING_START:
+	{
+		auto& ref = ev.data.typing_start;
+		if (!ref.is_set()) {
+			logg->warn("Event {} was nullptr", ev.type_str.get());
+			return;
+		}
+
+		if (!data.mega_deep || !data.deep_data) return;
+
+		auto ch = here.get_channel(ref->channel_id);
+		time_iso ti;
+
+		// typing is in seconds, damn.
+		ti.input_epoch_s(ref->timestamp);
+
+		each_block b;
+		b.title = "```md\n[" + std::to_string(ref->member.user.id.get()) + "](" + ref->member.user.get_combo_name() + ")```";
+		b.subtitle = "`[" + ti.nice_format() + "]<@" + std::to_string(ref->channel_id) + ">(" + ch.name.get() + ")` ";
+		b.content = " `" + local("typing_event") + "`\n";
+		b.user_id = ref->user_id;
+
+
+		flush_one_block(b);
+	}
+		break;
+	/*case event_type::GUILD_CREATE:
+	{
+		auto& ref = ev.data.guild_create;
+		if (!ref.is_set()) {
+			logg->warn("Event {} was nullptr", ev.type_str.get());
+			return;
+		}
+	}
+		break;
+	case event_type::GUILD_UPDATE:
+	{
+		auto& ref = ev.data.guild_update;
+		if (!ref.is_set()) {
+			logg->warn("Event {} was nullptr", ev.type_str.get());
+			return;
+		}
+	}
+		break;
+	case event_type::GUILD_DELETE:
+	{
+		auto& ref = ev.data.guild_delete;
+		if (!ref.is_set()) {
+			logg->warn("Event {} was nullptr", ev.type_str.get());
+			return;
+		}
+	}
+		break;*/
+	case event_type::MESSAGE_REACTION_ADD:
+	{
+		auto& ref = ev.data.message_reaction_add;
+		if (!ref.is_set()) {
+			logg->warn("Event {} was nullptr", ev.type_str.get());
+			return;
+		}
+
+		if (!is_chat_valid(ref->channel_id)) return;
+
+		auto memb = here.get_member(ref->user_id);
+
+		if (memb.user.id == here.get_bot().id) return;
+
+		auto chh = here.get_channel(ref->channel_id);
+		auto msg = here.get_message(ref->channel_id, ref->message_id.get());
+
+		each_block b;
+		b.title = "```md\n[" + std::to_string(memb.user.id.get()) + "](" + memb.user.get_combo_name() + ")```";
+		b.subtitle = "`[" + msg.timestamp.nice_format() + "]<m" + std::to_string(ref->message_id) + "@" + std::to_string(ref->channel_id) + ">(" + chh.name.get() + ")` ";
+		b.content = msg.content.get() + " `<- " + local("reacted_with") + "` " + ref->emoji.format() + "\n";
+		b.user_id = ref->user_id;
+
+
+		flush_one_block(b);
+	}
+		break;
+	case event_type::MESSAGE_REACTION_REMOVE:
+	{
+		auto& ref = ev.data.message_reaction_remove;
+		if (!ref.is_set()) {
+			logg->warn("Event {} was nullptr", ev.type_str.get());
+			return;
+		}
+
+		if (!is_chat_valid(ref->channel_id)) return;
+
+		auto memb = here.get_member(ref->user_id);
+
+		if (memb.user.id == here.get_bot().id) return;
+
+		auto chh = here.get_channel(ref->channel_id);
+		auto msg = here.get_message(ref->channel_id, ref->message_id.get());
+
+		each_block b;
+		b.title = "```md\n[" + std::to_string(memb.user.id.get()) + "](" + memb.user.get_combo_name() + ")```";
+		b.subtitle = "`[" + msg.timestamp.nice_format() + "]<m" + std::to_string(ref->message_id) + "@" + std::to_string(ref->channel_id) + ">(" + chh.name.get() + ")` ";
+		b.content = msg.content.get() + " `<- " + local("removed_reaction") + "` " + ref->emoji.format() + "\n";
+		b.user_id = ref->user_id;
+
+
+		flush_one_block(b);
+	}
+		break;
+	/*case event_type::MESSAGE_REACTION_REMOVE_ALL:
+	{
+		auto& ref = ev.data.message_reaction_remove_all;
+		if (!ref.is_set()) {
+			logg->warn("Event {} was nullptr", ev.type_str.get());
+			return;
+		}
+
+		if (!is_chat_valid(ref->channel_id)) return;
+		auto chh = here.get_channel(ref->channel_id);
+		auto msg = here.get_message(ref->channel_id, ref->message_id.get());
+
+		each_block b;
+		b.title = "```md\n[" + std::to_string(usr.user.id.get()) + "](" + (usr.nick.get()) + ")```";
+		b.subtitle = "`[" + msg.timestamp.nice_format() + "]<m" + std::to_string(ref->message_id) + "@" + std::to_string(ref->channel_id) + ">(" + chh.name.get() + ")` ";
+		b.content = msg.content.get() + " `<- " + local("removed_reaction") + "` " + format_emoji(ref->emoji) + "\n";
+		b.user_id = ref->user_id;
+
+
+		flush_one_block(b);
+	}
+		break;*/
+	case event_type::MESSAGE_DELETE_BULK:
+	{
+		auto& ref = ev.data.message_delete_bulk;
+		if (!ref.is_set()) {
+			logg->warn("Event {} was nullptr", ev.type_str.get());
+			return;
+		}
+
+		if (!data.mega_deep || !data.deep_data) return;
+
+		if (!is_chat_valid(ref->channel_id.get())) return;
+		if (ref->ids.size() == 0) return;
+
+		channel_c ch = here.get_channel(ref->channel_id);
+
+		each_block b;
+		b.title = "```css\n[" + local("message_t") + "](" + local("delete_t") + ")```";
+		b.subtitle = "`<@" + std::to_string(ch.id.get()) + ">(" + ch.name.get() + "):";
+		b.content += "```\n";
+		for (size_t p = 0; p < ref->ids.size(); p++) {
+			auto& mm = ref->ids[p];
+			b.content += std::to_string(mm) + " ";
+		}
+		b.content += "```\n";
+		b.user_id = 0;
+
+		flush_one_block(b);
+	}
+		break;
+	case event_type::USER_UPDATE:
+	{
+		auto& ref = ev.data.user_update;
+		if (!ref.is_set()) {
+			logg->warn("Event {} was nullptr", ev.type_str.get());
+			return;
+		}
+
+		if (!data.deep_data) return;
+
+		member_c memb = here.get_member(ref->id);
+
+		if (memb.user.id == here.get_bot().id) return;
+
+		std::string roles_combo;
+		for (size_t p = 0; p < memb.roles.size(); p++) {
+			auto& i = memb.roles[p];
+			roles_combo += "#" + std::to_string(i) + (i != memb.roles.back() ? ", " : "");
+		}
+		if (roles_combo.empty()) roles_combo = local("member_has_no_tags");
+
+		each_block b;
+		b.title = "```css\n[" + local("update_user") + "](#" + std::to_string(memb.user.id.get()) + ")```";
+		b.content = "```md\n- " + local("member_joined_at", true) + ": " + memb.joined_at.nice_format() + "\n"
+			+ "- " + local("member_nick", true) + ": " + memb.nick.get() + "\n"
+			+ "- " + local("member_realnick", true) + ": " + memb.user.get_combo_name() + "\n"
+			+ "- " + local("member_is_bot", true) + ": " + std::string(memb.user.bot.get() ? local("yes") : local("no")) + "\n"
+			+ "- " + local("member_verified", true) + ": " + std::string(memb.user.verified.get() ? local("yes") : local("no")) + "\n"
+			+ "- " + local("member_webhook", true) + ": " + std::string(memb.user.is_webhook() ? local("yes") : local("no")) + "\n"
+			+ "- " + local("member_mfa", true) + ": " + std::string(memb.user.mfa_enabled.get() ? local("yes") : local("no")) + "\n"
+			+ "- " + local("member_locale", true) + ": " + memb.user.locale.get() + "\n"
+			+ "- " + local("member_flags", true) + ": " + std::to_string(memb.user.flags.get()) + "\n"
+			+ "- " + local("member_publicflags", true) + ": " + std::to_string(memb.user.public_flags.get()) + "\n"
+			+ "- " + local("member_deaf", true) + ": " + std::string(memb.deaf.get() ? local("yes") : local("no")) + "\n"
+			+ "- " + local("member_mute", true) + ": " + std::string(memb.mute.get() ? local("yes") : local("no")) + "\n"
+			+ "- " + local("member_tags", true) + ": " + roles_combo
+			+ "```\n";
+
+		b.user_id = 0;
+
+		flush_one_alt_block(b);
+	}
+		break;
+	case event_type::INVITE_CREATE:
+	{
+		auto& ref = ev.data.invite_create;
+		if (!ref.is_set()) {
+			logg->warn("Event {} was nullptr", ev.type_str.get());
+			return;
+		}
+
+		if (!data.mega_deep || !data.deep_data) return;
+
+		channel_c ch = here.get_channel(ref->channel_id);
+		member_c memb = here.get_member(ref->inviter.id);
+		time_iso tim;
+		tim.input_epoch_ms(ref->max_age.get());
+
+		each_block b;
+		b.title = "```css\n[" + local("new_invite_t") + "]```";
+		b.subtitle = "`[" + ref->created_at.nice_format() + "]<@" + std::to_string(ref->channel_id) + ">(" + ch.name.get() + ")` ";
+		b.content = "```md\n- " + local("member_nick", true) + ": " + memb.nick.get() + "\n"
+			+ "- " + local("member_realnick", true) + ": " + memb.user.get_combo_name() + "\n"
+			+ "- " + local("member_is_bot", true) + ": " + std::string(memb.user.bot.get() ? local("yes") : local("no")) + "\n"
+			+ "- " + local("invite_max_age", true) + ": " + tim.nice_format() + "\n"
+			+ "- " + local("invite_max_uses", true) + ": " + std::to_string(ref->max_uses.get()) + "\n"
+			+ "- " + local("invite_temporary", true) + ": " + std::string(ref->temporary.get() ? local("yes") : local("no")) + "\n"
+			+ "- " + local("invite_code", true) + ": " + ref->code + "\n"
+			+ "```\n";
+
+		b.user_id = 0;
+
+		flush_one_alt_block(b);
+	}
+		break;
+	case event_type::INVITE_DELETE:
+	{
+		auto& ref = ev.data.invite_delete;
+		if (!ref.is_set()) {
+			logg->warn("Event {} was nullptr", ev.type_str.get());
+			return;
+		}
+
+		if (!data.mega_deep || !data.deep_data) return;
+
+		channel_c ch = here.get_channel(ref->channel_id);
+		
+
+		each_block b;
+		b.title = "```css\n[" + local("del_invite_t") + "]```";
+		b.subtitle = "`<@" + std::to_string(ref->channel_id) + ">(" + ch.name.get() + ")` ";
+		b.content = ref->code.get() + "\n";
+
+		b.user_id = 0;
+
+		flush_one_alt_block(b);
+	}
+		break;
+	case event_type::CHANNEL_CREATE:
+	{
+		auto& ref = ev.data.channel_create;
+		if (!ref.is_set()) {
+			logg->warn("Event {} was nullptr", ev.type_str.get());
+			return;
+		}
+		if (!data.deep_data) return;
+
+		if (!is_chat_valid(ref->id.get())) return;
+
+		bool is_voice = ref->type.get() == aegis::gateway::objects::channel::channel_type::Voice;
+		each_block b;
+		b.subtitle = "\n> " + (ref->parent_id.get() ? ("<#" + std::to_string(ref->parent_id.get()) + "> / ") : "") + (is_voice ? " " : "<#" + std::to_string(ref->id.get()) + "> ") + "(" + ref->name.get() + ")\n";
+		
+		switch (ref->type.get()) {
+		case static_cast<int>(channel_type::GUILD_CATEGORY):
+			b.title = "```css\n[" + local("category_t") + "](" + local("create_t") + ")```";
+			break;
+		case static_cast<int>(channel_type::GUILD_TEXT):
+			b.title = "```css\n[" + local("channel_t") + "](" + local("create_t") + ")```";
+			if (ref->topic.get().length()) b.subtitle += local("topic", true) + ":\n```\n" + _fix_content(ref->topic.get()) + "```";
+			b.subtitle += local("nsfw") + ": `" + std::string(ref->nsfw.get() ? local("yes") : local("no")) + "`\n";
+			break;
+		case static_cast<int>(channel_type::GUILD_VOICE):
+			b.title = "```css\n[" + local("voice_t") + "](" + local("create_t") + ")```";
+			b.subtitle += local("bitrate", true) + ": `" + std::to_string(ref->bitrate.get() / 1000) + " kbps`\n";
+			b.subtitle += local("user_max", true) + ": `" + std::to_string(ref->user_limit.get()) + "`\n";
+			break;
+		}
+
+		b.user_id = 0;
+
+		flush_one_alt_block(b);
+	}
+		break;
+	case event_type::CHANNEL_UPDATE:
+	{
+		auto& ref = ev.data.channel_update;
+		if (!ref.is_set()) {
+			logg->warn("Event {} was nullptr", ev.type_str.get());
+			return;
+		}
+		if (!data.deep_data) return;
+
+		if (!is_chat_valid(ref->id.get())) return;
+
+		bool is_voice = ref->type.get() == aegis::gateway::objects::channel::channel_type::Voice;
+		each_block b;
+		b.subtitle = "\n> " + (ref->parent_id.get() ? ("<#" + std::to_string(ref->parent_id.get()) + "> / ") : "") + (is_voice ? " " : "<#" + std::to_string(ref->id.get()) + "> ") + "(" + ref->name.get() + ")\n";
+		
+		switch (ref->type.get()) {
+		case static_cast<int>(channel_type::GUILD_CATEGORY):
+			b.title = "```css\n[" + local("category_t") + "](" + local("update_t") + ")```";
+			break;
+		case static_cast<int>(channel_type::GUILD_TEXT):
+			b.title = "```css\n[" + local("channel_t") + "](" + local("update_t") + ")```";
+			if (ref->topic.get().length()) b.subtitle += local("topic", true) + ":\n```\n" + _fix_content(ref->topic.get()) + "```";
+			b.subtitle += local("nsfw") + ": `" + std::string(ref->nsfw.get() ? local("yes") : local("no")) + "`\n";
+			break;
+		case static_cast<int>(channel_type::GUILD_VOICE):
+			b.title = "```css\n[" + local("voice_t") + "](" + local("update_t") + ")```";
+			b.subtitle += local("bitrate", true) + ": `" + std::to_string(ref->bitrate.get() / 1000) + " kbps`\n";
+			b.subtitle += local("user_max", true) + ": `" + std::to_string(ref->user_limit.get()) + "`\n";
+			break;
+		}
+
+		b.user_id = 0;
+
+		flush_one_alt_block(b);
+	}
+		break;
+	case event_type::CHANNEL_DELETE:
+	{
+		auto& ref = ev.data.channel_delete;
+		if (!ref.is_set()) {
+			logg->warn("Event {} was nullptr", ev.type_str.get());
+			return;
+		}
+		if (!data.deep_data) return;
+
+		if (!is_chat_valid(ref->id.get())) return;
+
+		bool is_voice = ref->type.get() == aegis::gateway::objects::channel::channel_type::Voice;
+		each_block b;
+		b.subtitle = "\n> " + (ref->parent_id.get() ? ("<#" + std::to_string(ref->parent_id.get()) + "> / ") : "") + (is_voice ? " " : "<#" + std::to_string(ref->id.get()) + "> ") + "(" + ref->name.get() + ")\n";
+
+		switch (ref->type.get()) {
+		case static_cast<int>(channel_type::GUILD_CATEGORY):
+			b.title = "```css\n[" + local("category_t") + "](" + local("delete_t") + ")```";
+			break;
+		case static_cast<int>(channel_type::GUILD_TEXT):
+			b.title = "```css\n[" + local("channel_t") + "](" + local("delete_t") + ")```";
+			if (ref->topic.get().length()) b.subtitle += local("topic", true) + ":\n```\n" + _fix_content(ref->topic.get()) + "```";
+			b.subtitle += local("nsfw") + ": `" + std::string(ref->nsfw.get() ? local("yes") : local("no")) + "`\n";
+			break;
+		case static_cast<int>(channel_type::GUILD_VOICE):
+			b.title = "```css\n[" + local("voice_t") + "](" + local("delete_t") + ")```";
+			b.subtitle += local("bitrate", true) + ": `" + std::to_string(ref->bitrate.get() / 1000) + " kbps`\n";
+			b.subtitle += local("user_max", true) + ": `" + std::to_string(ref->user_limit.get()) + "`\n";
+			break;
+		}
+
+		b.user_id = 0;
+
+		flush_one_alt_block(b);
+	}
+		break;
+	case event_type::CHANNEL_PINS_UPDATE:
+	{
+		auto& ref = ev.data.channel_pins_update;
+		if (!ref.is_set()) {
+			logg->warn("Event {} was nullptr", ev.type_str.get());
+			return;
+		}
+
+		if (!data.deep_data) return;
+
+		channel_c ch = here.get_channel(ref->channel_id);
+
+		each_block b;
+		b.title = "```css\n[" + local("pinned_message_t") + "]```";
+		b.subtitle = "`[" + ref->last_pin_timestamp.nice_format() + "]<@" + std::to_string(ref->channel_id) + ">(" + ch.name.get() + ")` ";
+
+		b.user_id = 0;
+
+		flush_one_block(b);
+	}
+		break;
+	case event_type::GUILD_BAN_ADD:
+	{
+		auto& ref = ev.data.guild_ban_add;
+		if (!ref.is_set()) {
+			logg->warn("Event {} was nullptr", ev.type_str.get());
+			return;
+		}
+
+		each_block b;
+		b.title = "```css\n[" + local("banned_t") + "]```";
+		b.subtitle = u8"🔻 `" + ref->user.get_combo_name() + "` [<@" + std::to_string(ref->user.id.get()) + ">, #" + std::to_string(ref->user.id.get()) + "]";
+
+		b.user_id = 0;
+
+
+		flush_one_alt_block(b);
+	}
+		break;
+	case event_type::GUILD_BAN_REMOVE:
+	{
+		auto& ref = ev.data.guild_ban_remove;
+		if (!ref.is_set()) {
+			logg->warn("Event {} was nullptr", ev.type_str.get());
+			return;
+		}
+
+		each_block b;
+		b.title = "```css\n[" + local("unbanned_t") + "]```";
+		b.subtitle = u8"🔺 `" + ref->user.get_combo_name() + "` [<@" + std::to_string(ref->user.id.get()) + ">, #" + std::to_string(ref->user.id.get()) + "]";
+
+		b.user_id = 0;
+
+
+		flush_one_alt_block(b);
+	}
+		break;
+	case event_type::GUILD_EMOJIS_UPDATE:
+	{
+		auto& ref = ev.data.guild_emojis_update;
+		if (!ref.is_set()) {
+			logg->warn("Event {} was nullptr", ev.type_str.get());
+			return;
+		}
+
+		if (!data.mega_deep || !data.deep_data) return;
+
+		std::string emojilist;
+		for (size_t p = 0; p < ref->emojis.size(); p++) {
+			if (emojilist.length() + ref->emojis[p].format().length() > 2000) {
+				each_block b;
+				b.title = "```css\n[" + local("emoji_list_update_t") + "]```";
+				b.content = emojilist + "\n";
+
+				b.user_id = 0;
+
+				flush_one_alt_block(b);
+				emojilist.clear();
+			}
+
+			emojilist += ref->emojis[p].format() + " ";
+		}
+		if (!emojilist.empty()) {
+			emojilist.pop_back(); // ' '
+
+			each_block b;
+			b.title = "```css\n[" + local("emoji_list_update_t") + "]```";
+			b.content = emojilist + "\n";
+
+			b.user_id = 0;
+
+			flush_one_alt_block(b);
+		}
+	}
+		break;
+	case event_type::GUILD_INTEGRATIONS_UPDATE:
+	{
+		auto& ref = ev.data.guild_integrations_update;
+		if (!ref.is_set()) {
+			logg->warn("Event {} was nullptr", ev.type_str.get());
+			return;
+		}
+
+		if (!data.mega_deep || !data.deep_data) return;
+
+		each_block b;
+		b.title = "```css\n[" + local("integrations_update_t") + "]```";
+		b.user_id = 0;
+
+
+		flush_one_alt_block(b);
+	}
+		break;
+	/*case event_type::GUILD_MEMBERS_CHUNK:
+	{
+		auto& ref = ev.data.guild_members_chunk;
+		if (!ref.is_set()) {
+			logg->warn("Event {} was nullptr", ev.type_str.get());
+			return;
+		}
+	}
+		break;*/
+	case event_type::GUILD_ROLE_CREATE:
+	{
+		if (!data.deep_data) return;
+
+		auto& ref = ev.data.guild_role_create;
+		if (!ref.is_set()) {
+			logg->warn("Event {} was nullptr", ev.type_str.get());
+			return;
+		}
+
+		each_block b;
+		b.title = "```css\n[" + local("role_t") + "](" + local("create_t") + ")```";
+		b.subtitle += local("role_info", true) + ": <#" + std::to_string(ref->role.id.get()) + "> `[" + ref->role.name.get() + ", #" + std::to_string(ref->role.id.get()) + "]`\n";
+		b.subtitle += local("role_color", true) + ": `" + std::to_string(ref->role.color.get()) + "`\n";
+		b.subtitle += local("role_hoist", true) + ": `" + std::string(ref->role.hoist.get() ? local("yes") : local("no")) + "`\n";
+		b.subtitle += local("role_managed", true) + ": `" + std::string(ref->role.managed.get() ? local("yes") : local("no")) + "`\n";
+		b.subtitle += local("role_mentionable", true) + ": `" + std::string(ref->role.mentionable.get() ? local("yes") : local("no")) + "`\n";
+
+		b.user_id = 0;
+
+
+		flush_one_alt_block(b);
+	}
+		break;
+	case event_type::GUILD_ROLE_UPDATE:
+	{
+		if (!data.deep_data) return;
+
+		auto& ref = ev.data.guild_role_update;
+		if (!ref.is_set()) {
+			logg->warn("Event {} was nullptr", ev.type_str.get());
+			return;
+		}
+
+		each_block b;
+		b.title = "```css\n[" + local("role_t") + "](" + local("update_t") + ")```";
+		b.subtitle += local("role_info", true) + ": <#" + std::to_string(ref->role.id.get()) + "> `[" + ref->role.name.get() + ", #" + std::to_string(ref->role.id.get()) + "]`\n";
+		b.subtitle += local("role_color", true) + ": `" + std::to_string(ref->role.color.get()) + "`\n";
+		b.subtitle += local("role_hoist", true) + ": `" + std::string(ref->role.hoist.get() ? local("yes") : local("no")) + "`\n";
+		b.subtitle += local("role_managed", true) + ": `" + std::string(ref->role.managed.get() ? local("yes") : local("no")) + "`\n";
+		b.subtitle += local("role_mentionable", true) + ": `" + std::string(ref->role.mentionable.get() ? local("yes") : local("no")) + "`\n";
+
+		b.user_id = 0;
+
+
+		flush_one_alt_block(b);
+	}
+		break;
+	case event_type::GUILD_ROLE_DELETE:
+	{
+		if (!data.deep_data) return;
+
+		auto& ref = ev.data.guild_role_delete;
+		if (!ref.is_set()) {
+			logg->warn("Event {} was nullptr", ev.type_str.get());
+			return;
+		}
+
+		each_block b;
+		b.title = "```css\n[" + local("role_t") + "](" + local("delete_t") + ")```";
+		b.subtitle += local("role_info", true) + ": <#" + std::to_string(ref->role.id.get()) + "> `[" + ref->role.name.get() + ", #" + std::to_string(ref->role.id.get()) + "]`\n";
+		b.subtitle += local("role_color", true) + ": `" + std::to_string(ref->role.color.get()) + "`\n";
+		b.subtitle += local("role_hoist", true) + ": `" + std::string(ref->role.hoist.get() ? local("yes") : local("no")) + "`\n";
+		b.subtitle += local("role_managed", true) + ": `" + std::string(ref->role.managed.get() ? local("yes") : local("no")) + "`\n";
+		b.subtitle += local("role_mentionable", true) + ": `" + std::string(ref->role.mentionable.get() ? local("yes") : local("no")) + "`\n";
+
+		flush_one_alt_block(b);
+
+	}
+		break;
+	case event_type::VOICE_STATE_UPDATE:
+	{
+		auto& ref = ev.data.voice_state_update;
+		if (!ref.is_set()) {
+			logg->warn("Event {} was nullptr", ev.type_str.get());
+			return;
+		}
+
+		if (!data.mega_deep || !data.deep_data) return;
+
+		each_block b;
+		b.title = "```css\n[" + local("voice_member_update") + "](#" + std::to_string(ref->user_id.get()) + ")```";
+		b.content = "```md\n- " + local("member_nick", true) + ": " + ref->member.nick.get() + "\n"
+			+ "- " + local("member_realnick", true) + ": " + ref->member.user.get_combo_name() + "\n"
+			+ "- " + local("member_is_bot", true) + ": " + std::string(ref->member.user.bot.get() ? local("yes") : local("no")) + "\n"
+			+ "- " + local("member_verified", true) + ": " + std::string(ref->member.user.verified.get() ? local("yes") : local("no")) + "\n"
+			+ "- " + local("member_webhook", true) + ": " + std::string(ref->member.user.is_webhook() ? local("yes") : local("no")) + "\n"
+			+ "- " + local("member_deaf", true) + ": " + std::string(ref->deaf.get() ? local("yes") : local("no")) + "\n"
+			+ "- " + local("member_mute", true) + ": " + std::string(ref->mute.get() ? local("yes") : local("no")) + "\n"
+			+ "- " + local("member_deaf_self", true) + ": " + std::string(ref->self_deaf.get() ? local("yes") : local("no")) + "\n"
+			+ "- " + local("member_mute_self", true) + ": " + std::string(ref->self_mute.get() ? local("yes") : local("no")) + "\n"
+			+ "- " + local("member_stream", true) + ": " + std::string(ref->self_stream.get() ? local("yes") : local("no")) + "\n"
+			+ "- " + local("member_video", true) + ": " + std::string(ref->self_video.get() ? local("yes") : local("no")) + "\n"
+			+ "```\n";
+
+		b.user_id = 0;
+
+		flush_one_block(b);
+		
+	}
+		break;
+	/*case event_type::VOICE_SERVER_UPDATE:
+	{
+		auto& ref = ev.data.voice_server_update;
+		if (!ref.is_set()) {
+			logg->warn("Event {} was nullptr", ev.type_str.get());
+			return;
+		}
+
+		if (!data.mega_deep || !data.deep_data) return;
+
+		
+	}
+		break;
+	case event_type::WEBHOOKS_UPDATE:
+	{
+		auto& ref = ev.data.webhook_update;
+		if (!ref.is_set()) {
+			logg->warn("Event {} was nullptr", ev.type_str.get());
+			return;
+		}
+
+		if (!data.mega_deep || !data.deep_data) return;
+	}
+		break;	*/		
+	}
+
+	//time_flush();
+}
+
+
+
+
+Guild::Guild(const unsigned long long id, std::shared_ptr<aegis::core> bot, std::weak_ptr<aegis::shards::shard_mgr> shrs)
+	: here(bot->get_ratelimit(), bot->log)
+{
+	shards = shrs;
+	here.get_raw_guild().id = id;
 	last = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
 	reassign(bot);
 	load_config();
-	core->async([&] {refresh_flush_channel(); }); // do later
-	core->async([&] {task_welcome_message(); }); // do later	
+
+	here.set_after_handle([&](the_event& ev) {
+		if (!has_welcomed) {
+			task_welcome_message();
+		}
+		/*for (size_t p = 0; p < 15 && !thus; p++) {
+			bool good = trycatch_auto([&] {reassign(core); }); // trying to reassign.
+			if (!thus || !good) {
+				logg->critical("[{}/15] Guild #{} has no guild set. Trying to reset guild pointer...", p + 1, guild_id);
+				std::this_thread::sleep_for(std::chrono::seconds(3));
+			}
+		}
+		if (!thus) return;*/
+		for (size_t p = 0; p < 4 && !trycatch_auto([&] {handle(ev); }); p++) {
+			logg->critical("[{}/4] Guild #{} failed to handle event.", p + 1, here.get_raw_guild().id.get());
+			std::this_thread::sleep_for(std::chrono::seconds(2));
+		}
+		time_flush();
+	});
+
+	//refresh_flush_channel();
+	//task_welcome_message();
+	//core->async([&] {refresh_flush_channel(); }); // do later
+	//core->async([&] {task_welcome_message(); }); // do later	
 }
 
 Guild::~Guild()
@@ -1094,20 +2273,24 @@ void Guild::reassign(std::shared_ptr<aegis::core> bot)
 	core = bot;
 	logg = bot->log;
 
-	if (!trycatch_auto([&] {
-		aegis::shards::shard* _shard = &core->get_shard_by_guild(guild_id);
-		thus = bot->guild_create(guild_id, _shard);
-	})) {
-		logg->critical("Failed to get Guild #{}! Skipping event.", guild_id);
-		thus = nullptr;
-		return;
-	}
+	/*if (!thus || ++last_thus_update > update_thus) {
+		last_thus_update = 0;
+		if (!trycatch_auto([&] {
+			aegis::shards::shard* _shard = &core->get_shard_by_guild(guild_id);
+			thus = bot->guild_create(guild_id, _shard);
+		})) {
+			logg->critical("Failed to get Guild #{}! Skipping event.", guild_id);
+			thus = nullptr;
+			return;
+		}
+	}*/
 }
 
 void Guild::force_save()
 {
 	save_config();
-	force_flush_buffer();
+	_force_flush_buffer_custom(buf, data.channel_log);
+	_force_flush_buffer_custom(altbuf, data.channel_alt_log ? data.channel_alt_log : data.channel_log);
 }
 
 void Guild::welcome_back()
@@ -1118,22 +2301,22 @@ void Guild::welcome_back()
 bool Guild::broadcast(std::string bread)
 {
 	if (bread.length() == 0) {
-		logg->warn("Guild #{} had issue flushing (broadcast, null). Skipped.", guild_id);
+		logg->warn("Guild #{} had issue flushing (broadcast, null). Skipped.", here.get_raw_guild().id.get());
 		return false;
 	}
 	if (!data.channel_log) {
-		logg->warn("Guild #{} had issue flushing (broadcast, no channel). Skipped.", guild_id);
+		logg->warn("Guild #{} had issue flushing (broadcast, no channel). Skipped.", here.get_raw_guild().id.get());
 		return false;
 	}
 
 	try {
-		if (!flush_channel) refresh_flush_channel();
+		/*if (!flush_channel) refresh_flush_channel();
 		if (!flush_channel) {
 			logg->critical("Guild #{} could not send broadcast. Invalid flush channel.", guild_id);
-		}
+		}*/
 
 
-		if (flush_channel->perms().can_embed()) {
+		if (here.bot_has_perm(data.channel_log, permissions_user::EMBED_LINKS)) {
 
 			bread = "```md\n" + bread + "```";
 			if (bread.length() > 2000) bread = bread.substr(0, 2000);
@@ -1144,7 +2327,8 @@ bool Guild::broadcast(std::string bread)
 				{ "color", color_embed_default }
 			};
 
-			if (slow_flush_embed(embed, *flush_channel, guild_id, logg)) logg->info("Guild #{} broadcasted message successfully.", guild_id);
+			//if (slow_flush_embed(embed, *flush_channel, guild_id, logg)) logg->info("Guild #{} broadcasted message successfully.", guild_id);
+			if (here.create_message_embed(data.channel_log, embed)) logg->info("Guild #{} broadcasted message successfully.", here.get_raw_guild().id.get());
 			else logg->error("Guild #{} failed to broadcast the message.");
 
 			return true;
@@ -1153,14 +2337,15 @@ bool Guild::broadcast(std::string bread)
 			bread = "***__" + local("broadcast_title") + "__***\n```md\n" + bread + "```";
 			if (bread.length() > 2000) bread = bread.substr(0, 2000);
 
-			if (slow_flush(bread, *flush_channel, guild_id, logg)) logg->info("Guild #{} broadcasted message successfully.", guild_id);
+			//if (slow_flush(bread, *flush_channel, guild_id, logg)) logg->info("Guild #{} broadcasted message successfully.", guild_id);
+			if (here.create_message(data.channel_log, bread)) logg->info("Guild #{} broadcasted message successfully.", here.get_raw_guild().id.get());
 			else logg->error("Guild #{} failed to broadcast the message.");
 
 			return true;
 		}
 	}
 	catch (...) {
-		logg->critical("Guild #{} has issue flushing (broadcast, exception). Skipped.", guild_id);
+		logg->critical("Guild #{} has issue flushing (broadcast, exception). Skipped.", here.get_raw_guild().id.get());
 	}
 	return false;
 }
@@ -1168,35 +2353,42 @@ bool Guild::broadcast(std::string bread)
 bool Guild::force_flush_buffer()
 {
 	//if (ON_RESTART) return false;
-	std::lock_guard<std::recursive_mutex> luck(buf_control);
-	if (buf.empty()) {
+	/*std::lock_guard<std::recursive_mutex> luck(buf_control);
+	if (buff.empty()) {
 		return true;
 	}
-	if (_flush_custom(buf)) {
-		buf.clear();
+	if (here.create_message(data.channel_log, buff)) {
+		logg->info("Guild #{} flushed {} byte(s)", here.get_raw_guild().id.get(), buff.size());
+		buff.clear();
 		return true;
 	}
-	return false;
+	return false;*/
+	return _force_flush_buffer_custom(buf, data.channel_log);
 }
 
-aegis::snowflake Guild::get_guild_id()
+unsigned long long Guild::get_guild_id()
 {
-	return guild_id;
+	return here.get_raw_guild().id.get();
 }
 
-bool Guild::is_guild(const aegis::snowflake id)
+bool Guild::is_guild(const unsigned long long id)
 {
-	return guild_id == id;
+	return here.get_raw_guild().id.get() == id;
 }
 
-void Guild::handle(aegis::gateway::events::message_create& e)
+guild_control& Guild::guild_raw()
 {
-	AutoLock luckyness(working_on);
+	return here;
+}
+
+/*void Guild::handle(aegis::gateway::events::message_create& e)
+{
+	//AutoLockluckyness(working_on);
 
 	if (!is_chat_valid(e.channel.get_id())) return;
 
-	/*if (check_command(e.msg.get_content(), e.channel, e.msg.author.id))
-		logg->info("[ASYNC] Tasked command message create block.");*/
+	//if (check_command(e.msg.get_content(), e.channel, e.msg.author.id))
+	//	logg->info("[ASYNC] Tasked command message create block.");
 	check_command(e.msg.get_content(), e.channel, e.msg.author.id);
 
 
@@ -1218,7 +2410,7 @@ void Guild::handle(aegis::gateway::events::message_create& e)
 
 void Guild::handle(aegis::gateway::events::message_update& e)
 {
-	AutoLock luckyness(working_on);
+	//AutoLockluckyness(working_on);
 
 	if (!is_chat_valid(e.channel.get_id())) return;
 
@@ -1236,16 +2428,16 @@ void Guild::handle(aegis::gateway::events::message_update& e)
 
 void Guild::handle(aegis::gateway::events::message_reaction_add& e)
 {
-	AutoLock luckyness(working_on);
+	//AutoLockluckyness(working_on);
 
 	if (!is_chat_valid(e.channel_id)) return;
 
-	auto usr = core->user_create(e.user_id);
+	auto usr = get_member(e.user_id);
 	auto chh = core->channel_create(e.channel_id);
 	auto msg = chh->get_message(e.message_id).get();
 
 	each_block b;
-	b.title = "```md\n[" + std::to_string(usr->get_id()) + "](" + (usr->get_username()) + "#" + std::to_string(usr->get_discriminator()) + ")```";
+	b.title = "```md\n[" + std::to_string(usr.user.id.get()) + "](" + (usr.nick.get()) + ")```";
 	b.subtitle = "`[" + msg.timestamp + "]<m" + std::to_string(e.message_id) + "@" + std::to_string(e.channel_id) + ">(" + chh->get_name() + ")` ";
 	b.content =  msg.get_content() + " `<- " + local("reacted_with") + "` " + format_emoji(e.emoji) + "\n";
 	b.user_id = e.user_id;
@@ -1257,16 +2449,16 @@ void Guild::handle(aegis::gateway::events::message_reaction_add& e)
 
 void Guild::handle(aegis::gateway::events::message_reaction_remove& e)
 {
-	AutoLock luckyness(working_on);
+	//AutoLockluckyness(working_on);
 
 	if (!is_chat_valid(e.channel_id)) return;
 
-	auto usr = core->user_create(e.user_id);
+	auto usr = get_member(e.user_id);
 	auto chh = core->channel_create(e.channel_id);
 	auto msg = chh->get_message(e.message_id).get();
 
 	each_block b;
-	b.title = "```md\n[" + std::to_string(usr->get_id()) + "](" + (usr->get_username()) + "#" + std::to_string(usr->get_discriminator()) + ")```";
+	b.title = "```md\n[" + std::to_string(usr.user.id.get()) + "](" + (usr.nick.get()) + ")```";
 	b.subtitle = "`[" + msg.timestamp + "]<m" + std::to_string(e.message_id) + "@" + std::to_string(e.channel_id) + ">(" + chh->get_name() + ")` ";
 	b.content = msg.get_content() + " `<- " + local("removed_reaction") + "` " + format_emoji(e.emoji) + "\n";
 	b.user_id = e.user_id;
@@ -1279,7 +2471,7 @@ void Guild::handle(aegis::gateway::events::message_reaction_remove& e)
 void Guild::handle(aegis::gateway::events::message_delete& e)
 {
 	if (!data.deep_data) return;
-	AutoLock luckyness(working_on);
+	//AutoLockluckyness(working_on);
 
 	if (!is_chat_valid(e.channel.get_id())) return;
 
@@ -1297,7 +2489,7 @@ void Guild::handle(aegis::gateway::events::message_delete& e)
 void Guild::handle(aegis::gateway::events::channel_create& e)
 {
 	if (!data.deep_data) return;
-	AutoLock luckyness(working_on);
+	//AutoLockluckyness(working_on);
 
 	if (!is_chat_valid(e.channel.id)) return;
 
@@ -1331,7 +2523,7 @@ void Guild::handle(aegis::gateway::events::channel_create& e)
 void Guild::handle(aegis::gateway::events::channel_update& e)
 {
 	if (!data.deep_data) return;
-	AutoLock luckyness(working_on);
+	//AutoLockluckyness(working_on);
 
 	if (!is_chat_valid(e.channel.id)) return;
 
@@ -1362,10 +2554,11 @@ void Guild::handle(aegis::gateway::events::channel_update& e)
 	//logg->info("[ASYNC] Tasked channel update block.");
 }
 
+
 void Guild::handle(aegis::gateway::events::channel_delete& e)
 {
 	if (!data.deep_data) return;
-	AutoLock luckyness(working_on);
+	//AutoLockluckyness(working_on);
 
 	if (!is_chat_valid(e.channel.id)) return;
 
@@ -1395,10 +2588,9 @@ void Guild::handle(aegis::gateway::events::channel_delete& e)
 	flush_one_block(b);
 	//logg->info("[ASYNC] Tasked channel delete block.");
 }
-
 void Guild::handle(aegis::gateway::events::guild_ban_add& e)
 {
-	AutoLock luckyness(working_on);
+	//AutoLockluckyness(working_on);
 
 	each_block b;
 	b.title = "```css\n[" + local("banned_t") + "]```";
@@ -1413,23 +2605,16 @@ void Guild::handle(aegis::gateway::events::guild_ban_add& e)
 
 void Guild::handle(aegis::gateway::events::guild_ban_remove& e)
 {
-	AutoLock luckyness(working_on);
+	//AutoLockluckyness(working_on);
 
-	each_block b;
-	b.title = "```css\n[" + local("unbanned_t") + "]```";
-	b.subtitle = u8"🔺 `" + e.user.username + "#" + e.user.discriminator + "` [<@" + std::to_string(e.user.id) + ">, #" + std::to_string(e.user.id) + "]";
-
-	b.user_id = 0;
-
-			
-	flush_one_block(b);
+	
 	//logg->info("[ASYNC] Tasked ban delete block.");
 }
 
 void Guild::handle(aegis::gateway::events::guild_role_create& e)
 {
 	if (!data.deep_data) return;
-	AutoLock luckyness(working_on);
+	//AutoLockluckyness(working_on);
 
 	each_block b;
 	b.title = "```css\n[" + local("role_t") + "](" + local("create_t") + ")```";
@@ -1449,7 +2634,7 @@ void Guild::handle(aegis::gateway::events::guild_role_create& e)
 void Guild::handle(aegis::gateway::events::guild_role_update& e)
 {
 	if (!data.deep_data) return;
-	AutoLock luckyness(working_on);
+	//AutoLockluckyness(working_on);
 
 	each_block b;
 	b.title = "```css\n[" + local("role_t") + "](" + local("update_t") + ")```";
@@ -1469,7 +2654,7 @@ void Guild::handle(aegis::gateway::events::guild_role_update& e)
 void Guild::handle(aegis::gateway::events::guild_role_delete& e)
 {
 	if (!data.deep_data) return;
-	AutoLock luckyness(working_on);
+	//AutoLockluckyness(working_on);
 
 	each_block b;
 	b.title = "```css\n[" + local("role_t") + "](" + local("delete_t") + ")```";
@@ -1480,4 +2665,5 @@ void Guild::handle(aegis::gateway::events::guild_role_delete& e)
 		
 	flush_one_block(b);
 	//logg->info("[ASYNC] Tasked role delete block.");
-}
+}*/
+

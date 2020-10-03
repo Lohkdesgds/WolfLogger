@@ -11,7 +11,7 @@ const unsigned long long bots_allowed[] = { 524361154294972416 };
 // reminder: bot image at Adobe CC\Defaults
 
 
-GuildGlobal i_know;
+std::unique_ptr<GuildGlobal> i_know;
 
 
 BOOL onConsoleEvent(DWORD event) {
@@ -19,7 +19,7 @@ BOOL onConsoleEvent(DWORD event) {
 	switch (event) {
 	case CTRL_C_EVENT:
 	case CTRL_CLOSE_EVENT:
-		i_know.force_save_all();
+		i_know->force_save_all();
 		break;
 	}
 	return TRUE;
@@ -29,10 +29,15 @@ int main()
 {
 	std::shared_ptr<std::thread> thr;
 
+	if (!(i_know = std::make_unique<GuildGlobal>())) {
+		std::cout << "Something went wrong when creating the bot." << std::endl;
+		return 1;
+	}
+
 	if (!SetConsoleCtrlHandler(onConsoleEvent, TRUE)) {
-		if (auto logg = i_know.get_logger(); logg) logg->critical("Something went wrong when trying to setup close handling...");
+		if (auto logg = i_know->get_logger(); logg) logg->critical("Something went wrong when trying to setup close handling...");
 		else std::cout << "Something went wrong when trying to setup close handling..." << std::endl;
-		i_know.shutdown();
+		i_know->shutdown();
 
 		std::this_thread::sleep_for(std::chrono::seconds(5));
 		return 1;
@@ -49,8 +54,8 @@ int main()
 			[&] {return u8"Feito com C++... quero dizer, amor";},
 			[&] {return u8"Simplicidade é tudo";},
 			[&] {return u8"Meu DEUS, " + std::to_string(arr_siz) + u8" possíveis modelos de mensagem?! Pois é";},
-			[&] {return u8"Thank you Aegis! For real!";},
-			[&] {return u8"Versão " + version + " refactored";},
+			//[&] {return u8"Thank you Aegis for helping!";},
+			[&] {return u8"Versão " + version + " LSW certified edition";},
 			[&] {return u8"Eu sou um bot?!";},
 			[&] {return u8"@Lohkdesgds para suporte!";},
 			[&] {return u8"Arroz, feijão, batata e um abração";},
@@ -60,7 +65,10 @@ int main()
 			[&] {return u8"O Lohk tem tentado me fazer extremamente estável. Se eu tiver problemas, desculpe!";},
 			[&] {return u8"Você sabia que você pode me adicionar no seu grupo?";},
 			[&] {return u8"Fun Fact: o Ninja ainda é o maior streamer na Twitch de todos os tempos.";},
-			[&] {return u8"Sério alguém pode comprar algo pra eu jantar?";},
+			[&] {return u8"Fun Fact: o Pewdiepie ainda é o maior Youtuber de todos os tempos.";},
+			[&] {return u8"Fun Fact: o Lohk reescreveu grande parte de uma biblioteca só pra fazer esse bot!";},
+			[&] {return u8"Fun Fact: o Brasil não é um país pobre. Na realidade, ele até assusta o resto do mundo em alguns setores!";},
+			[&] {return u8"Sério, alguém pode comprar algo pra eu jantar?";},
 			[&] {return u8"Quanto mais eu penso, menos eu durmo :o";},
 			[&] {return u8"Eu sou feito de 1 e 0 no final das contas, e você?";},
 			[&] {return u8"Se precisa de ajuda, procure, nem que seja no Google!";},
@@ -90,16 +98,16 @@ int main()
 			[&] {return u8"Eu suporto acentos àéíóúçêãõü!";},
 			[&] {return u8"Você sabia que se eu caio eu não caio? Exatamente...";},
 			[&] {return u8"Algumas updates podem ser bugadas, mas eu arrumo, relaxa!";},
-			[&] {if (auto corr = i_know.get_core(); corr) { return command_global + u8"! - " + std::to_string(corr->get_guild_count()) + " guild(s)!"; } return std::string(u8"Acho que tive uns problemas aqui O.o"); },
+			//[&] {if (auto corr = i_know->get_core(); corr) { return command_global + u8"! - " + std::to_string(corr->get_guild_count()) + " guild(s)!"; } return std::string(u8"Acho que tive uns problemas aqui O.o"); },
 			[&] {return u8"Usando " + std::to_string(double(aegis::utility::getCurrentRSS()) / div_memory_calc) + " MB de RAM agora mesmo!"; },
-			[&] {if (auto corr = i_know.get_core(); corr) {return u8"Acordado há " + corr->uptime_str(); } return std::string(u8"Acho que tive uns problemas aqui O.o"); },
+			[&] {if (auto corr = i_know->get_core(); corr) {return u8"Acordado há " + corr->uptime_str(); } return std::string(u8"Acho que tive uns problemas aqui O.o"); },
 			[&] {return u8"Isso é aleatório (tecnicamente): " + std::to_string(rand());}
 		};
 		arr_siz = sizeof(random_phrases) / sizeof(std::function<std::string(void)>);
 
-		std::this_thread::sleep_for(std::chrono::seconds(2));
+		std::this_thread::sleep_for(std::chrono::seconds(5));
 
-		auto keep = [&] {return !notice_dead_early && (i_know.get_core()); };
+		auto keep = [&] {return !notice_dead_early && (i_know->get_core()); };
 
 		int randdd = GetTickCount64() % (arr_siz);
 
@@ -110,34 +118,34 @@ int main()
 				if (!keep()) break;
 
 				try {
-					if (auto corr = i_know.get_core(); corr) corr->update_presence(random_phrases[randdd](), aegis::gateway::objects::activity::Game, aegis::gateway::objects::presence::Idle);
+					if (auto corr = i_know->get_core(); corr) corr->update_presence(random_phrases[randdd](), aegis::gateway::objects::activity::Game, aegis::gateway::objects::presence::Idle);
 				}
 				catch (aegis::error e) {
-					if (auto logg = i_know.get_logger(); logg) logg->critical("Presence Updater: couldn't set presence. Got error: {}", e);
+					if (auto logg = i_know->get_logger(); logg) logg->critical("Presence Updater: couldn't set presence. Got error: {}", e);
 				}
 				catch (nlohmann::detail::type_error e) {
-					if (auto logg = i_know.get_logger(); logg) logg->error("Presence Updater:: JSON failed: TYPE ERROR: {}", e.what());
+					if (auto logg = i_know->get_logger(); logg) logg->error("Presence Updater:: JSON failed: TYPE ERROR: {}", e.what());
 				}
 				catch (nlohmann::detail::invalid_iterator e) {
-					if (auto logg = i_know.get_logger(); logg) logg->error("Presence Updater:: JSON failed: INVALID ITERATOR ERROR: {}", e.what());
+					if (auto logg = i_know->get_logger(); logg) logg->error("Presence Updater:: JSON failed: INVALID ITERATOR ERROR: {}", e.what());
 				}
 				catch (nlohmann::detail::parse_error e) {
-					if (auto logg = i_know.get_logger(); logg) logg->error("Presence Updater:: JSON failed: PARSE ERROR: {}", e.what());
+					if (auto logg = i_know->get_logger(); logg) logg->error("Presence Updater:: JSON failed: PARSE ERROR: {}", e.what());
 				}
 				catch (nlohmann::detail::out_of_range e) {
-					if (auto logg = i_know.get_logger(); logg) logg->error("Presence Updater:: JSON failed: OUT OF RANGE ERROR: {}",  e.what());
+					if (auto logg = i_know->get_logger(); logg) logg->error("Presence Updater:: JSON failed: OUT OF RANGE ERROR: {}",  e.what());
 				}
 				catch (nlohmann::detail::other_error e) {
-					if (auto logg = i_know.get_logger(); logg) logg->error("Presence Updater:: JSON failed: OTHER ERROR: {}", e.what());
+					if (auto logg = i_know->get_logger(); logg) logg->error("Presence Updater:: JSON failed: OTHER ERROR: {}", e.what());
 				}
 				catch (nlohmann::detail::exception e) {
-					if (auto logg = i_know.get_logger(); logg) logg->error("Presence Updater:: JSON failed: GENERIC EXCEPTION ERROR: {}", e.what());
+					if (auto logg = i_know->get_logger(); logg) logg->error("Presence Updater:: JSON failed: GENERIC EXCEPTION ERROR: {}", e.what());
 				}
 				catch (std::exception e) {
-					if (auto logg = i_know.get_logger(); logg) logg->critical("Presence Updater: couldn't set presence. Got error: {}", e.what());
+					if (auto logg = i_know->get_logger(); logg) logg->critical("Presence Updater: couldn't set presence. Got error: {}", e.what());
 				}
 				catch (...) {
-					if (auto logg = i_know.get_logger(); logg) logg->critical("Presence Updater: couldn't set presence. Unknown error.");
+					if (auto logg = i_know->get_logger(); logg) logg->critical("Presence Updater: couldn't set presence. Unknown error.");
 				}
 			}
 			
@@ -145,10 +153,10 @@ int main()
 		}
 	}), [&](std::thread* t){
 		notice_dead_early = true;
-		if (auto logg = i_know.get_logger(); logg) logg->info("Terminating parallel threads {}...", project_name);
+		if (auto logg = i_know->get_logger(); logg) logg->info("Terminating parallel threads {}...", project_name);
 		else std::cout << "Terminating parallel threads " << project_name << "..." << std::endl;
 		t->join();
-		if (auto logg = i_know.get_logger(); logg) logg->info("Terminated parallel threads {}.", project_name);
+		if (auto logg = i_know->get_logger(); logg) logg->info("Terminated parallel threads {}.", project_name);
 		else std::cout << "Terminated parallel threads " << project_name << "." << std::endl;
 		delete t;
 	});
@@ -170,27 +178,32 @@ int main()
 				}
 
 				if (cutt.length() >= 1700) {
-					if (auto logg = i_know.get_logger(); logg) logg->warn("Isn't \n\n{}\n\n too big? Sorry.", cutt);
+					if (auto logg = i_know->get_logger(); logg) logg->warn("Isn't \n\n{}\n\n too big? Sorry.", cutt);
 					else std::cout << "Isn't\n\n" << cutt << "\n\ntoo big? Sorry." << std::endl;
 				}
 				else {
-					if (auto logg = i_know.get_logger(); logg) logg->warn("Are you sure you want to send\n\n{}\n\nto every server connected? (type CONFIRM to send)", cutt);
+					if (auto logg = i_know->get_logger(); logg) logg->warn("Are you sure you want to send\n\n{}\n\nto every server connected? (type CONFIRM to send)", cutt);
 					else std::cout << "Are you sure you want to send\n\n" << cutt << "\n\nto every server connected? (type CONFIRM to send)" << std::endl;
 					std::getline(std::cin, confirm);
 
 					if (confirm == "CONFIRM") {
-						size_t total = i_know.guild_count();
-						if (auto logg = i_know.get_logger(); logg) logg->info("Sending broadcast to {} guilds...", total);
-						size_t amount = i_know.broadcast(cutt);
-						if (auto logg = i_know.get_logger(); logg) logg->info("{} of {} guilds have received the task to broadcast.", amount, total);
+						size_t total = i_know->guild_count();
+						if (auto logg = i_know->get_logger(); logg) logg->info("Sending broadcast to {} guilds...", total);
+						size_t amount = i_know->broadcast(cutt);
+						if (auto logg = i_know->get_logger(); logg) logg->info("{} of {} guilds have received the task to broadcast.", amount, total);
 						else std::cout << "All " << amount << " of " << total << " guilds have received the task to broadcast." << std::endl;
 					}
 				}
 			}
 		}
 
+		else if (smth_n.find("list") == 0) {
+			auto str_e = i_know->generate_guild_list();
+			if (auto logg = i_know->get_logger(); logg) logg->info("Guilds list:\n{}", str_e);
+			else std::cout << "Guilds list:\n" << str_e << std::endl;
+		}
 		else if (smth_n.find("exit") != 0) {
-			if (auto logg = i_know.get_logger(); logg) logg->info("Commands:\n- broadcast <text>\n- exit");
+			if (auto logg = i_know->get_logger(); logg) logg->info("Commands:\n- broadcast <text>\n- exit");
 			else std::cout << "Commands:\n- broadcast <text>\n- exit" << std::endl;
 		}
 	}
@@ -198,16 +211,18 @@ int main()
 	notice_dead_early = true;
 
 
-	if (auto logg = i_know.get_logger(); logg) logg->info("Shutting down {}...", project_name);
+	if (auto logg = i_know->get_logger(); logg) logg->info("Shutting down {}...", project_name);
 	else std::cout << "Shutting down " << project_name << "..." << std::endl;
-	i_know.shutdown();
+	i_know->shutdown();
 
 	//thr.join();
 
-	if (auto logg = i_know.get_logger(); logg) logg->info("Ended {}.", project_name);
+	if (auto logg = i_know->get_logger(); logg) logg->info("Ended {}.", project_name);
 	else std::cout << "Ended " << project_name << "." << std::endl;
 	//end();
 
 	//std::cout << "Ended " << project_name << "." << std::endl;
 	//thebot->yield();
+
+	i_know.reset();
 }
